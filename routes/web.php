@@ -48,6 +48,9 @@ Route::group(['middleware' => ['auth']], function() {
         Route::post('/supplier/store', [App\Http\Controllers\SupplierController::class, 'store'])->name('db.supplier.store');
         Route::patch('/supplier/{supplier}/update', [App\Http\Controllers\SupplierController::class, 'update'])->name('db.supplier.update');
         Route::delete('/supplier/{supplier}/delete', [App\Http\Controllers\SupplierController::class, 'destroy'])->name('db.supplier.delete');
+
+        Route::get('/rekening', [App\Http\Controllers\RekeningController::class, 'index'])->name('db.rekening');
+        Route::patch('/rekening/{rekening}/update', [App\Http\Controllers\RekeningController::class, 'update'])->name('db.rekening.update');
     });
 
     // END ROUTE DB
