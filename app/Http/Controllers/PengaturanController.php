@@ -15,4 +15,6 @@ class PengaturanController extends Controller
             'data' => $data
         ]);
     }
+
+    
 }
