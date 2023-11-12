@@ -34,6 +34,24 @@ class CustomerController extends Controller
 
     }
 
+    public function update(Request $request, Customer $customer)
+    {
+        $data = $request->validate([
+            'nama' => 'required',
+            'singkatan' => 'required',
+            'cp' => 'required',
+            'no_wa' => 'required',
+            'alamat' => 'required',
+            'harga' => 'required',
+        ]);
+
+        $data['harga'] = str_replace('.', '', $data['harga']);
+
+        $customer->update($data);
+
+        return redirect()->back()->with('success', 'Data berhasil diubah!');
+    }
+
     public function destroy(Customer $customer)
     {
         $customer->delete();

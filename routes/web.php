@@ -35,6 +35,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::prefix('db')->group(function () {
         Route::get('/customer', [App\Http\Controllers\CustomerController::class, 'index'])->name('db.customer');
         Route::post('/customer/store', [App\Http\Controllers\CustomerController::class, 'store'])->name('db.customer.store');
+        Route::patch('/customer/{customer}/update', [App\Http\Controllers\CustomerController::class, 'update'])->name('db.customer.update');
         Route::delete('/customer/{customer}/delete', [App\Http\Controllers\CustomerController::class, 'destroy'])->name('db.customer.delete');
     });
     // END ROUTE DB

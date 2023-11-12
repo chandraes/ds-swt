@@ -51,10 +51,11 @@
                         </a>
                     </td>
                     <td class="text-center align-middle">
+                        <button class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#editCustomer" onclick="editCustomer({{$d}})">Edit</button>
                         <form action="{{route('db.customer.delete', $d)}}" method="post" id="deleteForm-{{$d->id}}">
                             @csrf
                             @method('delete')
-                            <button type="submit" class="btn btn-danger"><i
+                            <button type="submit" class="btn btn-danger m-2"><i
                                     class="fa fa-trash"></i></button>
                         </form>
                     </td>
@@ -80,6 +81,8 @@
         </tbody>
     </table>
 </div>
+
+@include('db.customer.edit')
 @endsection
 @push('css')
 <link href="{{asset('assets/css/dt.min.css')}}" rel="stylesheet">
@@ -90,6 +93,17 @@
 
 <script src="{{asset('assets/js/dt5.min.js')}}"></script>
 <script>
+
+    function editCustomer(data) {
+        document.getElementById('editNama').value = data.nama;
+        document.getElementById('editSingkatan').value = data.singkatan;
+        document.getElementById('editCp').value = data.cp;
+        document.getElementById('editNo_wa').value = data.no_wa;
+        document.getElementById('editAlamat').value = data.alamat;
+        document.getElementById('editHarga').value = data.harga;
+        // Populate other fields...
+    }
+
     $('#data').DataTable({
         paging: false,
         scrollCollapse: true,
@@ -103,12 +117,42 @@
         delimiter: '.'
     });
 
+    var wa = new Cleave('#editNo_wa', {
+        delimiter: '-',
+        blocks: [4, 4, 8]
+    });
+
+    var cleave = new Cleave('#editHarga', {
+        numeral: true,
+        numeralThousandsGroupStyle: 'thousand',
+        numeralDecimalMark: ',',
+        delimiter: '.'
+    });
+
     var wa = new Cleave('#no_wa', {
         delimiter: '-',
         blocks: [4, 4, 8]
     });
 
     $('#createForm').submit(function(e){
+            e.preventDefault();
+            Swal.fire({
+                title: 'Apakah data sudah benar?',
+                text: "Pastikan data sudah benar sebelum disimpan!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Ya, simpan!'
+                }).then((result) => {
+                if (result.isConfirmed) {
+                    this.submit();
+                }
+            })
+        });
+
+
+    $('#editForm').submit(function(e){
             e.preventDefault();
             Swal.fire({
                 title: 'Apakah data sudah benar?',
