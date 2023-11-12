@@ -26,6 +26,22 @@
                             <input type="text" class="form-control" name="no_wa" id="edit_no_wa" aria-describedby="helpId"
                                 placeholder="" required>
                         </div>
+                        <div class="col-4 mb-3">
+                            <label for="no_ktp" class="form-label">No KTP</label>
+                            <input type="text" class="form-control" name="no_ktp" id="edit_no_ktp" aria-describedby="helpId"
+                                placeholder="" required>
+                        </div>
+                        <div class="col-4 mb-3">
+                            <label for="npwp" class="form-label">NPWP</label>
+                            <input type="text" class="form-control" name="npwp" id="edit_npwp" aria-describedby="helpId"
+                                placeholder="" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 mb-3">
+                            <label for="alamat" class="form-label">Alamat</label>
+                            <textarea class="form-control" name="alamat" id="edit_alamat" rows="3" required></textarea>
+                        </div>
                     </div>
                     <hr>
                     <h2>Informasi BANK</h2>

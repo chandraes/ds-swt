@@ -19,6 +19,9 @@ class SupplierController extends Controller
     {
         $data = $request->validate([
             'nama' => 'required',
+            'no_ktp' => 'required',
+            'npwp' => 'required',
+            'alamat' => 'required',
             'nickname' => 'required',
             'no_wa' => 'required',
             'bank' => 'required',
@@ -35,6 +38,9 @@ class SupplierController extends Controller
     {
         $data = $request->validate([
             'nama' => 'required',
+            'no_ktp' => 'required',
+            'npwp' => 'required',
+            'alamat' => 'required',
             'nickname' => 'required',
             'no_wa' => 'required',
             'bank' => 'required',

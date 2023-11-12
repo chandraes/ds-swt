@@ -112,7 +112,7 @@
                     }
                 })
             });
-            
+
     function editSupplier(data, id) {
         document.getElementById('edit_nama').value = data.nama;
         document.getElementById('edit_no_wa').value = data.no_wa;
@@ -120,6 +120,9 @@
         document.getElementById('edit_no_rek').value = data.no_rek;
         document.getElementById('edit_bank').value = data.bank;
         document.getElementById('edit_nickname').value = data.nickname;
+        document.getElementById('edit_no_ktp').value = data.no_ktp;
+        document.getElementById('edit_npwp').value = data.npwp;
+        document.getElementById('edit_alamat').value = data.alamat;
 
         document.getElementById('editForm').action = '/db/supplier/' + id + '/update';
     };
@@ -138,6 +141,16 @@
     var no_wa = new Cleave('#no_wa', {
         delimiter: '-',
         blocks: [4, 4, 8]
+    });
+
+    var npwp = new Cleave('#npwp', {
+        delimiters: ['.', '.', '.', '-','.','.'],
+        blocks: [2, 3, 3, 1, 3, 3],
+    });
+
+    var edit_npwp = new Cleave('#edit_npwp', {
+        delimiters: ['.', '.', '.', '-','.','.'],
+        blocks: [2, 3, 3, 1, 3, 3],
     });
 
     var edit_no_wa = new Cleave('#edit_no_wa', {
