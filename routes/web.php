@@ -27,6 +27,10 @@ Route::group(['middleware' => ['auth']], function() {
     Route::view('pengaturan', 'pengaturan.index')->name('pengaturan');
     Route::prefix('pengaturan')->group(function () {
         Route::get('/akun', [App\Http\Controllers\PengaturanController::class, 'index'])->name('pengaturan.akun');
+
+        Route::get('/wa', [App\Http\Controllers\WaController::class, 'index'])->name('pengaturan.wa');
+        Route::get('/wa/get-group-wa', [App\Http\Controllers\WaController::class, 'get_group_wa'])->name('pengaturan.wa.get-group-wa');
+        Route::patch('/wa/{group_wa}/update', [App\Http\Controllers\WaController::class, 'update'])->name('pengaturan.wa.update');
     });
     // END ROUTE PENGATURAN
 

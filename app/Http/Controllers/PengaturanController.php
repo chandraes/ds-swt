@@ -10,9 +10,10 @@ class PengaturanController extends Controller
     public function index()
     {
         $data = User::all();
-        
+
         return view('pengaturan.pengguna.index', [
             'data' => $data
         ]);
     }
+
 }
