@@ -94,6 +94,12 @@ class PengaturanController extends Controller
      */
     public function destroy(string $id)
     {
+        $check = User::count();
+
+        if ($check == 1) {
+            return redirect()->back()->with('error', 'Tidak dapat menghapus user, karena hanya ada 1 user');
+        }
+        
         DB::transaction(function () use ($id) {
             $user = User::findOrFail($id);
             $user->delete();
