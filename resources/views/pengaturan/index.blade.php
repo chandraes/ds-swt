@@ -7,9 +7,9 @@
 <div class="container mt-5">
     <div class="row justify-content-left">
         <div class="col-3 text-center">
-            <a href="{{route('pengaturan')}}" class="text-decoration-none">
+            <a href="{{route('pengaturan.akun')}}" class="text-decoration-none">
                 <img src="{{asset('images/pengguna.svg')}}" alt="" width="100">
-                <h2>Pengguna</h2>
+                <h2>AKUN</h2>
             </a>
         </div>
         <div class="col-3 text-center">

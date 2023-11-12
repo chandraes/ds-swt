@@ -23,8 +23,25 @@ Auth::routes([
 
 Route::group(['middleware' => ['auth']], function() {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-    Route::view('pengaturan', 'pengaturan')->name('pengaturan');
+    // ROUTE PENGATURAN
+    Route::view('pengaturan', 'pengaturan.index')->name('pengaturan');
+    Route::prefix('pengaturna')->group(function () {
+        Route::get('/akun', [App\Http\Controllers\PengaturanController::class, 'index'])->name('pengaturan.akun');
+    });
+    // END ROUTE PENGATURAN
+
+    // ROUTE DB
     Route::view('db', 'db.index')->name('db');
+
+    // END ROUTE DB
+
+    // ROUTE REKAP
     Route::view('rekap', 'rekap.index')->name('rekap');
+
+    // END ROUTE REKAP
+
+    // ROUTE BILLING
     Route::view('billing','billing.index')->name('billing');
+
+    // END ROUTE BILLING
 });
