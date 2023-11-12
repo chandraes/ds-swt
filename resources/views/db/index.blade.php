@@ -13,7 +13,7 @@
             </a>
         </div>
         <div class="col-3 mt-3 text-center">
-            <a href="{{route('db')}}" class="text-decoration-none">
+            <a href="{{route('db.supplier')}}" class="text-decoration-none">
                 <img src="{{asset('images/supplier.svg')}}" alt="" width="100">
                 <h2>SUPPLIER</h2>
             </a>
