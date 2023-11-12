@@ -26,7 +26,7 @@ Route::group(['middleware' => ['auth']], function() {
     // ROUTE PENGATURAN
     Route::view('pengaturan', 'pengaturan.index')->name('pengaturan');
     Route::prefix('pengaturan')->group(function () {
-        Route::get('/akun', [App\Http\Controllers\PengaturanController::class, 'index'])->name('pengaturan.akun');
+        Route::resource('/akun', App\Http\Controllers\PengaturanController::class,)->except(['show']);
     });
     // END ROUTE PENGATURAN
 
