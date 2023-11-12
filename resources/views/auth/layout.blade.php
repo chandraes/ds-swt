@@ -15,9 +15,6 @@
 		<!-- TITLE -->
 		<title>{{ config('app.name', 'Laravel') }}</title>
 
-		<!-- BOOTSTRAP CSS -->
-		<link id="style" href="{{asset('assets/plugins/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet" />
-        <link id="style" href="{{asset('assets/font-awesome/css/font-awesome.min.css')}}" rel="stylesheet" />
 
 		<!-- STYLE CSS -->
 		<link href="{{asset('assets/css/style.css')}}" rel="stylesheet"/>
@@ -30,9 +27,8 @@
 
 	</head>
 
-	<body class="login-img">
+	<body class="bg-warning bg-gradient">
 
-		<!-- BACKGROUND-IMAGE -->
 		<div>
 
 			<!-- GLOABAL LOADER -->
@@ -46,26 +42,7 @@
 		</div>
 
 		<script src="{{asset('assets/js/jquery.min.js')}}"></script>
-        <!-- BOOTSTRAP JS -->
-        <script src="{{asset('assets/plugins/bootstrap/js/popper.min.js')}}"></script>
-        <script src="{{asset('assets/plugins/bootstrap/js/bootstrap.min.js')}}"></script>
 
-		<!-- SPARKLINE JS -->
-		<script src="{{asset('assets/js/jquery.sparkline.min.js')}}"></script>
-
-		<!-- CHART-CIRCLE JS -->
-		<script src="{{asset('assets/js/circle-progress.min.js')}}"></script>
-
-		<!-- Perfect SCROLLBAR JS-->
-		<script src="{{asset('assets/plugins/p-scroll/perfect-scrollbar.js')}}"></script>
-
-        <!-- Color Theme js -->
-        <script src="{{asset('assets/js/themeColors.js')}}"></script>
-
-        <!-- swither styles js -->
-        <script src="{{asset('assets/js/swither-styles.js')}}"></script>
-
-        <!-- CUSTOM JS -->
         <script src="{{asset('assets/js/custom.js')}}"></script>
 
 	</body>
