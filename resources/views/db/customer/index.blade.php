@@ -19,13 +19,14 @@
                                 width="30"> Tambah Customer</a>
                         @include('db.customer.create')
                     </td>
-
                 </tr>
             </table>
         </div>
     </div>
 </div>
-
+@php
+    $editId = isset($d) ? $d->id : '';
+@endphp
 <div class="container mt-5 table-responsive">
     <table class="table table-bordered table-hover" id="data">
         <thead class="table-warning bg-gradient">
@@ -46,12 +47,13 @@
                     <td class="text-center align-middle">{{$d->cp}}</td>
                     <td class="text-center align-middle">{{$d->no_wa}}</td>
                     <td class="text-center align-middle">
-                        <a href="#" class="btn btn-primary">
+                        <button href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editHargaCustomer" onclick="editHargaCustomer({{$d}}, {{$d->id}})">
                             Rp. {{$d->harga}}
-                        </a>
+                        </button>
+
                     </td>
                     <td class="text-center align-middle">
-                        <button class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#editCustomer" onclick="editCustomer({{$d}})">Edit</button>
+                        <button class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#editCustomer" onclick="editCustomer({{$d}}, {{$d->id}})">Edit</button>
                         <form action="{{route('db.customer.delete', $d)}}" method="post" id="deleteForm-{{$d->id}}">
                             @csrf
                             @method('delete')
@@ -81,7 +83,7 @@
         </tbody>
     </table>
 </div>
-
+@include('db.customer.edit-harga')
 @include('db.customer.edit')
 @endsection
 @push('css')
@@ -94,7 +96,7 @@
 <script src="{{asset('assets/js/dt5.min.js')}}"></script>
 <script>
 
-    function editCustomer(data) {
+    function editCustomer(data, id) {
         document.getElementById('editNama').value = data.nama;
         document.getElementById('editSingkatan').value = data.singkatan;
         document.getElementById('editCp').value = data.cp;
@@ -102,6 +104,12 @@
         document.getElementById('editAlamat').value = data.alamat;
         document.getElementById('editHarga').value = data.harga;
         // Populate other fields...
+        document.getElementById('editForm').action = '/db/customer/' + id + '/update';
+    }
+
+    function editHargaCustomer(data, id) {
+        document.getElementById('editHarga2').value = data.harga;
+        document.getElementById('editHargaForm').action = '/db/customer/'+id + '/update-harga';
     }
 
     $('#data').DataTable({
@@ -123,6 +131,13 @@
     });
 
     var cleave = new Cleave('#editHarga', {
+        numeral: true,
+        numeralThousandsGroupStyle: 'thousand',
+        numeralDecimalMark: ',',
+        delimiter: '.'
+    });
+
+    var cleave = new Cleave('#editHarga2', {
         numeral: true,
         numeralThousandsGroupStyle: 'thousand',
         numeralDecimalMark: ',',
@@ -169,6 +184,22 @@
             })
         });
 
+        $('#editHargaForm').submit(function(e){
+            e.preventDefault();
+            Swal.fire({
+                title: 'Apakah data sudah benar?',
+                text: "Pastikan data sudah benar sebelum disimpan!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Ya, simpan!'
+                }).then((result) => {
+                if (result.isConfirmed) {
+                    this.submit();
+                }
+            })
+        });
 </script>
 @endpush
 

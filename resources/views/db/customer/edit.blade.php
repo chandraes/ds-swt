@@ -6,7 +6,7 @@
                 <h5 class="modal-title" id="editCustomerTitle">Edit Customer @isset($d) {{$d->nama}} @endisset</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="{{ isset($d) ? route('db.customer.update', $d) : '#' }}" method="post" id="editForm">
+            <form method="post" id="editForm">
                 @csrf
                 @method('patch')
                 <div class="modal-body">

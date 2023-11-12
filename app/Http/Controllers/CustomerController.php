@@ -57,4 +57,17 @@ class CustomerController extends Controller
         $customer->delete();
         return redirect()->back()->with('success', 'Data berhasil dihapus!');
     }
+
+    public function update_harga(Request $request, Customer $customer)
+    {
+        $data = $request->validate([
+            'harga' => 'required',
+        ]);
+
+        $data['harga'] = str_replace('.', '', $data['harga']);
+
+        $customer->update($data);
+
+        return redirect()->back()->with('success', 'Data berhasil diubah!');
+    }
 }
