@@ -7,7 +7,7 @@
 <div class="container mt-5">
     <div class="row justify-content-left">
         <div class="col-3 mt-3 text-center">
-            <a href="{{route('db')}}" class="text-decoration-none">
+            <a href="{{route('db.customer')}}" class="text-decoration-none">
                 <img src="{{asset('images/customer.svg')}}" alt="" width="100">
                 <h2>CUSTOMER</h2>
             </a>

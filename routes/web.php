@@ -25,14 +25,18 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     // ROUTE PENGATURAN
     Route::view('pengaturan', 'pengaturan.index')->name('pengaturan');
-    Route::prefix('pengaturna')->group(function () {
+    Route::prefix('pengaturan')->group(function () {
         Route::get('/akun', [App\Http\Controllers\PengaturanController::class, 'index'])->name('pengaturan.akun');
     });
     // END ROUTE PENGATURAN
 
     // ROUTE DB
     Route::view('db', 'db.index')->name('db');
-
+    Route::prefix('db')->group(function () {
+        Route::get('/customer', [App\Http\Controllers\CustomerController::class, 'index'])->name('db.customer');
+        Route::post('/customer/store', [App\Http\Controllers\CustomerController::class, 'store'])->name('db.customer.store');
+        Route::delete('/customer/{customer}/delete', [App\Http\Controllers\CustomerController::class, 'destroy'])->name('db.customer.delete');
+    });
     // END ROUTE DB
 
     // ROUTE REKAP
