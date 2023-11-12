@@ -28,10 +28,7 @@
         <nav class="navbar navbar-expand-md navbar-dark bg-dark bg-gradient shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    <img src="{{asset('images/saind.png')}}" alt="DS SAWIT" class="img-responsive" width="140"><br>
-                    <strong>
-                        &nbsp;<span id="clock" style="font-size: 9pt"></span>
-                    </strong>
+                    <img src="{{asset('images/sawit.svg')}}" alt="DS SAWIT" class="img-responsive" width=35"> <strong>DS SAWIT</strong>
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -91,24 +88,7 @@
         </main>
     </div>
 
-    <script>
-        $(document).ready(function(){
-            var clockElement = document.getElementById('clock');
-            function clock() {
-                clockElement.textContent = new Date().toLocaleString('id-ID', {
-                    day: 'numeric',
-                    month: 'long',
-                    year: 'numeric',
-                    hour: 'numeric',
-                    minute: 'numeric',
-                    second: 'numeric',
-                    hour12: false
-                });
-            }
-            setInterval(clock, 1000);
-        });
 
-    </script>
     <script src="{{asset('assets/js/jquery.min.js')}}"></script>
     <script src="{{asset('assets/js/sweetalert.js')}}"></script>
     @stack('js')

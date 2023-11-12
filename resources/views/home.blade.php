@@ -33,15 +33,4 @@
     </div>
 </div>
 @endsection
-@push('js')
-<script src="{{asset('assets/js/cleave.min.js')}}"></script>
-<script>
-    // use cleave.js to format the number
-    var cleave = new Cleave('#number', {
-        numeral: true,
-        numeralThousandsGroupStyle: 'thousand',
-        numeralDecimalMark: ',',
-        delimiter: '.'
-    });
-</script>
-@endpush
+
