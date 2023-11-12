@@ -21,9 +21,9 @@ Auth::routes([
     'register' => false,
 ]);
 
-
-
 Route::group(['middleware' => ['auth']], function() {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::view('pengaturan', 'pengaturan')->name('pengaturan');
+    Route::view('db', 'db.index')->name('db');
+    Route::view('rekap', 'rekap.index')->name('rekap');
 });

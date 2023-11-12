@@ -85,7 +85,7 @@
             </div>
         </nav>
 
-        <main class="py-4 mt-5">
+        <main class="py-4 mt-3">
             @include('swal')
             @yield('content')
         </main>
