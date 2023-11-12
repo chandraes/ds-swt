@@ -101,6 +101,7 @@
         document.getElementById('editNo_wa').value = data.no_wa;
         document.getElementById('editAlamat').value = data.alamat;
         document.getElementById('editHarga').value = data.harga;
+        document.getElementById('edit_npwp').value = data.npwp;
         // Populate other fields...
         document.getElementById('editForm').action = '/db/customer/' + id + '/update';
     }
@@ -116,26 +117,36 @@
         scrollY: "550px",
     });
 
-    var cleave = new Cleave('#harga', {
+    var harga = new Cleave('#harga', {
         numeral: true,
         numeralThousandsGroupStyle: 'thousand',
         numeralDecimalMark: ',',
         delimiter: '.'
     });
 
-    var wa = new Cleave('#editNo_wa', {
+    var editWa = new Cleave('#editNo_wa', {
         delimiter: '-',
         blocks: [4, 4, 8]
     });
 
-    var cleave = new Cleave('#editHarga', {
+    var npwp = new Cleave('#npwp', {
+        delimiters: ['.', '.', '.', '-','.','.'],
+        blocks: [2, 3, 3, 1, 3, 3],
+    });
+
+    var edit_npwp = new Cleave('#edit_npwp', {
+        delimiters: ['.', '.', '.', '-','.','.'],
+        blocks: [2, 3, 3, 1, 3, 3],
+    });
+
+    var editHarga = new Cleave('#editHarga', {
         numeral: true,
         numeralThousandsGroupStyle: 'thousand',
         numeralDecimalMark: ',',
         delimiter: '.'
     });
 
-    var cleave = new Cleave('#editHarga2', {
+    var editHarga2 = new Cleave('#editHarga2', {
         numeral: true,
         numeralThousandsGroupStyle: 'thousand',
         numeralDecimalMark: ',',

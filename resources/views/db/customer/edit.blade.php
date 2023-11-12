@@ -11,26 +11,34 @@
                 @method('patch')
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-6 mb-3">
+                        <div class="col-4 mb-3">
                             <label for="nama" class="form-label">Nama</label>
                             <input type="text" class="form-control" name="nama" id="editNama" aria-describedby="helpId"
                                 placeholder="" required>
                         </div>
-                        <div class="col-6 mb-3">
+                        <div class="col-4 mb-3">
                             <label for="singkatan" class="form-label">Singkatan</label>
                             <input type="text" class="form-control" name="singkatan" id="editSingkatan"
                                 aria-describedby="helpId" placeholder="" required>
                         </div>
-                        <div class="col-6 mb-3">
+                        <div class="col-4 mb-3">
                             <label for="cp" class="form-label">Contact Person</label>
                             <input type="text" class="form-control" name="cp" id="editCp" aria-describedby="helpId"
                                 placeholder="" required>
                         </div>
-                        <div class="col-6 mb-3">
+                        <div class="col-4 mb-3">
                             <label for="no_wa" class="form-label">Nomor WA</label>
                             <input type="text" class="form-control" name="no_wa" id="editNo_wa" aria-describedby="helpId"
                                 placeholder="" required>
                         </div>
+                        <div class="col-4 mb-3">
+                            <label for="npwp" class="form-label">NPWP</label>
+                            <input type="text" class="form-control" name="npwp" id="edit_npwp" aria-describedby="helpId"
+                                placeholder="" required>
+                        </div>
+
+                    </div>
+                    <div class="row">
                         <div class="col-12 mb-3">
                             <label for="alamat" class="form-label">Alamat</label>
                             <textarea class="form-control" name="alamat" id="editAlamat" rows="3" required></textarea>

@@ -19,6 +19,7 @@ class CustomerController extends Controller
     {
         $data = $request->validate([
             'nama' => 'required',
+            'npwp' => 'required',
             'singkatan' => 'required',
             'cp' => 'required',
             'no_wa' => 'required',
@@ -38,6 +39,7 @@ class CustomerController extends Controller
     {
         $data = $request->validate([
             'nama' => 'required',
+            'npwp' => 'required',
             'singkatan' => 'required',
             'cp' => 'required',
             'no_wa' => 'required',

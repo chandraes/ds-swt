@@ -16,6 +16,9 @@ return new class extends Migration
             $table->string('nama');
             $table->string('nickname');
             $table->string('no_wa');
+            $table->text('alamat');
+            $table->string('npwp');
+            $table->string('no_ktp');
             $table->string('bank');
             $table->string('no_rek');
             $table->string('nama_rek');

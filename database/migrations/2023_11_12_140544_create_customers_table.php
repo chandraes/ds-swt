@@ -17,7 +17,8 @@ return new class extends Migration
             $table->string('singkatan');
             $table->string('cp');
             $table->string('no_wa');
-            $table->string('alamat');
+            $table->string('npwp');
+            $table->text('alamat');
             $table->integer('harga');
             $table->timestamps();
         });
