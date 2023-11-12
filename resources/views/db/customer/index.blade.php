@@ -108,6 +108,7 @@
 
     function editHargaCustomer(data, id) {
         document.getElementById('editHarga2').value = data.harga;
+        document.getElementById('edit_harga_nama').value = data.nama;
         document.getElementById('editHargaForm').action = '/db/customer/'+id + '/update-harga';
     }
 

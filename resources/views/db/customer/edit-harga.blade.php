@@ -3,7 +3,7 @@
     <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-sm" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="editCustomerTitle">Edit Harga Customer @isset($d) {{$d->singkatan}} @endisset</h5>
+                <h5 class="modal-title" id="editCustomerTitle">Edit Harga Customer</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form method="post" id="editHargaForm">
@@ -11,6 +11,11 @@
                 @method('patch')
                 <div class="modal-body">
                     <div class="row mt-3">
+                        <div class="col-12 mb-3">
+                          <label for="nama" class="form-label">Nama</label>
+                          <input type="text"
+                            class="form-control" name="nama" id="edit_harga_nama" aria-describedby="helpId" placeholder="" disabled>
+                        </div>
                         <div class="col-12 mb-3">
                             <label for="harga" class="form-label">Harga</label>
                             <div class="input-group mb-3">
