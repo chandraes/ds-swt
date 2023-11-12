@@ -3,7 +3,7 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12 text-center">
-            <h1><u>CUSTOMER</u></h1>
+            <h1><u>INVESTOR</u></h1>
         </div>
     </div>
     <div class="flex-row justify-content-between mt-3">
@@ -14,25 +14,29 @@
                                 width="30"> Dashboard</a></td>
                     <td><a href="{{route('db')}}"><img src="{{asset('images/database.svg')}}" alt="dokumen" width="30">
                             Database</a></td>
-                    <td><a href="#" data-bs-toggle="modal" data-bs-target="#createCustomer"><img
-                                src="{{asset('images/customer.svg')}}" width="30"> Tambah Customer</a>
-                        @include('db.customer.create')
+                    <td><a href="#" data-bs-toggle="modal" data-bs-target="#createInvestor"><img
+                                src="{{asset('images/investor.svg')}}" width="30"> Tambah Investor</a>
+
                     </td>
                 </tr>
             </table>
         </div>
     </div>
 </div>
+@include('db.investor.create')
+@include('db.investor.edit')
 <div class="container mt-5 table-responsive">
     <table class="table table-bordered table-hover" id="data">
         <thead class="table-warning bg-gradient">
             <tr>
-                <th class="text-center align-middle" style="width: 5%">No</th>
-                <th class="text-center align-middle">Nama</th>
-                <th class="text-center align-middle">Contact Person</th>
-                <th class="text-center align-middle">No Wa</th>
-                <th class="text-center align-middle">Harga</th>
-                <th class="text-center align-middle">Action</th>
+                <th class="text-center align-middle" style="width: 5%">NO</th>
+                <th class="text-center align-middle">NAMA</th>
+                <th class="text-center align-middle">NO WA</th>
+                <th class="text-center align-middle">PERSENTASE</th>
+                <th class="text-center align-middle">NO REK</th>
+                <th class="text-center align-middle">ATAS NAMA</th>
+                <th class="text-center align-middle">BANK</th>
+                <th class="text-center align-middle">ACT</th>
             </tr>
         </thead>
         <tbody>
@@ -40,50 +44,47 @@
             <tr>
                 <td class="text-center align-middle">{{$loop->iteration}}</td>
                 <td class="text-center align-middle">{{$d->nama}}</td>
-                <td class="text-center align-middle">{{$d->cp}}</td>
                 <td class="text-center align-middle">{{$d->no_wa}}</td>
-                <td class="text-center align-middle">
-                    <button href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editHargaCustomer"
-                        onclick="editHargaCustomer({{$d}}, {{$d->id}})">
-                        Rp. {{$d->harga}}
-                    </button>
-
-                </td>
+                <td class="text-center align-middle">{{$d->persentase}}%</td>
+                <td class="text-center align-middle">{{$d->no_rek}}</td>
+                <td class="text-center align-middle">{{$d->nama_rek}}</td>
+                <td class="text-center align-middle">{{$d->bank}}</td>
                 <td class="text-center align-middle">
                     <div class="d-flex justify-content-center">
-                        <button class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#editCustomer"
-                            onclick="editCustomer({{$d}}, {{$d->id}})">Edit</button>
-                        <form action="{{route('db.customer.delete', $d)}}" method="post" id="deleteForm-{{$d->id}}">
+                        <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal"
+                            data-bs-target="#editInvestor" onclick="editInvestor({{$d}}, {{$d->id}})"><i
+                                class="fa fa-edit"></i></button>
+                        <form action="{{route('db.investor.delete', $d)}}" method="post" id="deleteForm-{{$d->id}}">
                             @csrf
                             @method('delete')
                             <button type="submit" class="btn btn-danger m-2"><i class="fa fa-trash"></i></button>
                         </form>
                     </div>
+
                 </td>
             </tr>
             <script>
                 $('#deleteForm-{{$d->id}}').submit(function(e){
-                            e.preventDefault();
-                            Swal.fire({
-                                title: 'Apakah data yakin untuk menghapus data ini?',
-                                icon: 'warning',
-                                showCancelButton: true,
-                                confirmButtonColor: '#3085d6',
-                                cancelButtonColor: '#6c757d',
-                                confirmButtonText: 'Ya, hapus!'
-                                }).then((result) => {
-                                if (result.isConfirmed) {
-                                    this.submit();
-                                }
-                            })
-                        });
+                       e.preventDefault();
+                       Swal.fire({
+                           title: 'Apakah data yakin untuk menghapus data ini?',
+                           icon: 'warning',
+                           showCancelButton: true,
+                           confirmButtonColor: '#3085d6',
+                           cancelButtonColor: '#6c757d',
+                           confirmButtonText: 'Ya, hapus!'
+                           }).then((result) => {
+                           if (result.isConfirmed) {
+                               this.submit();
+                           }
+                       })
+                   });
             </script>
             @endforeach
         </tbody>
     </table>
 </div>
-@include('db.customer.edit-harga')
-@include('db.customer.edit')
+
 @endsection
 @push('css')
 <link href="{{asset('assets/css/dt.min.css')}}" rel="stylesheet">
@@ -94,20 +95,15 @@
 
 <script src="{{asset('assets/js/dt5.min.js')}}"></script>
 <script>
-    function editCustomer(data, id) {
-        document.getElementById('editNama').value = data.nama;
-        document.getElementById('editSingkatan').value = data.singkatan;
-        document.getElementById('editCp').value = data.cp;
-        document.getElementById('editNo_wa').value = data.no_wa;
-        document.getElementById('editAlamat').value = data.alamat;
-        document.getElementById('editHarga').value = data.harga;
+    function editInvestor(data, id) {
+        document.getElementById('edit_nama').value = data.nama;
+        document.getElementById('edit_no_wa').value = data.no_wa;
+        document.getElementById('edit_nama_rek').value = data.nama_rek;
+        document.getElementById('edit_no_rek').value = data.no_rek;
+        document.getElementById('edit_bank').value = data.bank;
+        document.getElementById('edit_persentase').value = data.persentase;
         // Populate other fields...
-        document.getElementById('editForm').action = '/db/customer/' + id + '/update';
-    }
-
-    function editHargaCustomer(data, id) {
-        document.getElementById('editHarga2').value = data.harga;
-        document.getElementById('editHargaForm').action = '/db/customer/'+id + '/update-harga';
+        document.getElementById('editForm').action = '/db/investor/' + id + '/update';
     }
 
     $('#data').DataTable({
@@ -116,36 +112,26 @@
         scrollY: "550px",
     });
 
-    var cleave = new Cleave('#harga', {
-        numeral: true,
-        numeralThousandsGroupStyle: 'thousand',
-        numeralDecimalMark: ',',
-        delimiter: '.'
-    });
-
-    var wa = new Cleave('#editNo_wa', {
+    var no_rek = new Cleave('#no_rek', {
         delimiter: '-',
         blocks: [4, 4, 8]
     });
 
-    var cleave = new Cleave('#editHarga', {
-        numeral: true,
-        numeralThousandsGroupStyle: 'thousand',
-        numeralDecimalMark: ',',
-        delimiter: '.'
-    });
-
-    var cleave = new Cleave('#editHarga2', {
-        numeral: true,
-        numeralThousandsGroupStyle: 'thousand',
-        numeralDecimalMark: ',',
-        delimiter: '.'
-    });
-
-    var wa = new Cleave('#no_wa', {
+    var no_wa = new Cleave('#no_wa', {
         delimiter: '-',
         blocks: [4, 4, 8]
     });
+
+    var edit_no_wa = new Cleave('#edit_no_wa', {
+        delimiter: '-',
+        blocks: [4, 4, 8]
+    });
+
+    var edit_no_rek = new Cleave('#edit_no_rek', {
+        delimiter: '-',
+        blocks: [4, 4, 8]
+    });
+
 
     $('#createForm').submit(function(e){
             e.preventDefault();
