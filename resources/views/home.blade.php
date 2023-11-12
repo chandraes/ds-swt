@@ -13,6 +13,12 @@
             </a>
         </div>
         <div class="col-3 text-center">
+            <a href="{{route('billing')}}" class="text-decoration-none">
+                <img src="{{asset('images/billing.svg')}}" alt="" width="100">
+                <h2>BILLING</h2>
+            </a>
+        </div>
+        <div class="col-3 text-center">
             <a href="{{route('rekap')}}" class="text-decoration-none">
                 <img src="{{asset('images/rekap.svg')}}" alt="" width="100">
                 <h2>REKAP</h2>

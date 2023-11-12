@@ -26,4 +26,5 @@ Route::group(['middleware' => ['auth']], function() {
     Route::view('pengaturan', 'pengaturan')->name('pengaturan');
     Route::view('db', 'db.index')->name('db');
     Route::view('rekap', 'rekap.index')->name('rekap');
+    Route::view('billing','billing.index')->name('billing');
 });
