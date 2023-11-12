@@ -1,5 +1,4 @@
 @extends('layouts.app')
-
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
@@ -13,19 +12,17 @@
                 <tr>
                     <td><a href="{{route('home')}}"><img src="{{asset('images/dashboard.svg')}}" alt="dashboard"
                                 width="30"> Dashboard</a></td>
-                    <td><a href="{{route('db')}}"><img src="{{asset('images/database.svg')}}" alt="dokumen"
-                                width="30"> Database</a></td>
-                    <td><a href="#"  data-bs-toggle="modal" data-bs-target="#createCustomer"><img src="{{asset('images/customer.svg')}}"
-                                width="30"> Tambah Customer</a>
+                    <td><a href="{{route('db')}}"><img src="{{asset('images/database.svg')}}" alt="dokumen" width="30">
+                            Database</a></td>
+                    <td><a href="#" data-bs-toggle="modal" data-bs-target="#createCustomer"><img
+                                src="{{asset('images/customer.svg')}}" width="30"> Tambah Customer</a>
                         @include('db.customer.create')
                     </td>
-
                 </tr>
             </table>
         </div>
     </div>
 </div>
-
 <div class="container mt-5 table-responsive">
     <table class="table table-bordered table-hover" id="data">
         <thead class="table-warning bg-gradient">
@@ -40,28 +37,32 @@
         </thead>
         <tbody>
             @foreach ($data as $d)
-                <tr>
-                    <td class="text-center align-middle">{{$loop->iteration}}</td>
-                    <td class="text-center align-middle">{{$d->nama}}</td>
-                    <td class="text-center align-middle">{{$d->cp}}</td>
-                    <td class="text-center align-middle">{{$d->no_wa}}</td>
-                    <td class="text-center align-middle">
-                        <a href="#" class="btn btn-primary">
-                            Rp. {{$d->harga}}
-                        </a>
-                    </td>
-                    <td class="text-center align-middle">
-                        <button class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#editCustomer" onclick="editCustomer({{$d}})">Edit</button>
+            <tr>
+                <td class="text-center align-middle">{{$loop->iteration}}</td>
+                <td class="text-center align-middle">{{$d->nama}}</td>
+                <td class="text-center align-middle">{{$d->cp}}</td>
+                <td class="text-center align-middle">{{$d->no_wa}}</td>
+                <td class="text-center align-middle">
+                    <button href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editHargaCustomer"
+                        onclick="editHargaCustomer({{$d}}, {{$d->id}})">
+                        Rp. {{$d->harga}}
+                    </button>
+
+                </td>
+                <td class="text-center align-middle">
+                    <div class="d-flex justify-content-center">
+                        <button class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#editCustomer"
+                            onclick="editCustomer({{$d}}, {{$d->id}})">Edit</button>
                         <form action="{{route('db.customer.delete', $d)}}" method="post" id="deleteForm-{{$d->id}}">
                             @csrf
                             @method('delete')
-                            <button type="submit" class="btn btn-danger m-2"><i
-                                    class="fa fa-trash"></i></button>
+                            <button type="submit" class="btn btn-danger m-2"><i class="fa fa-trash"></i></button>
                         </form>
-                    </td>
-                </tr>
-                <script>
-                     $('#deleteForm-{{$d->id}}').submit(function(e){
+                    </div>
+                </td>
+            </tr>
+            <script>
+                $('#deleteForm-{{$d->id}}').submit(function(e){
                             e.preventDefault();
                             Swal.fire({
                                 title: 'Apakah data yakin untuk menghapus data ini?',
@@ -76,12 +77,12 @@
                                 }
                             })
                         });
-                </script>
+            </script>
             @endforeach
         </tbody>
     </table>
 </div>
-
+@include('db.customer.edit-harga')
 @include('db.customer.edit')
 @endsection
 @push('css')
@@ -93,15 +94,22 @@
 
 <script src="{{asset('assets/js/dt5.min.js')}}"></script>
 <script>
-
-    function editCustomer(data) {
+    function editCustomer(data, id) {
         document.getElementById('editNama').value = data.nama;
         document.getElementById('editSingkatan').value = data.singkatan;
         document.getElementById('editCp').value = data.cp;
         document.getElementById('editNo_wa').value = data.no_wa;
         document.getElementById('editAlamat').value = data.alamat;
         document.getElementById('editHarga').value = data.harga;
+        document.getElementById('edit_npwp').value = data.npwp;
         // Populate other fields...
+        document.getElementById('editForm').action = '/db/customer/' + id + '/update';
+    }
+
+    function editHargaCustomer(data, id) {
+        document.getElementById('editHarga2').value = data.harga;
+        document.getElementById('edit_harga_nama').value = data.nama;
+        document.getElementById('editHargaForm').action = '/db/customer/'+id + '/update-harga';
     }
 
     $('#data').DataTable({
@@ -110,19 +118,36 @@
         scrollY: "550px",
     });
 
-    var cleave = new Cleave('#harga', {
+    var harga = new Cleave('#harga', {
         numeral: true,
         numeralThousandsGroupStyle: 'thousand',
         numeralDecimalMark: ',',
         delimiter: '.'
     });
 
-    var wa = new Cleave('#editNo_wa', {
+    var editWa = new Cleave('#editNo_wa', {
         delimiter: '-',
         blocks: [4, 4, 8]
     });
 
-    var cleave = new Cleave('#editHarga', {
+    var npwp = new Cleave('#npwp', {
+        delimiters: ['.', '.', '.', '-','.','.'],
+        blocks: [2, 3, 3, 1, 3, 3],
+    });
+
+    var edit_npwp = new Cleave('#edit_npwp', {
+        delimiters: ['.', '.', '.', '-','.','.'],
+        blocks: [2, 3, 3, 1, 3, 3],
+    });
+
+    var editHarga = new Cleave('#editHarga', {
+        numeral: true,
+        numeralThousandsGroupStyle: 'thousand',
+        numeralDecimalMark: ',',
+        delimiter: '.'
+    });
+
+    var editHarga2 = new Cleave('#editHarga2', {
         numeral: true,
         numeralThousandsGroupStyle: 'thousand',
         numeralDecimalMark: ',',
@@ -169,6 +194,21 @@
             })
         });
 
+        $('#editHargaForm').submit(function(e){
+            e.preventDefault();
+            Swal.fire({
+                title: 'Apakah data sudah benar?',
+                text: "Pastikan data sudah benar sebelum disimpan!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Ya, simpan!'
+                }).then((result) => {
+                if (result.isConfirmed) {
+                    this.submit();
+                }
+            })
+        });
 </script>
 @endpush
-
