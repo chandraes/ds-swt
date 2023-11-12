@@ -7,7 +7,7 @@
 <div class="container mt-5">
     <div class="row justify-content-left">
         <div class="col-md-3 text-center mt-3">
-            <a href="{{route('akun')}}" class="text-decoration-none">
+            <a href="{{route('akun.index')}}" class="text-decoration-none">
                 <img src="{{asset('images/pengguna.svg')}}" alt="" width="100">
                 <h2>AKUN</h2>
             </a>

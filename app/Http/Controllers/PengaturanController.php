@@ -47,7 +47,7 @@ class PengaturanController extends Controller
             ]);
         });
         // return redirect()->back()->with('success', 'Data berhasil ditambahkan!');
-        return redirect()->route('akun.index')->with('success', 'User has been created');
+        return redirect()->route('akun.index')->with('success', 'User Berhasil Ditambahkan');
     }
 
     /**
@@ -70,23 +70,23 @@ class PengaturanController extends Controller
             if ($data['password'] == '') {
                 $this->validate($request, [
                     'name' => 'required|string|max:255',
-                    'email' => 'required|string|email|max:255',
+                    'email' => 'nullable|string|email|max:255',
                     'username' => 'required|string|max:255',
                 ]);
                 $data['password'] = $user->password;
             } else {
                 $this->validate($request, [
                     'name' => 'required|string|max:255',
-                    'email' => 'required|string|email|max:255',
+                    'email' => 'nullable|string|email|max:255',
                     'username' => 'required|string|max:255',
                     'password' => 'required|string|min:6|confirmed',
                 ]);
                 $data['password'] = $data['password'];
             }
-            $user->update($data);           
+            $user->update($data);
         });
         //  return redirect()->back()->with('success', 'Data berhasil diubah!');
-         return redirect()->route('akun.index')->with('success', 'User has been updated');
+         return redirect()->route('akun.index')->with('success', 'User Berhasil Diubah!');
     }
 
     /**
