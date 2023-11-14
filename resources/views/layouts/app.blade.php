@@ -8,7 +8,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     {{-- change favicon to saind.ico --}}
-    <link rel="shortcut icon" href="{{asset('images/sawit.svg')}}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{asset('images/cgm.png')}}" type="image/x-icon">
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
@@ -38,10 +38,10 @@
         </div>
     </div>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-dark bg-dark bg-gradient shadow-sm">
+        <nav class="navbar navbar-expand-md navbar-light bg-secondary bg-gradient shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    <img src="{{asset('images/sawit.svg')}}" alt="DS CGM" class="img-responsive" width=35"> <strong>DS CGM SAWIT</strong>
+                    <img src="{{asset('images/cgm.png')}}" alt="DS CGM" class="img-responsive" width=35"> <strong>DS CGM SAWIT</strong>
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
