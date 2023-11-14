@@ -26,7 +26,11 @@ Route::group(['middleware' => ['auth']], function() {
     // ROUTE PENGATURAN
     Route::view('pengaturan', 'pengaturan.index')->name('pengaturan');
     Route::prefix('pengaturan')->group(function () {
-        Route::resource('/akun', App\Http\Controllers\PengaturanController::class,)->except(['show']);
+        // Route::resource('/akun', App\Http\Controllers\PengaturanController::class,)->except(['show']);
+        Route::get('/akun', [App\Http\Controllers\PengaturanController::class, 'index'])->name('pengaturan.akun');
+        Route::post('/akun/store', [App\Http\Controllers\PengaturanController::class, 'store'])->name('pengaturan.akun.store');
+        Route::patch('/akun/{akun}/update', [App\Http\Controllers\PengaturanController::class, 'update'])->name('pengaturan.akun.update');
+        Route::delete('/akun/{akun}/delete', [App\Http\Controllers\PengaturanController::class, 'destroy'])->name('pengaturan.akun.delete');
     });
     // END ROUTE PENGATURAN
 
