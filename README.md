@@ -4,6 +4,7 @@
 - Laravel UI for Authentication.
 - Laravel LANG for Language.
 - Cleave JS for input masking.
+- Barryvdh/laravel-dompdf for generate PDF.
 
 ## License
 

@@ -21,7 +21,7 @@ class RekeningSeeder extends Seeder
                 'nama_rek' => 'PT. ABC'
             ],
             [
-                'untuk' => 'kas-ram',
+                'untuk' => 'withdraw',
                 'bank' => 'BCA',
                 'no_rek' => '1234567890',
                 'nama_rek' => 'PT. ABC'
