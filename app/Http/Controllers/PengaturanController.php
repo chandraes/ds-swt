@@ -13,7 +13,7 @@ class PengaturanController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+        public function index()
     {
 
         $users = User::all();
@@ -36,19 +36,23 @@ class PengaturanController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(StoreUserRequest $request)
-    {
-        $data = $request->validated();
-        DB::transaction(function () use ($data) {
-            $user = User::create([
-                'name' => $data['name'],
-                'email' => $data['email'],
-                'username' => $data['username'],
-                'password' => $data['password'],
-            ]);
-        });
-        // return redirect()->back()->with('success', 'Data berhasil ditambahkan!');
-        return redirect()->route('akun.index')->with('success', 'User Berhasil Ditambahkan');
+
+{
+    $data = $request->validated();
+
+    if ($request->fails()) {
+        return redirect()->back()->withErrors($request->errors())->withInput();
     }
+
+    $this->validate($request, [
+        'name' => 'required|string|max:255',
+        'email' => 'required|string|email|max:255|unique:users',
+        'username' => 'required|string|max:255|unique:users',
+        'password' => 'required|confirmed|string|min:6',
+    ]);
+    
+    return redirect()->route('pengaturan.akun')->with('success', 'Data berhasil ditambahkan!');
+}
 
     /**
      * Show the form for editing the specified resource.
@@ -56,6 +60,7 @@ class PengaturanController extends Controller
     public function edit($id)
     {
         $user = User::findOrFail($id);
+        // dd($user);
         return view('pengaturan.pengguna.edit',  compact('user'));
     }
 
@@ -81,12 +86,14 @@ class PengaturanController extends Controller
                     'username' => 'required|string|max:255',
                     'password' => 'required|string|min:6|confirmed',
                 ]);
-                $data['password'] = $data['password'];
+                $data['password'] = bcrypt($data['password']);
             }
             $user->update($data);
         });
         //  return redirect()->back()->with('success', 'Data berhasil diubah!');
-         return redirect()->route('akun.index')->with('success', 'User Berhasil Diubah!');
+
+         return redirect()->route('pengaturan.akun')->with('success', 'Data berhasil diubah!');
+
     }
 
     /**
@@ -102,10 +109,17 @@ class PengaturanController extends Controller
         
         DB::transaction(function () use ($id) {
             $user = User::findOrFail($id);
-            $user->delete();
+
+            // Pengecekan apakah hanya tersisa satu data
+            $totalUsers = User::count();
+            if ($totalUsers > 1) {
+                $user->delete();
+            } else {
+                return redirect()->route('pengaturan.akun')->with('error', 'Tidak dapat menghapus satu-satunya pengguna.');
+            }
         });
-        // return redirect()->back()->with('success', 'Data berhasil diubah!');
-        return redirect()->route('akun.index')->with('success', 'User has been deleted');
+
+        return redirect()->route('pengaturan.akun')->with('success', 'User has been deleted');
     }
 
 }
