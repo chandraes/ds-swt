@@ -36,6 +36,7 @@ class PengaturanController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(StoreUserRequest $request)
+
 {
     $data = $request->validated();
 
@@ -74,23 +75,25 @@ class PengaturanController extends Controller
             if ($data['password'] == '') {
                 $this->validate($request, [
                     'name' => 'required|string|max:255',
-                    'email' => 'required|string|email|max:255',
+                    'email' => 'nullable|string|email|max:255',
                     'username' => 'required|string|max:255',
                 ]);
                 $data['password'] = $user->password;
             } else {
                 $this->validate($request, [
                     'name' => 'required|string|max:255',
-                    'email' => 'required|string|email|max:255',
+                    'email' => 'nullable|string|email|max:255',
                     'username' => 'required|string|max:255',
                     'password' => 'required|string|min:6|confirmed',
                 ]);
                 $data['password'] = bcrypt($data['password']);
             }
-            $user->update($data);           
+            $user->update($data);
         });
         //  return redirect()->back()->with('success', 'Data berhasil diubah!');
-         return redirect()->route('pengaturan.akun')->with('success', 'User has been updated');
+
+         return redirect()->route('pengaturan.akun')->with('success', 'Data berhasil diubah!');
+
     }
 
     /**
@@ -98,6 +101,12 @@ class PengaturanController extends Controller
      */
     public function destroy(string $id)
     {
+        $check = User::count();
+
+        if ($check == 1) {
+            return redirect()->back()->with('error', 'Tidak dapat menghapus user, karena hanya ada 1 user');
+        }
+        
         DB::transaction(function () use ($id) {
             $user = User::findOrFail($id);
 

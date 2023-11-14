@@ -61,11 +61,25 @@ Route::group(['middleware' => ['auth']], function() {
 
     // ROUTE REKAP
     Route::view('rekap', 'rekap.index')->name('rekap');
+    Route::prefix('rekap')->group(function() {
+        Route::get('/kas-besar', [App\Http\Controllers\RekapController::class, 'kas_besar'])->name('rekap.kas-besar');
+    });
 
     // END ROUTE REKAP
 
     // ROUTE BILLING
     Route::view('billing','billing.index')->name('billing');
+    Route::prefix('billing')->group(function() {
+        Route::get('/form-deposit/masuk', [App\Http\Controllers\FormDepositController::class, 'masuk'])->name('form-deposit.masuk');
+        Route::post('/form-deposit/masuk/store', [App\Http\Controllers\FormDepositController::class, 'masuk_store'])->name('form-deposit.masuk.store');
+        Route::get('/form-deposit/keluar', [App\Http\Controllers\FormDepositController::class, 'keluar'])->name('form-deposit.keluar');
+        Route::post('/form-deposit/keluar/store', [App\Http\Controllers\FormDepositController::class, 'keluar_store'])->name('form-deposit.keluar.store');
+
+        Route::get('/form-lain/masuk', [App\Http\Controllers\FormLainController::class, 'masuk'])->name('form-lain.masuk');
+        Route::post('/form-lain/masuk/store', [App\Http\Controllers\FormLainController::class, 'masuk_store'])->name('form-lain.masuk.store');
+        Route::get('/form-lain/keluar', [App\Http\Controllers\FormLainController::class, 'keluar'])->name('form-lain.keluar');
+        Route::post('/form-lain/keluar/store', [App\Http\Controllers\FormLainController::class, 'keluar_store'])->name('form-lain.keluar.store');
+    });
 
     // END ROUTE BILLING
 });
