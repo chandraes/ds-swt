@@ -15,11 +15,14 @@ class PengaturanController extends Controller
      */
         public function index()
     {
+
         $users = User::all();
+
         return view('pengaturan.pengguna.index', [
             'data' => $users
         ]);
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -109,4 +112,5 @@ class PengaturanController extends Controller
 
         return redirect()->route('pengaturan.akun')->with('success', 'User has been deleted');
     }
+
 }

@@ -13,6 +13,12 @@
             </a>
         </div>
         <div class="col-3 text-center mt-3">
+            <a href="{{route('pengaturan.wa')}}" class="text-decoration-none">
+                <img src="{{asset('images/wa.svg')}}" alt="" width="100">
+                <h2>GROUP WHATSAPP</h2>
+            </a>
+        </div>
+        <div class="col-3 text-center mt-3">
             <a href="{{route('home')}}" class="text-decoration-none">
                 <img src="{{asset('images/dashboard.svg')}}" alt="" width="100">
                 <h2>Dashboard</h2>

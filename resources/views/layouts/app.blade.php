@@ -19,17 +19,29 @@
     <script src="{{asset('assets/js/jquery.min.js')}}"></script>
     <script src="{{asset('assets/js/sweetalert.js')}}"></script>
     @stack('css')
+    <style>
+        .centered {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
 
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
 
 <body class="bg-white">
+    <div id="spinner" class="centered" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(255, 255, 255, 0.5); z-index: 9999;">
+        <div class="spinner-border text-primary" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-dark bg-dark bg-gradient shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    <img src="{{asset('images/sawit.svg')}}" alt="DS SAWIT" class="img-responsive" width=35"> <strong>DS SAWIT</strong>
+                    <img src="{{asset('images/sawit.svg')}}" alt="DS CGM" class="img-responsive" width=35"> <strong>DS CGM SAWIT</strong>
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
