@@ -1,5 +1,4 @@
 @extends('layouts.app')
-
 @section('content')
 <div class="container-fluid">
     <div class="row justify-content-center">
@@ -96,7 +95,7 @@
                     <td class="text-center align-middle">{{$d->jenis === 1 ?
                         number_format($d->nominal_transaksi, 0, ',', '.') : ''}}
                     </td>
-                    <td class="text-center align-middle text-danger">{{$d->jenis === 0 ?
+                    <td class="text-center align-middle text-danger">{{$d->jenis === 2 ?
                         number_format($d->nominal_transaksi, 0, ',', '.') : ''}}
                     </td>
                     <td class="text-center align-middle">{{number_format($d->saldo, 0, ',', '.')}}</td>
@@ -123,7 +122,7 @@
                     <td class="text-center align-middle"><strong>{{number_format($data->where('jenis',
                             1)->sum('nominal_transaksi'), 0, ',', '.')}}</strong></td>
                     <td class="text-center align-middle text-danger"><strong>{{number_format($data->where('jenis',
-                            0)->sum('nominal_transaksi'), 0, ',', '.')}}</strong></td>
+                            2)->sum('nominal_transaksi'), 0, ',', '.')}}</strong></td>
                     {{-- latest saldo --}}
                     <td class="text-center align-middle">
                         <strong>

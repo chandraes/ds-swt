@@ -34,27 +34,31 @@ class FormDevidenController extends Controller
         ]);
 
         $data['nominal_transaksi'] = str_replace('.', '', $data['nominal_transaksi']);
+        
 
         $last = KasBesar::latest()->first();
+        
 
         if ($last == null || $last->saldo < $data['nominal_transaksi']) {
             return redirect()->route('billing.deviden.index')->with('error', 'Saldo tidak cukup');
         }
 
-        $pemegangSaham = PemegangSaham::all();
+
+
+        $investor = Investor::all();
         $group = GroupWa::where('untuk', 'kas-besar')->first();
         $month = Carbon::now()->locale('id')->monthName;
-
+        
         $isiPesan = [];
 
-        foreach ($pemegangSaham as $v) {
+        foreach ($investor as $v) {
             usleep(50000);
 
             $last2 = KasBesar::latest()->orderBy('id', 'desc')->first();
             $nilai2 = $data['nominal_transaksi'] * $v->persentase / 100;
-
+            
             $k['tanggal'] = date('Y-m-d');
-            $k['jenis_transaksi_id'] = 2;
+            $k['jenis'] = 2;
             $k['uraian'] = "Bagi Deviden ".$v->nama;
             $k['nominal_transaksi'] = $nilai2;
             $k['saldo'] = $last2->saldo - $nilai2;
@@ -64,6 +68,7 @@ class FormDevidenController extends Controller
             $k['modal_investor_terakhir'] = $last2->modal_investor_terakhir;
 
             $store = KasBesar::create($k);
+            //  dd($store);
 
             $pesan = "🔴🔴🔴🔴🔴🔴🔴🔴🔴\n".
                     "*Form Deviden ".$month."*\n".
@@ -84,13 +89,15 @@ class FormDevidenController extends Controller
             array_push($isiPesan, $pesan);
         }
 
+       
+
         // looping $isiPesan
         foreach ($isiPesan as $pesan) {
             $send = new StarSender($group->nama_group, $pesan);
             $res = $send->sendGroup();
         }
 
-        return redirect()->route('billing.index')->with('success', 'Data berhasil disimpan');
+        return redirect()->route('billing')->with('success', 'Data berhasil disimpan');
     }
 
 }
