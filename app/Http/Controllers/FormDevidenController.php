@@ -68,7 +68,7 @@ class FormDevidenController extends Controller
             $k['modal_investor_terakhir'] = $last2->modal_investor_terakhir;
 
             $store = KasBesar::create($k);
-            //  dd($store);
+            //  dd($nilai2);
 
             $pesan = "🔴🔴🔴🔴🔴🔴🔴🔴🔴\n".
                     "*Form Deviden ".$month."*\n".
