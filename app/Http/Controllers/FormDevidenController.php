@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\KasBesar;
 use App\Models\Investor;
-use App\Models\PersentaseAwal;
 use App\Models\Rekening;
 use App\Models\GroupWa;
 use Illuminate\Http\Request;
@@ -30,7 +29,7 @@ class FormDevidenController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'nominal_transaksi' => 'required|numeric|min:0',
+            'nominal_transaksi' => 'required',
         ]);
 
         $data['nominal_transaksi'] = str_replace('.', '', $data['nominal_transaksi']);
@@ -56,19 +55,21 @@ class FormDevidenController extends Controller
 
             $last2 = KasBesar::latest()->orderBy('id', 'desc')->first();
             $nilai2 = $data['nominal_transaksi'] * $v->persentase / 100;
+            // $rekening = Rekening::where('untuk', 'withdraw')->first();
             
-            $k['tanggal'] = date('Y-m-d');
-            $k['jenis'] = 2;
-            $k['uraian'] = "Bagi Deviden ".$v->nama;
-            $k['nominal_transaksi'] = $nilai2;
-            $k['saldo'] = $last2->saldo - $nilai2;
-            $k['transfer_ke'] = substr($v->nama_rekening, 0, 15);
-            $k['bank'] = $v->bank;
-            $k['no_rekening'] = $v->nomor_rekening;
-            $k['modal_investor_terakhir'] = $last2->modal_investor_terakhir;
+                $k['tanggal'] = date('Y-m-d');
+                $k['jenis'] = 0;
+                $k['uraian'] = "Bagi Deviden ".$v->nama;
+                $k['nominal_transaksi'] = $nilai2;
+                $k['saldo'] = $last2->saldo - $nilai2;
+                $k['nama_rek'] = substr($v->nama_rek, 0, 15);
+                $k['bank'] = $v->bank;
+                $k['no_rek'] = $v->no_rek;
+                $k['modal_investor_terakhir'] = $last2->modal_investor_terakhir
+                ;
 
             $store = KasBesar::create($k);
-            //  dd($nilai2);
+            //  dd($store);
 
             $pesan = "🔴🔴🔴🔴🔴🔴🔴🔴🔴\n".
                     "*Form Deviden ".$month."*\n".
@@ -77,8 +78,8 @@ class FormDevidenController extends Controller
                     "Nilai :  *Rp. ".number_format($k['nominal_transaksi'], 0, ',', '.')."*\n\n".
                     "Ditransfer ke rek:\n\n".
                     "Bank      : ".$k['bank']."\n".
-                    "Nama    : ".$k['transfer_ke']."\n".
-                    "No. Rek : ".$k['no_rekening']."\n\n".
+                    "Nama    : ".$k['nama_rek']."\n".
+                    "No. Rek : ".$k['no_rek']."\n\n".
                     "==========================\n".
                     "Sisa Saldo Kas Besar : \n".
                     "Rp. ".number_format($store->saldo, 0, ',', '.')."\n\n".
@@ -94,7 +95,7 @@ class FormDevidenController extends Controller
         // looping $isiPesan
         foreach ($isiPesan as $pesan) {
             $send = new StarSender($group->nama_group, $pesan);
-            $res = $send->sendGroup();
+            // $res = $send->sendGroup();
         }
 
         return redirect()->route('billing')->with('success', 'Data berhasil disimpan');

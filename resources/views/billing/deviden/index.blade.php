@@ -33,7 +33,8 @@
                     <label for="investor" class="form-label">{{ $d->nama }} ({{ $d->persentase }}%)</label>
                     <div class="input-group">
                         <span class="input-group-text" id="basic-addon1">Rp</span>
-                        <input type="text" class="form-control" name="nilai[{{ $d->id }}]" id="nilai-{{ $d->id }}" readonly data-thousands=".">
+                        <!-- Tambahkan class investor-input pada input untuk diatur dengan Cleave.js -->
+                        <input type="text" class="form-control investor-input" name="nilai[{{ $d->id }}]" id="nilai-{{ $d->id }}" readonly data-thousands=".">
                     </div>
                 </div>
             @endforeach
@@ -48,103 +49,54 @@
 @endsection
 @push('js')
 <script src="{{ asset('assets/js/jquery.maskMoney.js') }}"></script>
+<script src="{{asset('assets/js/cleave.min.js')}}"></script>
 <script src="{{ asset('assets/js/moment.min.js') }}"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        var nominalInput = document.getElementById('nominal_transaksi');
-        var masukForm = document.getElementById('masukForm');
-
-        nominalInput.addEventListener('input', function () {
-            var inputValue = nominalInput.value;
-
-            // Menghapus semua karakter selain angka dan koma
-            var numericValue = inputValue.replace(/[^\d,]/g, '');
-
-            // Mengganti koma dengan titik jika diperlukan
-            numericValue = numericValue.replace(',', '.');
-
-            // Memastikan bahwa nilai adalah angka atau string kosong
-            numericValue = isNaN(parseFloat(numericValue)) ? '' : numericValue;
-
-            // Menambahkan pemisah ribuan pada input
-            nominalInput.value = formatRupiah(numericValue);
-
-            // Mengupdate nilai pada setiap investor
-            updateInvestorValues(numericValue);
-        });
-
-        masukForm.addEventListener('submit', function () {
-            var nominalValue = nominalInput.value;
-
-            // Menghapus semua karakter selain angka
-            var numericNominalValue = nominalValue.replace(/[^\d]/g, '');
-
-            // Memastikan bahwa nilai adalah angka atau string kosong
-            numericNominalValue = isNaN(parseFloat(numericNominalValue)) ? '' : numericNominalValue;
-
-            // Mengganti nilai input dengan nilai yang sudah diformat
-            nominalInput.value = formatRupiah(numericNominalValue);
-        });
-    });
-
-    function formatRupiah(angka, prefix) {
-        var number_string = angka.toString(),
-            split = number_string.split(','),
-            sisa = split[0].length % 3,
-            rupiah = split[0].substr(0, sisa),
-            ribuan = split[0].substr(sisa).match(/\d{3}/gi);
-
-        if (ribuan) {
-            separator = sisa ? '.' : '';
-            rupiah += separator + ribuan.join('');
-        }
-
-        rupiah = split[1] !== undefined ? rupiah + ',' + split[1] : rupiah;
-        return prefix === undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
-    }
-
-    function updateInvestorValues(value) {
-        var dataInvestor = {!! json_encode($data) !!};
-
-        // each investor
-        dataInvestor.forEach(function (investor) {
-            var persen = investor.persentase;
-            var hasil = value * persen / 100;
-
-            var investorInput = document.getElementById('nilai-' + investor.id);
-
-            // Memastikan bahwa nilai adalah angka atau string kosong
-            var numericInvestorValue = isNaN(parseFloat(hasil)) ? '' : hasil;
-
-            // Menghapus pemisah ribuan pada input investor
-            investorInput.value = numericInvestorValue;
-        });
-    }
-</script>
-
-
-
-<script>
     $(function() {
-        
+        $('#nominal_transaksi').maskMoney({
+            thousands: '.',
+            decimal: ',',
+            precision: 0,
+            allowZero: true,
+        });
 
-        // masukForm on submit, sweetalert confirm
-        $('#masukForm').submit(function(e){
-            e.preventDefault();
-            Swal.fire({
-                title: 'Apakah data sudah benar?',
-                text: "Pastikan data sudah benar sebelum disimpan!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#6c757d',
-                confirmButtonText: 'Ya, simpan!'
-                }).then((result) => {
-                if (result.isConfirmed) {
-                    this.submit();
-                }
-            })
+        // Update nilai on keyup
+        $('#nominal_transaksi').on('keyup', function(){
+            let val = $(this).val().replace(/\./g,'');
+            let dataInvestor = {!! json_encode($data) !!};
+
+            dataInvestor.forEach(function(investor) {
+                let persen = investor.persentase;
+                let hasil = val * persen / 100;
+
+                $(`#nilai-${investor.id}`).maskMoney({
+                    thousands: '.',
+                    decimal: ',',
+                    precision: 0
+                });
+
+                $(`#nilai-${investor.id}`).maskMoney('mask', hasil);
+            });
         });
     });
+
+    // masukForm on submit, sweetalert confirm
+    $('#masukForm').submit(function(e){
+        e.preventDefault();
+        Swal.fire({
+            title: 'Apakah data sudah benar?',
+            text: "Pastikan data sudah benar sebelum disimpan!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Ya, simpan!'
+            }).then((result) => {
+            if (result.isConfirmed) {
+                this.submit();
+            }
+        })
+    });
 </script>
+
 @endpush
