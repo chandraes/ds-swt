@@ -30,4 +30,22 @@ class KasBesar extends Model
         return $this->selectRaw('YEAR(tanggal) tahun')->groupBy('tahun')->get();
     }
 
+    public function nomorDeposit()
+    {
+        $lastNomor = $this->whereNotNull('nomor_deposit')->latest()->orderBy('id', 'desc')->first();
+
+        if ($lastNomor) {
+            return $lastNomor->nomor_deposit + 1;
+        } else {
+            return 1;
+        }
+    }
+
+    // getNomorDepositAttribute
+    public function getNomorDepositAttribute($value)
+    {
+        return str_pad($value, 2, '0', STR_PAD_LEFT);
+    }
+
+
 }

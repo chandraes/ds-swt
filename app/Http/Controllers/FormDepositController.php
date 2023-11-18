@@ -28,7 +28,6 @@ class FormDepositController extends Controller
         $rekening = Rekening::where('untuk', 'kas-besar')->first();
 
         $data['tanggal'] = date('Y-m-d');
-        $data['uraian'] = 'Deposit';
         $data['jenis'] = 1;
         $data['nominal_transaksi'] = str_replace('.', '', $data['nominal_transaksi']);
         $data['modal_investor'] = -$data['nominal_transaksi'];
@@ -43,7 +42,7 @@ class FormDepositController extends Controller
             $data['saldo'] = $data['nominal_transaksi'];
             $data['modal_investor_terakhir'] = $data['modal_investor'];
         }
-
+        $data['nomor_deposit'] = $kasBesar->nomorDeposit();
         $data['no_rek'] = $rekening->no_rek;
         $data['nama_rek'] = $rekening->nama_rek;
         $data['bank'] = $rekening->bank;
@@ -54,6 +53,7 @@ class FormDepositController extends Controller
         $pesan =    "🔵🔵🔵🔵🔵🔵🔵🔵🔵\n".
                     "*Form Permintaan Deposit*\n".
                     "🔵🔵🔵🔵🔵🔵🔵🔵🔵\n\n".
+                    $store->kode_deposit.$store->nomor_deposit."\n\n".
                     "Nilai :  *Rp. ".number_format($data['nominal_transaksi'], 0, ',', '.')."*\n\n".
                     "Ditransfer ke rek:\n\n".
                     "Bank      : ".$data['bank']."\n".
