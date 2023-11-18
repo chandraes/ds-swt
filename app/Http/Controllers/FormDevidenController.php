@@ -33,21 +33,19 @@ class FormDevidenController extends Controller
         ]);
 
         $data['nominal_transaksi'] = str_replace('.', '', $data['nominal_transaksi']);
-        
+
 
         $last = KasBesar::latest()->first();
-        
+
 
         if ($last == null || $last->saldo < $data['nominal_transaksi']) {
             return redirect()->route('billing.deviden.index')->with('error', 'Saldo tidak cukup');
         }
 
-
-
         $investor = Investor::all();
         $group = GroupWa::where('untuk', 'kas-besar')->first();
         $month = Carbon::now()->locale('id')->monthName;
-        
+
         $isiPesan = [];
 
         foreach ($investor as $v) {
@@ -56,7 +54,7 @@ class FormDevidenController extends Controller
             $last2 = KasBesar::latest()->orderBy('id', 'desc')->first();
             $nilai2 = $data['nominal_transaksi'] * $v->persentase / 100;
             // $rekening = Rekening::where('untuk', 'withdraw')->first();
-            
+
                 $k['tanggal'] = date('Y-m-d');
                 $k['jenis'] = 0;
                 $k['uraian'] = "Bagi Deviden ".$v->nama;
@@ -65,8 +63,7 @@ class FormDevidenController extends Controller
                 $k['nama_rek'] = substr($v->nama_rek, 0, 15);
                 $k['bank'] = $v->bank;
                 $k['no_rek'] = $v->no_rek;
-                $k['modal_investor_terakhir'] = $last2->modal_investor_terakhir
-                ;
+                $k['modal_investor_terakhir'] = $last2->modal_investor_terakhir;
 
             $store = KasBesar::create($k);
             //  dd($store);
@@ -90,12 +87,10 @@ class FormDevidenController extends Controller
             array_push($isiPesan, $pesan);
         }
 
-       
-
         // looping $isiPesan
         foreach ($isiPesan as $pesan) {
             $send = new StarSender($group->nama_group, $pesan);
-            // $res = $send->sendGroup();
+            $res = $send->sendGroup();
         }
 
         return redirect()->route('billing')->with('success', 'Data berhasil disimpan');
