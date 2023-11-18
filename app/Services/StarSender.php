@@ -15,40 +15,40 @@ class StarSender
         $this->pesan = $pesan;
     }
 
-    public function sendGroup()
-    {
-        $apikey=$this->apikey;
-        $tujuan=$this->tujuan; //atau $tujuan="Group Chat Name";
-        $pesan=$this->pesan;
+    // public function sendGroup()
+    // {
+    //     $apikey=$this->apikey;
+    //     $tujuan=$this->tujuan; //atau $tujuan="Group Chat Name";
+    //     $pesan=$this->pesan;
 
-        $curl = curl_init();
+    //     $curl = curl_init();
 
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://starsender.online/api/group/sendText?message='.rawurlencode($pesan).'&tujuan='.rawurlencode($tujuan),
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => '',
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_CUSTOMREQUEST => 'POST',
-            CURLOPT_HTTPHEADER => array(
-                'apikey: '.$apikey
-            ),
-        ));
+    //     curl_setopt_array($curl, array(
+    //         CURLOPT_URL => 'https://starsender.online/api/group/sendText?message='.rawurlencode($pesan).'&tujuan='.rawurlencode($tujuan),
+    //         CURLOPT_RETURNTRANSFER => true,
+    //         CURLOPT_ENCODING => '',
+    //         CURLOPT_MAXREDIRS => 10,
+    //         CURLOPT_TIMEOUT => 0,
+    //         CURLOPT_FOLLOWLOCATION => true,
+    //         CURLOPT_CUSTOMREQUEST => 'POST',
+    //         CURLOPT_HTTPHEADER => array(
+    //             'apikey: '.$apikey
+    //         ),
+    //     ));
 
-        $response = curl_exec($curl);
+    //     $response = curl_exec($curl);
 
-        curl_close($curl);
+    //     curl_close($curl);
 
-        $result = json_decode($response, true);
+    //     $result = json_decode($response, true);
 
-        if ($result['status'] == true) {
-            return true;
-        } else {
-            return false;
-        }
+    //     if ($result['status'] == true) {
+    //         return true;
+    //     } else {
+    //         return false;
+    //     }
 
-    }
+    // }
 
     public function sendWa()
     {
