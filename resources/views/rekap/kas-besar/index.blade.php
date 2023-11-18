@@ -99,7 +99,7 @@
                     <td class="text-center align-middle text-danger">{{$d->jenis === 0 ?
                         number_format($d->nominal_transaksi, 0, ',', '.') : ''}}
                     </td>
-                    <td class="text-center align-middle">{{number_format($d->saldo, 0, ',', '.')}}</td>
+                    <td class="text-center align-middle">{{$d->saldo}}</td>
                     <td class="text-center align-middle">{{$d->nama_rek}}</td>
                     <td class="text-center align-middle">{{$d->bank}}</td>
                     <td class="text-center align-middle">{{number_format($d->modal_investor, 0, ',', '.')}}</td>
@@ -127,7 +127,7 @@
                     {{-- latest saldo --}}
                     <td class="text-center align-middle">
                         <strong>
-                            {{$data->last() ? number_format($data->last()->saldo, 0, ',', '.') : ''}}
+                            {{$data->last() ? $data->last()->saldo : ''}}
                         </strong>
                     </td>
                     <td></td>

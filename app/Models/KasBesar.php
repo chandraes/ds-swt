@@ -29,4 +29,9 @@ class KasBesar extends Model
     {
         return $this->selectRaw('YEAR(tanggal) tahun')->groupBy('tahun')->get();
     }
+
+    public function getSaldoAttribute($value)
+    {
+        return number_format($value, 0, ',', '.');
+    }
 }
