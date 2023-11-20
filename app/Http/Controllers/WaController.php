@@ -21,13 +21,14 @@ class WaController extends Controller
         $wa = new WaStatus();
         $group = $wa->getGroup();
 
-        return response()->json($group['data']);
+        return response()->json($group['data']['groups']);
     }
 
     public function update(Request $request, GroupWa $group_wa)
     {
         $data = $request->validate([
             'nama_group' => 'required',
+            'group_id' => 'required',
         ]);
 
         $group_wa->update($data);

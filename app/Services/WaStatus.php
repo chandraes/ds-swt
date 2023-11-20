@@ -20,16 +20,17 @@ class WaStatus
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://starsender.online/api/v1/getDevice',
+            CURLOPT_URL => 'https://api.starsender.online/api/whatsapp/groups',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
             CURLOPT_TIMEOUT => 0,
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_CUSTOMREQUEST => 'GET',
             CURLOPT_HTTPHEADER => array(
-                'apikey: '.$apikey
+                'Content-Type:application/json',
+                'Authorization: '.$apikey
             ),
         ));
 
@@ -82,17 +83,19 @@ class WaStatus
 
         $curl = curl_init();
 
+
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://starsender.online/api/device/group',
+            CURLOPT_URL => 'https://api.starsender.online/api/whatsapp/groups',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
             CURLOPT_TIMEOUT => 0,
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_CUSTOMREQUEST => 'GET',
             CURLOPT_HTTPHEADER => array(
-                'apikey: '.$apikey
+                'Content-Type:application/json',
+                'Authorization: '.$apikey
             ),
         ));
 
@@ -102,7 +105,7 @@ class WaStatus
 
         $result = json_decode($response, true);
 
-        if ($result['status'] == true) {
+        if ($result['success'] == true) {
             return $result;
         } else {
             return false;

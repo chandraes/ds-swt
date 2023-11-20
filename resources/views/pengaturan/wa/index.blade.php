@@ -19,6 +19,21 @@
         </div>
     </div>
 </div>
+{{-- if error has any --}}
+@if ($errors->any())
+<div class="container">
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Whoops!</strong> Ada kesalahan saat input data, yaitu:
+        <ul>
+            @foreach ($errors->all() as $error)
+            <li><strong>{{ $error }}</strong></li>
+            @endforeach
+        </ul>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+</div>
+@endif
+{{-- if success has any --}}
 @include('pengaturan.wa.edit')
 <div class="container mt-5 table-responsive">
     <table class="table table-bordered table-hover" id="data">
@@ -35,7 +50,7 @@
             <tr>
                 <td class="text-center align-middle">{{$loop->iteration}}</td>
                 <td class="text-center align-middle">{{strtoupper($d->untuk)}}</td>
-                <td class="text-center align-middle">{{$d->nama_group}}</td>
+                <td class="text-center align-middle">{{$d->group_id}}</td>
                 <td class="text-center align-middle">
                     <div class="d-flex justify-content-center">
                         <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal"
@@ -59,6 +74,12 @@
 <script src="{{asset('assets/js/dt5.min.js')}}"></script>
 <script>
 
+    function funSelect(){
+        var obj = document.getElementById("edit_nama_group");
+        var text = obj.options[obj.selectedIndex].text;
+        document.getElementById('group_id').value = text;
+    }
+
 
     function editWa(data, id) {
         document.getElementById('edit_untuk').value = data.untuk.toUpperCase();
@@ -75,6 +96,7 @@
                 // $('#editForm').modal('hide');
             },
             success: function (response) {
+
                 // empty edit_nama_group
                 $("#edit_nama_group").empty();
                 var len = 0;
@@ -84,9 +106,11 @@
                 if (len > 0) {
                     // Read data and create <option >
                     for (var i = 0; i < len; i++) {
-                        var name = response[i];
-                        var option = "<option value='" + name + "'>" + name + "</option>";
+                        var name = response[i]['id'];
+                        var group = response[i]['name'];
+                        var option = "<option value='" + name + "'>" + group + "</option>";
                         $("#edit_nama_group").append(option);
+                        document.getElementById('group_id').value = group;
                     }
                 }
 

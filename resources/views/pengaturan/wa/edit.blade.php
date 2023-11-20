@@ -16,9 +16,10 @@
                             <input type="text" class="form-control" name="untuk" id="edit_untuk" aria-describedby="helpId"
                                 placeholder="" disabled>
                         </div>
+                        <input type="hidden" name="group_id" id="group_id">
                         <div class="col-6 mb-3">
                             <label for="nama_group" class="form-label">Nama Group</label>
-                            <select class="form-select" name="nama_group" id="edit_nama_group">
+                            <select class="form-select" name="nama_group" id="edit_nama_group" onchange="funSelect()">
                                 <option value="">Select one</option>
                             </select>
                         </div>
