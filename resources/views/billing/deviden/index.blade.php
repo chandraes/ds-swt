@@ -53,11 +53,11 @@
 <script src="{{ asset('assets/js/moment.min.js') }}"></script>
 <script>
     $(function() {
-        $('#nominal_transaksi').maskMoney({
-            thousands: '.',
-            decimal: ',',
-            precision: 0,
-            allowZero: true,
+        var nominal = new Cleave('#nominal_transaksi', {
+            numeral: true,
+            numeralThousandsGroupStyle: 'thousand',
+            numeralDecimalMark: ',',
+            delimiter: '.'
         });
 
         // Update nilai on keyup
