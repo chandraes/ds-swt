@@ -9,7 +9,14 @@
     <form action="{{route('form-deposit.masuk.store')}}" method="post" id="masukForm">
         @csrf
         <div class="row">
-            <div class="col-md-4 mb-3">
+            <div class="col-md-1 mb-3">
+                <label for="nomor" class="form-label">Kode</label>
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1">D</span>
+                    <input type="text" class="form-control" name="nomor" id="nomor" disabled value="{{str_pad($nomor, 2, '0', STR_PAD_LEFT)}}" >
+                  </div>
+            </div>
+            <div class="col-md-3 mb-3">
                 <label for="uraian" class="form-label">Tanggal</label>
                 <input type="text" class="form-control @if ($errors->has('uraian'))
                     is-invalid

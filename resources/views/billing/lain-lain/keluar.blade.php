@@ -93,6 +93,11 @@
             numeralDecimalMark: ',',
             delimiter: '.'
         });
+
+        var no_rek = new Cleave('#no_rek', {
+            delimiter: '-',
+            blocks: [4, 4, 8]
+        });
         // masukForm on submit, sweetalert confirm
         $('#masukForm').submit(function(e){
             e.preventDefault();

@@ -12,10 +12,14 @@ class FormDepositController extends Controller
 {
     public function masuk()
     {
+        $db = new KasBesar();
+        $nomor = $db->nomorDeposit();
+
         $rekening = Rekening::where('untuk', 'kas-besar')->first();
 
         return view('billing.form-deposit.masuk', [
-            'rekening' => $rekening
+            'rekening' => $rekening,
+            'nomor' => $nomor
         ]);
     }
 
@@ -128,7 +132,7 @@ class FormDepositController extends Controller
                     "Rp. ".number_format($store->modal_investor_terakhir, 0, ',', '.')."\n\n".
                     "Terima kasih 🙏🙏🙏\n";
         $send = new StarSender($group->nama_group, $pesan);
-        // $res = $send->sendGroup();
+        $res = $send->sendGroup();
 
         return redirect()->route('billing')->with('success', 'Data berhasil disimpan');
     }
