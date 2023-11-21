@@ -19,4 +19,19 @@ class KasSupplier extends Model
     {
         return $this->where('supplier_id', $supplier_id)->latest()->orderBy('id', 'desc')->first();
     }
+
+    public function kasSupplierNow($supplier_id, $month, $year)
+    {
+        return $this->where('supplier_id', $supplier_id)->whereMonth('tanggal', $month)->whereYear('tanggal', $year)->get();
+    }
+
+    public function lastKasSupplierByMonth($supplier_id, $month, $year)
+    {
+        return $this->where('supplier_id', $supplier_id)->whereMonth('tanggal', $month)->whereYear('tanggal', $year)->latest()->orderBy('id', 'desc')->first();
+    }
+
+    public function dataTahun()
+    {
+        return $this->selectRaw('YEAR(tanggal) tahun')->groupBy('tahun')->get();
+    }
 }
