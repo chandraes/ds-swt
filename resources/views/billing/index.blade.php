@@ -1,5 +1,8 @@
 @extends('layouts.app')
 @section('content')
+@php
+    $customer = \App\Models\Customer::all();
+@endphp
 <div class="container text-center">
     <h1>BILLING</h1>
 </div>
@@ -92,10 +95,29 @@
             </div>
         </div>
         <div class="col-md-3 text-center mt-5">
-            <a href="#" class="text-decoration-none">
+            <a href="#" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#modalTransaksi">
                 <img src="{{asset('images/transaksi.svg')}}" alt="" width="100">
                 <h2>FORM TRANSAKSI</h2>
             </a>
+            <div class="modal fade" id="modalTransaksi" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog" aria-labelledby="transaksiTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-xl" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="transaksiTitle">Form Transaksi</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            @foreach ($customer as $c)
+
+                                <a href="{{route('form-transaksi.tambah', ['customer' => $c->id])}}" class="text-decoration-none">
+                                    <img src="{{asset('images/palm.svg')}}" alt="" width="100">
+                                    <h3 class="mt-2">{{$c->singkatan}}</h3>
+                                </a>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="col-md-3 text-center mt-5">
             <a href="{{route('home')}}" class="text-decoration-none">

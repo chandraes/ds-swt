@@ -116,8 +116,6 @@ class FormSupplierController extends Controller
 
         DB::commit();
 
-
-
         return redirect()->route('billing')->with('success', 'Data Berhasil Disimpan');
 
     }
