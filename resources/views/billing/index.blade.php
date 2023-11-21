@@ -111,18 +111,17 @@ $customer = \App\Models\Customer::all();
                         </div>
                         <div class="modal-body">
                             <div class="row">
-
+                                @foreach ($customer as $c)
+                                <div class="col-md-3 m-3">
+                                    <a href="{{route('form-transaksi.tambah', ['customer' => $c->id])}}"
+                                        class="text-decoration-none">
+                                        <img src="{{asset('images/palm.svg')}}" alt="" width="100">
+                                        <h3 class="mt-2">{{$c->singkatan}}</h3>
+                                    </a>
+                                </div>
+                                @endforeach
                             </div>
-                            @foreach ($customer as $c)
-                            <div class="col-md-3 m-3">
-                                <a href="{{route('form-transaksi.tambah', ['customer' => $c->id])}}"
-                                    class="text-decoration-none">
-                                    <img src="{{asset('images/palm.svg')}}" alt="" width="100">
-                                    <h3 class="mt-2">{{$c->singkatan}}</h3>
-                                </a>
-                            </div>
 
-                            @endforeach
                         </div>
                     </div>
                 </div>
