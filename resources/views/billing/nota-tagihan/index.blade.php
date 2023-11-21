@@ -35,7 +35,7 @@
                         {{-- checklist on check push $d->id to $selectedData --}}
                         <input type="checkbox" value="{{$d->id}}" onclick="check(this, {{$d->id}})" id="idSelect-{{$d->id}}">
                     </td>
-                    <td class="text-center align-middle">{{$loop->iteration}}</td>
+                    <td class="text-center align-middle"></td>
                     <td class="text-center align-middle">{{$d->tanggal}}</td>
                     <td class="text-center align-middle">{{$d->supplier->nickname}}</td>
                     <td class="text-center align-middle">{{$d->nota_timbangan}}</td>
@@ -163,7 +163,7 @@
             }
 
         $(document).ready(function() {
-                $('#tableTransaksi').DataTable({
+                var table = $('#tableTransaksi').DataTable({
                     "paging": false,
                     "searching": false,
                     "scrollCollapse": true,
@@ -171,6 +171,11 @@
 
                 });
 
+                table.on( 'order.dt search.dt', function () {
+                    table.column(1, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+                        cell.innerHTML = i+1;
+                    } );
+                } ).draw();
             });
 
         $( function() {
