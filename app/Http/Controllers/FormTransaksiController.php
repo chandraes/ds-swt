@@ -45,6 +45,8 @@ class FormTransaksiController extends Controller
         $data['total'] = $data['berat'] * $data['harga'];
         $data['pph'] = $data['total'] * 0.0025;
         $data['profit'] = $data['total'] * 0.01;
+        $data['total_tagihan'] = $data['total'] - $data['pph'];
+        $data['total_bayar'] = $data['total_tagihan'] - $data['profit'];
 
         $store = Transaksi::create($data);
 

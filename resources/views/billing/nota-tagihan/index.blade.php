@@ -24,7 +24,7 @@
                     <th class="text-center align-middle">Harga Satuan</th>
                     <th class="text-center align-middle">Total Harga</th>
                     <th class="text-center align-middle">PPH 0,25%</th>
-                    <th class="text-center align-middle">Profit 1%</th>
+                    <th class="text-center align-middle">Total Tagihan</th>
                     <th class="text-center align-middle">Act</th>
                 </tr>
             </thead>
@@ -44,7 +44,7 @@
                     <td class="text-center align-middle">{{$d->harga}}</td>
                     <td class="text-center align-middle">{{$d->total}}</td>
                     <td class="text-center align-middle">{{$d->pph}}</td>
-                    <td class="text-center align-middle">{{$d->profit}}</td>
+                    <td class="text-center align-middle">{{$d->total_tagihan}}</td>
                     <td class="text-center align-middle">
                         {{-- delete  --}}
                         <form action="{{route('form-transaksi.delete', ['transaksi' => $d->id])}}" method="post" id="delete-{{$d->id}}">
@@ -75,6 +75,18 @@
                 </script>
                 @endforeach
             </tbody>
+            <tfoot>
+                <tr>
+                    <th colspan="5" class="text-center align-middle">Grand Total</th>
+                    <th class="text-center align-middle">{{$totalBerat}}</th>
+                    <th class="text-center align-middle">Kg</th>
+                    <th class="text-center align-middle"></th>
+                    <th class="text-center align-middle">{{$total}}</th>
+                    <th class="text-center align-middle"></th>
+                    <th class="text-center align-middle">{{$totalTagihan}}</th>
+                    <th class="text-center align-middle"></th>
+                </tr>
+            </tfoot>
         </table>
     </div>
     <div class="row mt-5">
