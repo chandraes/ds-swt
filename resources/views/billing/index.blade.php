@@ -6,7 +6,7 @@
 @include('swal')
 <div class="container mt-5">
     <div class="row justify-content-left">
-        <div class="col-md-3 text-center mt-3">
+        <div class="col-md-3 text-center mt-5">
             <a href="#" class="text-decoration-none" data-bs-toggle="modal"
                 data-bs-target="#formDeposit">
                 <img src="{{asset('images/form-deposit.svg')}}" alt="" width="100">
@@ -34,13 +34,13 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-3 text-center mt-3">
+        <div class="col-md-3 text-center mt-5">
             <a href="{{route('billing.deviden.index')}}" class="text-decoration-none">
                 <img src="{{asset('images/form-deviden.svg')}}" alt="" width="100">
                 <h2>FORM DEVIDEN</h2>
             </a>
         </div>
-        <div class="col-md-3 text-center mt-3">
+        <div class="col-md-3 text-center mt-5">
             <a href="#" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#modalLain">
                 <img src="{{asset('images/form-lain.svg')}}" alt="" width="100">
                 <h2>FORM LAIN-LAIN</h2>
@@ -66,7 +66,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-3 text-center mt-3">
+        <div class="col-md-3 text-center mt-5">
             <a href="{{route('home')}}" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#formSupplier">
                 <img src="{{asset('images/form-supplier.svg')}}" alt="" width="100">
                 <h2>FORM SUPPLIER</h2>
@@ -91,7 +91,13 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-3 text-center mt-3">
+        <div class="col-md-3 text-center mt-5">
+            <a href="#" class="text-decoration-none">
+                <img src="{{asset('images/transaksi.svg')}}" alt="" width="100">
+                <h2>FORM TRANSAKSI</h2>
+            </a>
+        </div>
+        <div class="col-md-3 text-center mt-5">
             <a href="{{route('home')}}" class="text-decoration-none">
                 <img src="{{asset('images/dashboard.svg')}}" alt="" width="100">
                 <h2>DASHBOARD</h2>
