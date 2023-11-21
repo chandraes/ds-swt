@@ -34,7 +34,7 @@
                 @endif" name="nota_timbangan" id="nota_timbangan" required>
             </div>
             <div class="col-md-3 mb-3">
-                <label for="berat" class="form-label">Berat</label>
+                <label for="berat" class="form-label">Berat Bersih (Netto)</label>
                 <div class="input-group mb-3">
 
                     <input type="text" class="form-control @if ($errors->has('berat'))
