@@ -99,6 +99,7 @@
 
                 // empty edit_nama_group
                 $("#edit_nama_group").empty();
+                $("#edit_nama_group").append('<option value="">Pilih Group</option>');
                 var len = 0;
                 if (response != null) {
                     len = response.length;
