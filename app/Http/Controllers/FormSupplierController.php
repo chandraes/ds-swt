@@ -96,7 +96,7 @@ class FormSupplierController extends Controller
         $pesan =    "🔴🔴🔴🔴🔴🔴🔴🔴🔴\n".
                     "*Form Titipan Supplier*\n".
                     "🔴🔴🔴🔴🔴🔴🔴🔴🔴\n\n".
-                    "T".str_pad($store->nomor_titipan, 2, '0', STR_PAD_LEFT)."\n\n".
+                    "*T".str_pad($store->nomor_titipan, 2, '0', STR_PAD_LEFT)."*\n\n".
                     "Supplier : *".$supplier->nama."*\n\n".
                     "Nilai :  *Rp. ".number_format($data['nominal_transaksi'], 0, ',', '.')."*\n\n".
                     "Ditransfer ke rek:\n\n".

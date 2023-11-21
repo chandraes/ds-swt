@@ -17,11 +17,6 @@ class UserSeeder extends Seeder
             'username' => 'admin',
             'name' => 'Administrator',
             'password' => bcrypt('admin'),
-        ],
-        [
-            'username' => 'adids',
-            'name' => 'ADI DS',
-            'password' => bcrypt('adids123'),
         ]);
     }
 }
