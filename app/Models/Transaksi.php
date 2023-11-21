@@ -55,4 +55,21 @@ class Transaksi extends Model
         return $this->where('customer_id', $customer_id)->where('status', 1)->where('tagihan', 0)->get();
     }
 
+    public function formTransaksi($customer_id)
+    {
+        return $this->where('customer_id', $customer_id)->where('status', 0)->get();
+    }
+
+    public function formTransaksiBerat($customer_id)
+    {
+        $transaksi = $this->where('customer_id', $customer_id)->where('status', 0)->sum('berat');
+        return $transaksi == 0 ? 0 : number_format($transaksi, 0, ',', '.');
+    }
+
+    public function formTransaksiTotal($customer_id)
+    {
+        $transaksi = $this->where('customer_id', $customer_id)->where('status', 0)->sum('total');
+        return $transaksi == 0 ? 0 : number_format($transaksi, 0, ',', '.');
+    }
+
 }

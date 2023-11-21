@@ -11,14 +11,19 @@ class FormTransaksiController extends Controller
 {
     public function tambah(Customer $customer)
     {
+        $transaksi = new Transaksi;
+        $data = $transaksi->formTransaksi($customer->id);
+        $beratTotal = $transaksi->formTransaksiBerat($customer->id);
+        $total = $transaksi->formTransaksiTotal($customer->id);
 
-        $data = Transaksi::where('customer_id', $customer->id)->where('status', 0)->get();
         $supplier = Supplier::all();
 
         return view('billing.form-transaksi.index', [
             'data' => $data,
             'customer' => $customer,
             'supplier' => $supplier,
+            'beratTotal' => $beratTotal,
+            'total' => $total,
         ]);
     }
 
