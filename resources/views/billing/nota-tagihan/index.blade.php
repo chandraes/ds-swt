@@ -11,12 +11,16 @@
         <table class="table table-bordered table-hover" id="tableTransaksi">
             <thead class="table-success">
                 <tr>
+                    <th class="text-center align-middle" style="width:3%">
+                        Select
+                        <input type="checkbox" onclick="checkAll(this)" id="checkAll">
+                    </th>
                     <th class="text-center align-middle">No</th>
                     <th class="text-center align-middle">Tanggal</th>
                     <th class="text-center align-middle">Supplier</th>
                     <th class="text-center align-middle">Nota Timbangan</th>
                     <th class="text-center align-middle">Berat</th>
-                    <th class="text-center align-middle">Sat</th>
+                    <th class="text-center align-middle" style="width: 3%">Sat</th>
                     <th class="text-center align-middle">Harga Satuan</th>
                     <th class="text-center align-middle">Total Harga</th>
                     <th class="text-center align-middle">PPH 0,25%</th>
@@ -27,9 +31,13 @@
             <tbody>
                 @foreach ($data as $d)
                 <tr>
+                    <td class="text-center align-middle">
+                        {{-- checklist on check push $d->id to $selectedData --}}
+                        <input type="checkbox" value="{{$d->id}}" onclick="check(this, {{$d->id}})" id="idSelect-{{$d->id}}">
+                    </td>
                     <td class="text-center align-middle">{{$loop->iteration}}</td>
                     <td class="text-center align-middle">{{$d->tanggal}}</td>
-                    <td class="text-center align-middle">{{$d->supplier->nama}}</td>
+                    <td class="text-center align-middle">{{$d->supplier->nickname}}</td>
                     <td class="text-center align-middle">{{$d->nota_timbangan}}</td>
                     <td class="text-center align-middle">{{$d->berat}}</td>
                     <td class="text-center align-middle">Kg</td>
@@ -70,6 +78,7 @@
         </table>
     </div>
     <div class="row mt-5">
+        <input type="hidden" name="selectedData" required>
             <div class="col-md-12">
                 <a href="{{route('billing')}}" class="btn btn-secondary form-control mt-3">Kembali</a>
             </div>
@@ -87,9 +96,64 @@
     <script src="{{asset('assets/js/cleave.min.js')}}"></script>
     <script>
 
+        function check(checkbox, id) {
+                if (checkbox.checked) {
+                    $('input[name="selectedData"]').val(function(i, v) {
+                        // if end of string, remove comma
+                        return v + id + ',';
+
+                    });
+                } else {
+                    $('input[name="selectedData"]').val(function(i, v) {
+                        // remove id from string
+                        return v.replace(id + ',', '');
+                    });
+                }
+
+                value = $('input[name="selectedData"]').val();
+
+                if(value.slice(-1) == ','){
+                    // remove comma from last number
+                    value = value.slice(0, -1);
+                }
+                console.log(value);
+            }
+
+            // check all checkbox and push all id to $selectedData and check all checkbox
+            function checkAll(checkbox) {
+                if (checkbox.checked) {
+                    $('input[name="selectedData"]').val(function(i, v) {
+                        // if end of string, remove comma
+                        @foreach ($data as $d)
+                            v = v + {{$d->id}} + ',';
+                            $('#idSelect-{{$d->id}}').prop('checked', true);
+                        @endforeach
+                        return v;
+                    });
+                } else {
+                    $('input[name="selectedData"]').val(function(i, v) {
+                        // remove id from string
+                        @foreach ($data as $d)
+                            v = v.replace({{$d->id}} + ',', '');
+                            $('#idSelect-{{$d->id}}').prop('checked', false);
+                        @endforeach
+                        return v;
+                    });
+                }
+
+                value = $('input[name="selectedData"]').val();
+
+                if(value.slice(-1) == ','){
+                    // remove comma from last number
+                    value = value.slice(0, -1);
+                }
+                console.log(value);
+            }
+
         $(document).ready(function() {
                 $('#tableTransaksi').DataTable({
                     "paging": false,
+                    "ordering": false,
                     "searching": false,
                     "scrollCollapse": true,
                     "scrollY": "550px",
