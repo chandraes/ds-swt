@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
 @php
-    $customer = \App\Models\Customer::all();
+$customer = \App\Models\Customer::all();
 @endphp
 <div class="container text-center">
     <h1>BILLING</h1>
@@ -10,8 +10,7 @@
 <div class="container mt-5">
     <div class="row justify-content-left">
         <div class="col-md-3 text-center mt-5">
-            <a href="#" class="text-decoration-none" data-bs-toggle="modal"
-                data-bs-target="#formDeposit">
+            <a href="#" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#formDeposit">
                 <img src="{{asset('images/form-deposit.svg')}}" alt="" width="100">
                 <h2>FORM DEPOSIT</h2>
             </a>
@@ -48,12 +47,13 @@
                 <img src="{{asset('images/form-lain.svg')}}" alt="" width="100">
                 <h2>FORM LAIN-LAIN</h2>
             </a>
-            <div class="modal fade" id="modalLain" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog" aria-labelledby="modalLainTitle" aria-hidden="true">
+            <div class="modal fade" id="modalLain" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+                role="dialog" aria-labelledby="modalLainTitle" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="modalLainTitle">Form Lain-lain</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <select class="form-select" name="selectLain" id="selectLain">
@@ -70,16 +70,18 @@
             </div>
         </div>
         <div class="col-md-3 text-center mt-5">
-            <a href="{{route('home')}}" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#formSupplier">
+            <a href="{{route('home')}}" class="text-decoration-none" data-bs-toggle="modal"
+                data-bs-target="#formSupplier">
                 <img src="{{asset('images/form-supplier.svg')}}" alt="" width="100">
                 <h2>FORM SUPPLIER</h2>
             </a>
-            <div class="modal fade" id="formSupplier" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog" aria-labelledby="formSupplierTitle" aria-hidden="true">
+            <div class="modal fade" id="formSupplier" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+                role="dialog" aria-labelledby="formSupplierTitle" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="formSupplierTitle">Form Supplier</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <select class="form-select" name="selectFormSupplier" id="selectFormSupplier">
@@ -99,20 +101,27 @@
                 <img src="{{asset('images/transaksi.svg')}}" alt="" width="100">
                 <h2>FORM TRANSAKSI</h2>
             </a>
-            <div class="modal fade" id="modalTransaksi" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog" aria-labelledby="transaksiTitle" aria-hidden="true">
+            <div class="modal fade" id="modalTransaksi" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+                role="dialog" aria-labelledby="transaksiTitle" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-xl" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="transaksiTitle">Form Transaksi</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            @foreach ($customer as $c)
+                            <div class="row">
 
-                                <a href="{{route('form-transaksi.tambah', ['customer' => $c->id])}}" class="text-decoration-none">
+                            </div>
+                            @foreach ($customer as $c)
+                            <div class="col-md-3 m-3">
+                                <a href="{{route('form-transaksi.tambah', ['customer' => $c->id])}}"
+                                    class="text-decoration-none">
                                     <img src="{{asset('images/palm.svg')}}" alt="" width="100">
                                     <h3 class="mt-2">{{$c->singkatan}}</h3>
                                 </a>
+                            </div>
+
                             @endforeach
                         </div>
                     </div>
@@ -124,23 +133,29 @@
                 <img src="{{asset('images/nota-tagihan.svg')}}" alt="" width="100">
                 <h2>NOTA TAGIHAN</h2>
             </a>
-            <div class="modal fade" id="notaTagihan" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog" aria-labelledby="notaTagihanTitle" aria-hidden="true">
+            <div class="modal fade" id="notaTagihan" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+                role="dialog" aria-labelledby="notaTagihanTitle" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-xl" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="notaTagihanTitle">Nota Tagihan</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            @foreach ($customer as $c)
+                            <div class="row">
+                                @foreach ($customer as $c)
+                                <div class="col-md-3 m-2">
+                                    <a href="{{route('nota-tagihan.index', ['customer' => $c->id])}}"
+                                        class="text-decoration-none">
+                                        <img src="{{asset('images/palm.svg')}}" alt="" width="100">
+                                        <h3 class="mt-2">{{$c->singkatan}}</h3>
+                                    </a>
+                                </div>
+                                @endforeach
+                            </div>
 
-                            <a href="{{route('nota-tagihan.index', ['customer' => $c->id])}}" class="text-decoration-none">
-                                <img src="{{asset('images/palm.svg')}}" alt="" width="100">
-                                <h3 class="mt-2">{{$c->singkatan}}</h3>
-                            </a>
-                        @endforeach
                         </div>
-              
+
                     </div>
                 </div>
             </div>
