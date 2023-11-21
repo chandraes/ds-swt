@@ -135,7 +135,6 @@
         $(document).ready(function() {
                 $('#tableTransaksi').DataTable({
                     "paging": false,
-                    "ordering": false,
                     "searching": false,
                     "scrollCollapse": true,
                     "scrollY": "550px",

@@ -11,7 +11,7 @@ class FormTransaksiController extends Controller
     public function tambah(Customer $customer)
     {
 
-        $data = Transaksi::where('status', 0)->get();
+        $data = Transaksi::where('customer_id', $customer->id)->where('status', 0)->get();
 
         return view('billing.form-transaksi.index', [
             'data' => $data,
