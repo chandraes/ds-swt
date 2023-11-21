@@ -57,7 +57,7 @@ class FormDepositController extends Controller
         $pesan =    "🔵🔵🔵🔵🔵🔵🔵🔵🔵\n".
                     "*Form Permintaan Deposit*\n".
                     "🔵🔵🔵🔵🔵🔵🔵🔵🔵\n\n".
-                    "D".$store->nomor_deposit."\n\n".
+                    "*D".$store->nomor_deposit."*\n\n".
                     "Nilai :  *Rp. ".number_format($data['nominal_transaksi'], 0, ',', '.')."*\n\n".
                     "Ditransfer ke rek:\n\n".
                     "Bank      : ".$data['bank']."\n".
