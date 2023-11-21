@@ -78,7 +78,7 @@ class FormSupplierController extends Controller
 
         $data['jenis'] = 1;
         $data['tanggal'] = date('Y-m-d');
-        $data['uraian'] = 'Titipan Supplier';
+        $data['uraian'] = 'Titipan';
 
         if ($lastSupplier) {
             $data['saldo'] = $lastSupplier->saldo + $data['nominal_transaksi'];
