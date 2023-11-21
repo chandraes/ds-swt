@@ -86,7 +86,7 @@
             <tbody>
                 @foreach ($data as $d)
                 <tr>
-                    <td class="text-center align-middle">{{$loop->iteration}}</td>
+                    <td class="text-center align-middle"></td>
                     <td class="text-center align-middle">{{$d->tanggal}}</td>
                     <td class="text-center align-middle">{{$d->supplier->nickname}}</td>
                     <td class="text-center align-middle">{{$d->nota_timbangan}}</td>
@@ -154,13 +154,19 @@
     <script>
 
         $(document).ready(function() {
-                $('#tableTransaksi').DataTable({
+                var table = $('#tableTransaksi').DataTable({
                     "paging": false,
                     "searching": false,
                     "scrollCollapse": true,
                     "scrollY": "550px",
-
                 });
+
+                // add no column to table
+                table.on( 'order.dt search.dt', function () {
+                    table.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+                        cell.innerHTML = i+1;
+                    } );
+                } ).draw();
 
             });
 
