@@ -67,6 +67,31 @@
             </div>
         </div>
         <div class="col-md-3 text-center mt-3">
+            <a href="{{route('home')}}" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#formSupplier">
+                <img src="{{asset('images/form-supplier.svg')}}" alt="" width="100">
+                <h2>FORM SUPPLIER</h2>
+            </a>
+            <div class="modal fade" id="formSupplier" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog" aria-labelledby="formSupplierTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="formSupplierTitle">Form Supplier</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <select class="form-select" name="selectFormSupplier" id="selectFormSupplier">
+                                <option value="masuk">Titipan Supplier</option>
+                            </select>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                            <button type="button" class="btn btn-primary" onclick="funSupplier()">Lanjutkan</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 text-center mt-3">
             <a href="{{route('home')}}" class="text-decoration-none">
                 <img src="{{asset('images/dashboard.svg')}}" alt="" width="100">
                 <h2>DASHBOARD</h2>
@@ -92,6 +117,13 @@
             window.location.href = "{{route('form-lain.masuk')}}";
         }else if(selectLain == 'keluar'){
             window.location.href = "{{route('form-lain.keluar')}}";
+        }
+    }
+
+    function funSupplier(){
+        var selectFormSupplier = document.getElementById('selectFormSupplier').value;
+        if(selectFormSupplier == 'masuk'){
+            window.location.href = "{{route('form-supplier.titipan')}}";
         }
     }
 </script>

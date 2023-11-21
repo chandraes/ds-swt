@@ -41,6 +41,22 @@ class KasBesar extends Model
         }
     }
 
+    public function nomorTitipan()
+    {
+        $lastNomor = $this->whereNotNull('nomor_titipan')->latest()->orderBy('id', 'desc')->first();
+
+        if ($lastNomor) {
+            return $lastNomor->nomor_titipan + 1;
+        } else {
+            return 1;
+        }
+    }
+
+    public function getNomorTitipanAttribute($value)
+    {
+        return str_pad($value, 2, '0', STR_PAD_LEFT);
+    }
+
     // getNomorDepositAttribute
     public function getNomorDepositAttribute($value)
     {

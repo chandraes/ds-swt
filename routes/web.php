@@ -85,6 +85,10 @@ Route::group(['middleware' => ['auth']], function() {
         Route::post('/form-lain/masuk/store', [App\Http\Controllers\FormLainController::class, 'masuk_store'])->name('form-lain.masuk.store');
         Route::get('/form-lain/keluar', [App\Http\Controllers\FormLainController::class, 'keluar'])->name('form-lain.keluar');
         Route::post('/form-lain/keluar/store', [App\Http\Controllers\FormLainController::class, 'keluar_store'])->name('form-lain.keluar.store');
+
+        Route::get('/form-supplier/titipan', [App\Http\Controllers\FormSupplierController::class, 'titipan'])->name('form-supplier.titipan');
+        Route::post('/form-supplier/titipan/store', [App\Http\Controllers\FormSupplierController::class, 'titipan_store'])->name('form-supplier.titipan-store');
+        Route::get('/form-supplier/get-rek-supplier/{id}', [App\Http\Controllers\FormSupplierController::class, 'getRekSupplier'])->name('form-supplier.get-rek-supplier');
     });
 
     // END ROUTE BILLING

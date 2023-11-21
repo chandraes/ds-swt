@@ -13,6 +13,12 @@
             </a>
         </div>
         <div class="col-md-3 mt-3 text-center">
+            <a href="{{route('rekap.kas-besar')}}" class="text-decoration-none">
+                <img src="{{asset('images/kas-supplier.svg')}}" alt="" width="100">
+                <h2>KAS SUPPLIER</h2>
+            </a>
+        </div>
+        <div class="col-md-3 mt-3 text-center">
             <a href="{{route('home')}}" class="text-decoration-none">
                 <img src="{{asset('images/dashboard.svg')}}" alt="" width="100">
                 <h2>DASHBOARD</h2>

@@ -10,4 +10,9 @@ class Supplier extends Model
     use HasFactory;
 
     protected $guarded = ['id'];
+
+    public function kasSupplier()
+    {
+        return $this->hasMany(KasSupplier::class);
+    }
 }
