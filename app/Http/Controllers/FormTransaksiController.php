@@ -32,6 +32,7 @@ class FormTransaksiController extends Controller
                 'berat' => 'required',
             ]);
 
+        $tgl = $data['tanggal'];
         $customer = Customer::findOrFail($data['customer_id']);
         $data['berat'] = str_replace('.', '', $data['berat']);
         $data['tanggal'] = date('Y-m-d', strtotime($data['tanggal']));
@@ -42,7 +43,7 @@ class FormTransaksiController extends Controller
 
         $store = Transaksi::create($data);
 
-        return redirect()->route('form-transaksi.tambah', ['customer' => $customer->id])->with('success', 'Data Berhasil Ditambahkan');
+        return redirect()->route('form-transaksi.tambah', ['customer' => $customer->id])->with(['success' => 'Data Berhasil Ditambahkan', 'tgl' => $tgl, 'supplier' => $data['supplier_id']]);
 
     }
 

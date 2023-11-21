@@ -14,7 +14,7 @@
                 <label for="tanggal" class="form-label">Tanggal</label>
                 <input type="text" class="form-control @if ($errors->has('tanggal'))
                     is-invalid
-                @endif" name="tanggal" id="tanggal" required>
+                @endif" name="tanggal" id="tanggal" required @if (session('tgl')) value="{{session('tgl')}}" @endif >
             </div>
             <div class="col-md-3 mb-3">
                 <div class="mb-3">
@@ -22,7 +22,7 @@
                     <select class="form-select" name="supplier_id" id="supplier_id" required>
                         <option value="">-- Pilih Supplier --</option>
                         @foreach ($supplier as $s)
-                        <option value="{{$s->id}}">{{$s->nama}}</option>
+                        <option value="{{$s->id}}" {{session('supplier') == $s->id ? 'selected' : ''}}>{{$s->nama}}</option>
                         @endforeach
                     </select>
                 </div>
