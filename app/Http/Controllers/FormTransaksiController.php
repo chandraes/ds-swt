@@ -28,7 +28,7 @@ class FormTransaksiController extends Controller
                 'customer_id' => 'required|exists:customers,id',
                 'supplier_id' => 'required|exists:suppliers,id',
                 'tanggal' => 'required',
-                'nota_timbangan' => 'required|unique:transaksis,nota_timbangan',
+                'nota_timbangan' => 'required|unique:transaksis,nota_timbangan|min:9|max:9',
                 'berat' => 'required',
             ]);
 

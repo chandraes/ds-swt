@@ -32,6 +32,11 @@
                 <input type="text" class="form-control @if ($errors->has('nota_timbangan'))
                     is-invalid
                 @endif" name="nota_timbangan" id="nota_timbangan" required>
+                @if ($errors->has('nota_timbangan'))
+                <div class="invalid-feedback">
+                    {{$errors->first('nota_timbangan')}}
+                </div>
+                @endif
             </div>
             <div class="col-md-3 mb-3">
                 <label for="berat" class="form-label">Berat Bersih (Netto)</label>
@@ -165,7 +170,12 @@
             });
         });
 
-         var nominal = new Cleave('#berat', {
+        var editWa = new Cleave('#nota_timbangan', {
+            delimiter: '-',
+            blocks: [4, 4]
+        });
+
+        var nominal = new Cleave('#berat', {
             numeral: true,
             numeralThousandsGroupStyle: 'thousand',
             numeralDecimalMark: ',',
