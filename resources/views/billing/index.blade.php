@@ -120,6 +120,18 @@
             </div>
         </div>
         <div class="col-md-3 text-center mt-5">
+            <a href="#" class="text-decoration-none">
+                <img src="{{asset('images/nota-tagihan.svg')}}" alt="" width="100">
+                <h2>NOTA TAGIHAN</h2>
+            </a>
+        </div>
+        <div class="col-md-3 text-center mt-5">
+            <a href="#" class="text-decoration-none">
+                <img src="{{asset('images/nota-bayar.svg')}}" alt="" width="100">
+                <h2>NOTA BAYAR</h2>
+            </a>
+        </div>
+        <div class="col-md-3 text-center mt-5">
             <a href="{{route('home')}}" class="text-decoration-none">
                 <img src="{{asset('images/dashboard.svg')}}" alt="" width="100">
                 <h2>DASHBOARD</h2>

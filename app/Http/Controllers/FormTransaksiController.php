@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Transaksi;
 use App\Models\Customer;
+use App\Models\Supplier;
 use Illuminate\Http\Request;
 
 class FormTransaksiController extends Controller
@@ -12,10 +13,12 @@ class FormTransaksiController extends Controller
     {
 
         $data = Transaksi::where('customer_id', $customer->id)->where('status', 0)->get();
+        $supplier = Supplier::all();
 
         return view('billing.form-transaksi.index', [
             'data' => $data,
             'customer' => $customer,
+            'supplier' => $supplier,
         ]);
     }
 
@@ -23,6 +26,7 @@ class FormTransaksiController extends Controller
     {
         $data = $request->validate([
                 'customer_id' => 'required|exists:customers,id',
+                'supplier_id' => 'required|exists:suppliers,id',
                 'tanggal' => 'required',
                 'nota_timbangan' => 'required|unique:transaksis,nota_timbangan',
                 'berat' => 'required',

@@ -3,65 +3,11 @@
 <div class="container-fluid">
     <div class="row justify-content-center mb-5">
         <div class="col-md-12 text-center">
-            <h1><u>Tambah Transaksi</u></h1>
+            <h1><u>NOTA TAGIHAN</u></h1>
             <h1>{{$customer->nama}}</h1>
         </div>
     </div>
-    <form action="{{route('form-transaksi.tambah-store')}}" method="post" id="masukForm">
-        @csrf
-        <div class="row">
-            <div class="col-md-2 mb-3">
-                <label for="tanggal" class="form-label">Tanggal</label>
-                <input type="text" class="form-control @if ($errors->has('tanggal'))
-                    is-invalid
-                @endif" name="tanggal" id="tanggal" required>
-            </div>
-            <div class="col-md-3 mb-3">
-                <div class="mb-3">
-                    <label for="supplier_id" class="form-label">Supplier</label>
-                    <select class="form-select" name="supplier_id" id="supplier_id" required>
-                        <option value="">-- Pilih Supplier --</option>
-                        @foreach ($supplier as $s)
-                        <option value="{{$s->id}}">{{$s->nama}}</option>
-                        @endforeach
-                    </select>
-                </div>
-            </div>
-            <div class="col-md-4 mb-3">
-                <label for="nota_timbangan" class="form-label">Nota Timbang</label>
-                <input type="text" class="form-control @if ($errors->has('nota_timbangan'))
-                    is-invalid
-                @endif" name="nota_timbangan" id="nota_timbangan" required>
-            </div>
-            <div class="col-md-3 mb-3">
-                <label for="berat" class="form-label">Berat</label>
-                <div class="input-group mb-3">
-
-                    <input type="text" class="form-control @if ($errors->has('berat'))
-                    is-invalid
-                @endif" name="berat" id="berat" required data-thousands="." >
-                    <span class="input-group-text" id="basic-addon1">Kg</span>
-                  </div>
-                @if ($errors->has('berat'))
-                <div class="invalid-feedback">
-                    {{$errors->first('berat')}}
-                </div>
-                @endif
-            </div>
-
-        </div>
-        <div class="row justify-content-center">
-            <div class="col-md-3 text-center mb-3">
-                {{-- simpan --}}
-                <label for="berat" class="form-label">&nbsp;</label>
-                <input type="hidden" name="customer_id" value="{{$customer->id}}">
-                <button type="submit" class="btn btn-primary form-control">Simpan</button>
-            </div>
-        </div>
-    </form>
-    <hr>
-    <br>
-    <div class="row mt-3">
+        <div class="row mt-3">
         <table class="table table-bordered table-hover" id="tableTransaksi">
             <thead class="table-success">
                 <tr>
@@ -83,7 +29,7 @@
                 <tr>
                     <td class="text-center align-middle">{{$loop->iteration}}</td>
                     <td class="text-center align-middle">{{$d->tanggal}}</td>
-                    <td class="text-center align-middle">{{$d->supplier->nickname}}</td>
+                    <td class="text-center align-middle">{{$d->supplier->nama}}</td>
                     <td class="text-center align-middle">{{$d->nota_timbangan}}</td>
                     <td class="text-center align-middle">{{$d->berat}}</td>
                     <td class="text-center align-middle">Kg</td>

@@ -39,4 +39,20 @@ class Transaksi extends Model
     {
         return number_format($value, 0, ',', '.');
     }
+
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class);
+    }
+
+    public function supplier()
+    {
+        return $this->belongsTo(Supplier::class);
+    }
+
+    public function notaTagihan($customer_id)
+    {
+        return $this->where('customer_id', $customer_id)->where('status', 1)->where('tagihan', 0)->get();
+    }
+
 }
