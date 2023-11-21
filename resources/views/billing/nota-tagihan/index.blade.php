@@ -70,16 +70,9 @@
         </table>
     </div>
     <div class="row mt-5">
-        {{-- button lanjutkan --}}
-            <form action="{{route('form-transaksi.lanjutkan', ['customer' => $customer->id])}}" method="post" id="lanjutkanForm">
-                @csrf
-                <button type="submit" class="btn btn-success form-control" id="lanjutkan">Lanjutkan</button>
-            </form>
-            {{-- button back --}}
             <div class="col-md-12">
                 <a href="{{route('billing')}}" class="btn btn-secondary form-control mt-3">Kembali</a>
             </div>
-
     </div>
 </div>
 @endsection

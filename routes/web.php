@@ -97,6 +97,8 @@ Route::group(['middleware' => ['auth']], function() {
         Route::post('/form-transaksi/tambah-store', [App\Http\Controllers\FormTransaksiController::class, 'tambah_store'])->name('form-transaksi.tambah-store');
         Route::delete('/form-transaksi/delete/{transaksi}', [App\Http\Controllers\FormTransaksiController::class, 'delete'])->name('form-transaksi.delete');
         Route::post('/form-transaksi/lanjutkan/{customer}', [App\Http\Controllers\FormTransaksiController::class, 'lanjutkan'])->name('form-transaksi.lanjutkan');
+
+        Route::get('/nota-tagihan/{customer}', [App\Http\Controllers\NotaTagihanController::class, 'index'])->name('nota-tagihan.index');
     });
 
     // END ROUTE BILLING
