@@ -83,7 +83,7 @@
                         </div>
                     </td> -->
 
-                    
+
                 </tr>
                 <script>
                      $('#deleteForm-{{$d->id}}').submit(function(e){
@@ -97,6 +97,7 @@
                                 confirmButtonText: 'Ya, hapus!'
                                 }).then((result) => {
                                 if (result.isConfirmed) {
+                                    $('#spinner').show();
                                     this.submit();
                                 }
                             })
@@ -148,6 +149,7 @@
                 confirmButtonText: 'Ya, simpan!'
                 }).then((result) => {
                 if (result.isConfirmed) {
+                    $('#spinner').show();
                     this.submit();
                 }
             })
@@ -166,6 +168,7 @@
                 confirmButtonText: 'Ya, simpan!'
                 }).then((result) => {
                 if (result.isConfirmed) {
+                    $('#spinner').show();
                     this.submit();
                 }
             })
