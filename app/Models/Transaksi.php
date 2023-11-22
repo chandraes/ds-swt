@@ -96,4 +96,13 @@ class Transaksi extends Model
         return $transaksi == 0 ? 0 : $transaksi;
     }
 
+    public function totalNotaTagihan()
+    {
+        return $this->where('status', 1)->where('tagihan', 0)->count();
+    }
+
+    public function totalNotaBayar()
+    {
+        return $this->where('status', 1)->where('bayar', 0)->count();
+    }
 }

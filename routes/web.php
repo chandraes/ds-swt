@@ -74,7 +74,7 @@ Route::group(['middleware' => ['auth']], function() {
     // END ROUTE REKAP
 
     // ROUTE BILLING
-    Route::view('billing','billing.index')->name('billing');
+    Route::get('/billing', [App\Http\Controllers\BillingController::class, 'index'])->name('billing');
     Route::prefix('billing')->group(function() {
         Route::get('/form-deposit/masuk', [App\Http\Controllers\FormDepositController::class, 'masuk'])->name('form-deposit.masuk');
         Route::post('/form-deposit/masuk/store', [App\Http\Controllers\FormDepositController::class, 'masuk_store'])->name('form-deposit.masuk.store');

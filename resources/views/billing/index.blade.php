@@ -1,8 +1,5 @@
 @extends('layouts.app')
 @section('content')
-@php
-$customer = \App\Models\Customer::all();
-@endphp
 <div class="container text-center">
     <h1>BILLING</h1>
 </div>
@@ -130,7 +127,7 @@ $customer = \App\Models\Customer::all();
         <div class="col-md-3 text-center mt-5">
             <a href="#" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#notaTagihan">
                 <img src="{{asset('images/nota-tagihan.svg')}}" alt="" width="100">
-                <h2>NOTA TAGIHAN</h2>
+                <h2>NOTA TAGIHAN @if($nt != 0) <span class="text-danger">({{$nt}})</span> @endif</h2>
             </a>
             <div class="modal fade" id="notaTagihan" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
                 role="dialog" aria-labelledby="notaTagihanTitle" aria-hidden="true">
@@ -162,7 +159,7 @@ $customer = \App\Models\Customer::all();
         <div class="col-md-3 text-center mt-5">
             <a href="#" class="text-decoration-none">
                 <img src="{{asset('images/nota-bayar.svg')}}" alt="" width="100">
-                <h2>NOTA BAYAR</h2>
+                <h2>NOTA BAYAR  @if($nb != 0) <span class="text-danger">({{$nb}})</span> @endif</h2>
             </a>
         </div>
         <div class="col-md-3 text-center mt-5">
