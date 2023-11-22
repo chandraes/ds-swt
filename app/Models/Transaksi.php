@@ -40,11 +40,6 @@ class Transaksi extends Model
         return number_format($value, 0, ',', '.');
     }
 
-    public function getTotalTagihanAttribute($value)
-    {
-        return number_format($value, 0, ',', '.');
-    }
-
     public function customer()
     {
         return $this->belongsTo(Customer::class);
@@ -92,13 +87,13 @@ class Transaksi extends Model
     public function notaTransaksiTotalTagihan($customer_id)
     {
         $transaksi = $this->where('customer_id', $customer_id)->where('status', 1)->where('tagihan', 0)->sum('total_tagihan');
-        return $transaksi == 0 ? 0 : number_format($transaksi, 0, ',', '.');
+        return $transaksi == 0 ? 0 : $transaksi;
     }
 
     public function notaTransaksiTotalBayar($customer_id)
     {
         $transaksi = $this->where('customer_id', $customer_id)->where('status', 1)->where('tagihan', 0)->sum('total_bayar');
-        return $transaksi == 0 ? 0 : number_format($transaksi, 0, ',', '.');
+        return $transaksi == 0 ? 0 : $transaksi;
     }
 
 }

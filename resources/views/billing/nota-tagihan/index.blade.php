@@ -7,7 +7,18 @@
             <h1>{{$customer->nama}}</h1>
         </div>
     </div>
-        <div class="row mt-3">
+    <div class="row">
+        <div class="col-md-6">
+            <input type="hidden" class="form-control" id="total_tagih" disabled value="0">
+            <label for="berat" class="form-label">Total Tagihan di Pilih</label>
+            <div class="input-group">
+                <span class="input-group-text" id="basic-addon1">Rp.</span>
+                <input type="text" class="form-control" id="total_tagih_display" disabled >
+              </div>
+
+        </div>
+    </div>
+    <div class="row mt-3">
         <table class="table table-bordered table-hover" id="tableTransaksi">
             <thead class="table-success">
                 <tr>
@@ -33,7 +44,7 @@
                 <tr>
                     <td class="text-center align-middle">
                         {{-- checklist on check push $d->id to $selectedData --}}
-                        <input type="checkbox" value="{{$d->id}}" onclick="check(this, {{$d->id}})" id="idSelect-{{$d->id}}">
+                        <input type="checkbox" value="{{$d->id}}" data-tagihan="{{$d->total_tagihan}}" onclick="check(this, {{$d->id}})" id="idSelect-{{$d->id}}">
                     </td>
                     <td class="text-center align-middle"></td>
                     <td class="text-center align-middle">{{$d->tanggal}}</td>
@@ -44,10 +55,11 @@
                     <td class="text-center align-middle">{{$d->harga}}</td>
                     <td class="text-center align-middle">{{$d->total}}</td>
                     <td class="text-center align-middle">{{$d->pph}}</td>
-                    <td class="text-center align-middle">{{$d->total_tagihan}}</td>
+                    <td class="text-center align-middle">{{number_format($d->total_tagihan,0,',','.')}}</td>
                     <td class="text-center align-middle">
-                        {{-- delete  --}}
-                        <form action="{{route('form-transaksi.delete', ['transaksi' => $d->id])}}" method="post" id="delete-{{$d->id}}">
+                        {{-- delete --}}
+                        <form action="{{route('form-transaksi.delete', ['transaksi' => $d->id])}}" method="post"
+                            id="delete-{{$d->id}}">
                             @csrf
                             @method('delete')
                             <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i></button>
@@ -84,7 +96,7 @@
                     <th class="text-center align-middle"></th>
                     <th class="text-center align-middle">{{$total}}</th>
                     <th class="text-center align-middle"></th>
-                    <th class="text-center align-middle">{{$totalTagihan}}</th>
+                    <th class="text-center align-middle">{{number_format($totalTagihan, 0, ',','.')}}</th>
                     <th class="text-center align-middle"></th>
                 </tr>
             </tfoot>
@@ -92,9 +104,9 @@
     </div>
     <div class="row mt-5">
         <input type="hidden" name="selectedData" required>
-            <div class="col-md-12">
-                <a href="{{route('billing')}}" class="btn btn-secondary form-control mt-3">Kembali</a>
-            </div>
+        <div class="col-md-12">
+            <a href="{{route('billing')}}" class="btn btn-secondary form-control mt-3">Kembali</a>
+        </div>
     </div>
 </div>
 @endsection
@@ -106,92 +118,93 @@
 @endpush
 @push('js')
 <script src="{{asset('assets/js/dt5.min.js')}}"></script>
-    <script src="{{asset('assets/js/cleave.min.js')}}"></script>
-    <script>
+<script src="{{asset('assets/js/cleave.min.js')}}"></script>
+<script>
+       function check(checkbox, id) {
+            var totalTagihan = parseFloat($('#total_tagih').val()) || 0;
+            var tagihan = parseFloat($(checkbox).data('tagihan'));
 
-        function check(checkbox, id) {
-                if (checkbox.checked) {
-                    $('input[name="selectedData"]').val(function(i, v) {
-                        // if end of string, remove comma
-                        return v + id + ',';
+            if (checkbox.checked) {
+                totalTagihan += tagihan;
 
-                    });
-                } else {
-                    $('input[name="selectedData"]').val(function(i, v) {
-                        // remove id from string
-                        return v.replace(id + ',', '');
-                    });
-                }
+                $('input[name="selectedData"]').val(function(i, v) {
+                    return v + id + ',';
+                });
+            } else {
+                totalTagihan -= tagihan;
 
-                value = $('input[name="selectedData"]').val();
-
-                if(value.slice(-1) == ','){
-                    // remove comma from last number
-                    value = value.slice(0, -1);
-                }
-                console.log(value);
+                $('input[name="selectedData"]').val(function(i, v) {
+                    return v.replace(id + ',', '');
+                });
             }
+
+            $('#total_tagih').val(totalTagihan);
+            $('#total_tagih_display').val(totalTagihan.toLocaleString('id-ID'));
+
+            var value = $('input[name="selectedData"]').val();
+
+            if(value.slice(-1) == ','){
+                value = value.slice(0, -1);
+            }
+
+            console.log(value);
+        }
 
             // check all checkbox and push all id to $selectedData and check all checkbox
-            function checkAll(checkbox) {
-                if (checkbox.checked) {
-                    $('input[name="selectedData"]').val(function(i, v) {
-                        // if end of string, remove comma
-                        @foreach ($data as $d)
-                            v = v + {{$d->id}} + ',';
-                            $('#idSelect-{{$d->id}}').prop('checked', true);
-                        @endforeach
-                        return v;
-                    });
-                } else {
-                    $('input[name="selectedData"]').val(function(i, v) {
-                        // remove id from string
-                        @foreach ($data as $d)
-                            v = v.replace({{$d->id}} + ',', '');
-                            $('#idSelect-{{$d->id}}').prop('checked', false);
-                        @endforeach
-                        return v;
-                    });
-                }
+        function checkAll(checkbox) {
+            var totalTagihan = parseFloat($('#total_tagih').val()) || 0;
 
-                value = $('input[name="selectedData"]').val();
+            if (checkbox.checked) {
+                $('input[name="selectedData"]').val(function(i, v) {
+                    @foreach ($data as $d)
+                        var tagihan = parseFloat($('#idSelect-{{$d->id}}').data('tagihan'));
+                        totalTagihan += tagihan;
 
-                if(value.slice(-1) == ','){
-                    // remove comma from last number
-                    value = value.slice(0, -1);
-                }
-                console.log(value);
+                        v = v + {{$d->id}} + ',';
+                        $('#idSelect-{{$d->id}}').prop('checked', true);
+                    @endforeach
+                    return v;
+                });
+            } else {
+                $('input[name="selectedData"]').val(function(i, v) {
+                    @foreach ($data as $d)
+
+                        v = v.replace({{$d->id}} + ',', '');
+                        $('#idSelect-{{$d->id}}').prop('checked', false);
+                    @endforeach
+                    return v;
+                });
+                totalTagihan = 0;
             }
 
+            $('#total_tagih').val(totalTagihan);
+            $('#total_tagih_display').val(totalTagihan.toLocaleString('id-ID'));
+
+            var value = $('input[name="selectedData"]').val();
+
+            if(value.slice(-1) == ','){
+                value = value.slice(0, -1);
+            }
+
+            console.log(value);
+        }
+
         $(document).ready(function() {
-                var table = $('#tableTransaksi').DataTable({
-                    "paging": false,
-                    "searching": false,
-                    "scrollCollapse": true,
-                    "scrollY": "550px",
+            var table = $('#tableTransaksi').DataTable({
+                "paging": false,
+                "searching": false,
+                "scrollCollapse": true,
+                "scrollY": "550px",
 
-                });
-
-                table.on( 'order.dt search.dt', function () {
-                    table.column(1, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
-                        cell.innerHTML = i+1;
-                    } );
-                } ).draw();
             });
 
-        $( function() {
-            $( "#tanggal" ).datepicker({
-                dateFormat: "dd-mm-yy"
-            });
+            table.on( 'order.dt search.dt', function () {
+                table.column(1, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+                    cell.innerHTML = i+1;
+                } );
+            } ).draw();
         });
 
-         var nominal = new Cleave('#berat', {
-            numeral: true,
-            numeralThousandsGroupStyle: 'thousand',
-            numeralDecimalMark: ',',
-            delimiter: '.'
-        });
-        // masukForm on submit, sweetalert confirm
         $('#masukForm').submit(function(e){
             e.preventDefault();
             Swal.fire({
@@ -227,5 +240,5 @@
                 }
             })
         });
-    </script>
+</script>
 @endpush
