@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Http\Requests\StoreUserRequest;
 use Illuminate\Support\Facades\DB;
 Use App\Http\Controllers\Hash;
 use Illuminate\Http\Request;
@@ -35,24 +34,10 @@ class PengaturanController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreUserRequest $request)
+    public function store(Request $request)
+    {
 
-{
-    $data = $request->validated();
-
-    if ($request->fails()) {
-        return redirect()->back()->withErrors($request->errors())->withInput();
     }
-
-    $this->validate($request, [
-        'name' => 'required|string|max:255',
-        'email' => 'required|string|email|max:255|unique:users',
-        'username' => 'required|string|max:255|unique:users',
-        'password' => 'required|confirmed|string|min:6',
-    ]);
-    
-    return redirect()->route('pengaturan.akun')->with('success', 'Data berhasil ditambahkan!');
-}
 
     /**
      * Show the form for editing the specified resource.
@@ -84,7 +69,7 @@ class PengaturanController extends Controller
                     'name' => 'required|string|max:255',
                     'email' => 'nullable|string|email|max:255',
                     'username' => 'required|string|max:255',
-                    'password' => 'required|string|min:6|confirmed',
+                    'password' => 'required|string|min:6',
                 ]);
                 $data['password'] = bcrypt($data['password']);
             }
@@ -106,7 +91,7 @@ class PengaturanController extends Controller
         if ($check == 1) {
             return redirect()->back()->with('error', 'Tidak dapat menghapus user, karena hanya ada 1 user');
         }
-        
+
         DB::transaction(function () use ($id) {
             $user = User::findOrFail($id);
 

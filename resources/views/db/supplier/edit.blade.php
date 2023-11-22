@@ -36,6 +36,16 @@
                             <input type="text" class="form-control" name="npwp" id="edit_npwp" aria-describedby="helpId"
                                 placeholder="" required>
                         </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="harga" class="form-label">Persentase Profit</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control @if ($errors->has('persen_profit'))
+                                    is-invalid
+                                @endif" name="persen_profit" id="edit_persen_profit" required>
+                                <span class="input-group-text" id="basic-addon1">%</span>
+                            </div>
+                            <small id="helpId" class="form-text text-muted"><span class="text-danger">(Gunakan '.' untuk desimal)</span></small>
+                        </div>
                     </div>
                     <div class="row">
                         <div class="col-12 mb-3">

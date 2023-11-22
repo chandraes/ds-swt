@@ -27,6 +27,7 @@ class SupplierController extends Controller
             'bank' => 'required',
             'no_rek' => 'required',
             'nama_rek' => 'required',
+            'persen_profit' => 'required',
         ]);
 
         Supplier::create($data);
@@ -46,6 +47,7 @@ class SupplierController extends Controller
             'bank' => 'required',
             'no_rek' => 'required',
             'nama_rek' => 'required',
+            'persen_profit' => 'required',
         ]);
 
         $supplier->update($data);

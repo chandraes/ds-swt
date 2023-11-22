@@ -123,7 +123,7 @@
         document.getElementById('edit_no_ktp').value = data.no_ktp;
         document.getElementById('edit_npwp').value = data.npwp;
         document.getElementById('edit_alamat').value = data.alamat;
-
+        document.getElementById('edit_persen_profit').value = data.persen_profit;
         document.getElementById('editForm').action = '/db/supplier/' + id + '/update';
     };
 
