@@ -152,6 +152,10 @@
 
             // check all checkbox and push all id to $selectedData and check all checkbox
         function checkAll(checkbox) {
+            // empty total tagih dan total tagih display
+            $('#total_tagih').val(0);
+            $('#total_tagih_display').val(0);
+            $('input[name="selectedData"]').val('');
             var totalTagihan = parseFloat($('#total_tagih').val()) || 0;
 
             if (checkbox.checked) {
