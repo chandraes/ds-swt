@@ -38,13 +38,22 @@ class FormTransaksiController extends Controller
             ]);
 
         $tgl = $data['tanggal'];
+        $supplier = Supplier::findOrFail($data['supplier_id']);
+
+        if ($supplier->persen_profit == null || $supplier->persen_profit == 0) {
+            return redirect()->back()->with('error', 'Supplier belum memiliki persen profit! Harap hubungi admin untuk mengisi persen profit supplier!');
+        }
+        
+        $persen_profit = $supplier->persen_profit / 100;
+
         $customer = Customer::findOrFail($data['customer_id']);
         $data['berat'] = str_replace('.', '', $data['berat']);
         $data['tanggal'] = date('Y-m-d', strtotime($data['tanggal']));
         $data['harga'] = str_replace('.', '', $customer->harga);
         $data['total'] = $data['berat'] * $data['harga'];
         $data['pph'] = $data['total'] * 0.0025;
-        $data['profit'] = $data['total'] * 0.01;
+        $data['profit'] = $data['total'] * $persen_profit;
+        $data['total_ppn'] = $data['total'] * 0.11;
         $data['total_tagihan'] = $data['total'] - $data['pph'];
         $data['total_bayar'] = $data['total_tagihan'] - $data['profit'];
 
