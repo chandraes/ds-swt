@@ -56,14 +56,14 @@
                         </div>
                     </div>
                     <div class="row mb-4">
-                        <label class="col-md-3 form-label">Password Confirmation</label>
+                        <label for="" class="col-md-3 form-label">Role</label>
                         <div class="col-md-9">
-                            <input type="password" class="form-control @error('password_confirmation') is-invalid @enderror" name="password_confirmation" placeholder="*************">
-                            @error('password_confirmation')
-                                <span class="invalid-feedback text-danger" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
+                            <select class="form-select" name="role" id="role" required>
+                                <option value="">-- Pilih Role --</option>
+                                <option value="admin">Admin</option>
+                                <option value="user">User</option>
+                                <option value="investor">Investor</option>
+                            </select>
                         </div>
                     </div>
                 </div>

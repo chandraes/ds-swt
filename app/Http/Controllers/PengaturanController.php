@@ -12,7 +12,7 @@ class PengaturanController extends Controller
     /**
      * Display a listing of the resource.
      */
-        public function index()
+    public function index()
     {
 
         $users = User::all();
@@ -36,7 +36,19 @@ class PengaturanController extends Controller
      */
     public function store(Request $request)
     {
+        $data = $request->validate([
+            'username' => 'required|string|max:255|unique:users,username',
+            'name' => 'required|string|max:255',
+            'email' => 'nullable',
+            'password' => 'required',
+            'role' => 'required',
+        ]);
 
+        $data['password'] = bcrypt($data['password']);
+
+        User::create($data);
+
+        return redirect()->route('pengaturan.akun')->with('success', 'Data berhasil ditambahkan!');
     }
 
     /**
@@ -54,30 +66,29 @@ class PengaturanController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $data = $request->all();
-        $user = User::findOrFail($id);
-        DB::transaction(function () use ($request, $data, $user, $id) {
-            if ($data['password'] == '') {
-                $this->validate($request, [
-                    'name' => 'required|string|max:255',
-                    'email' => 'nullable|string|email|max:255',
-                    'username' => 'required|string|max:255',
-                ]);
-                $data['password'] = $user->password;
-            } else {
-                $this->validate($request, [
-                    'name' => 'required|string|max:255',
-                    'email' => 'nullable|string|email|max:255',
-                    'username' => 'required|string|max:255',
-                    'password' => 'required|string|min:6',
-                ]);
-                $data['password'] = bcrypt($data['password']);
-            }
-            $user->update($data);
-        });
-        //  return redirect()->back()->with('success', 'Data berhasil diubah!');
+        $data = $request->validate([
+            'username' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
+            'email' => 'nullable',
+            'password' => 'nullable',
+            'role' => 'required',
+        ]);
 
-         return redirect()->route('pengaturan.akun')->with('success', 'Data berhasil diubah!');
+        $user = User::findOrFail($id);
+
+        if ($request->password) {
+            $data['password'] = bcrypt($data['password']);
+        } else {
+            unset($data['password']);
+        }
+
+        try {
+            $user->update($data);
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('error', 'Username sudah digunakan!');
+        }
+
+        return redirect()->route('pengaturan.akun')->with('success', 'Data berhasil diubah!');
 
     }
 

@@ -58,7 +58,7 @@
                     <td class="text-center align-middle">{{$d->email}}</td>
                     <td class="text-center align-middle">{{$d->username}}</td>
                     <td class="text-center align-middle">
-                        <button class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#editUser" onclick="editUser({{$d->id}})">Edit</button>
+                        <button class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#editUser-{{$d->id}}">Edit</button>
                         <form action="{{route('pengaturan.akun.delete', $d->id)}}" method="post" id="deleteForm-{{$d->id}}">
                             @csrf
                             @method('delete')
@@ -66,25 +66,8 @@
                                     class="fa fa-trash"></i></button>
                         </form>
                     </td>
-
-                    <!-- <td class="text-center">
-                        <div class="btn-group align-middle">
-                            <a class="btn btn-primary badge" data-target="#editUser"
-                                data-bs-toggle="" type="button"
-                                href="{{route(request()->segment(1).'.'.request()->segment(2).'.update', $d->id)}}">Edit</a>
-                            <form id="delete-form"
-                                action="{{ route(request()->segment(1).'.'.request()->segment(2).'.delete', $d->id) }}"
-                                method="POST">
-                                @method('DELETE')
-                                @csrf
-                                <button class="btn btn-danger badge" type="submit"><i
-                                    class="fa fa-trash text-white"></i></button>
-                            </form>
-                        </div>
-                    </td> -->
-
-
                 </tr>
+                @include('pengaturan.pengguna.edit')
                 <script>
                      $('#deleteForm-{{$d->id}}').submit(function(e){
                             e.preventDefault();
@@ -120,16 +103,6 @@
 <script src="{{asset('assets/js/dt5.min.js')}}"></script>
 <script>
 
-    function editUser(data) {
-        document.getElementById('editNama').value = data.name;
-        document.getElementById('editEmail').value = data.email;
-        document.getElementById('editUsername').value = data.username;
-        // document.getElementById('editPassword').value = data.password;
-        // document.getElementById('editPasswordConfirmation').value = data.password;
-        // document.getElementById('editAlamat').value = data.alamat;
-        // document.getElementById('editHarga').value = data.harga;
-        // Populate other fields...
-    }
 
     $('#data').DataTable({
         paging: false,
