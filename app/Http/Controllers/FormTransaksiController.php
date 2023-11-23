@@ -76,7 +76,7 @@ class FormTransaksiController extends Controller
         $data = $request->validate([
             'supplier_id' => 'required|exists:suppliers,id',
             'tanggal' => 'required',
-            'nota_timbangan' => 'required',
+            'nota_timbangan' => 'required|min:9|max:9',
             'berat' => 'required',
         ]);
 

@@ -63,19 +63,20 @@
                         <input type="checkbox" value="{{$d->id}}" data-tagihan="{{$d->total_tagihan}}" onclick="check(this, {{$d->id}})" id="idSelect-{{$d->id}}">
                     </td>
                     <td class="text-center align-middle"></td>
-                    <td class="text-center align-middle">{{$d->tanggal}}</td>
+                    <td class="text-center align-middle">{{$d->id_tanggal}}</td>
                     <td class="text-center align-middle">{{$d->supplier->nickname}}</td>
                     <td class="text-center align-middle">{{$d->nota_timbangan}}</td>
-                    <td class="text-center align-middle">{{number_format($d->berat, 0,',','.')}}</td>
+                    <td class="text-center align-middle">{{$d->nf_berat}}</td>
                     <td class="text-center align-middle">Kg</td>
-                    <td class="text-center align-middle">{{$d->harga}}</td>
-                    <td class="text-center align-middle">{{$d->formatted_total}}</td>
+                    <td class="text-center align-middle">{{$d->nf_harga}}</td>
+                    <td class="text-center align-middle">{{$d->nf_total}}</td>
                     <td class="text-center align-middle">{{$d->pph}}</td>
                     <td class="text-center align-middle">{{$d->profit}}</td>
                     <td class="text-center align-middle">{{number_format($d->total_tagihan,0,',','.')}}</td>
                     <td class="text-center align-middle">
                         @if (auth()->user()->role == 'admin')
-                        <form action="{{route('form-transaksi.delete', ['transaksi' => $d->id])}}" method="post"
+                        <button class="btn m-2 btn-warning" data-bs-toggle="modal" data-bs-target="#editTransaksi" onclick="editTransaksi({{$d}}, {{$d->id}})"><i class="fa fa-edit"></i></button>
+                        <form action="{{route('form-transaksi.delete', ['transaksi' => $d->id])}}" method="post" style="display: inline-block;"
                             id="delete-{{$d->id}}">
                             @csrf
                             @method('delete')
@@ -121,6 +122,7 @@
             </tfoot>
         </table>
     </div>
+    @include('billing.nota-tagihan.edit')
     <div class="row mt-5">
         <form action="{{route('nota-tagihan.cutoff', ['customer' => $customer->id])}}" method="post" id="lanjutkanForm">
         @csrf
@@ -147,6 +149,21 @@
 <script src="{{asset('assets/js/dt5.min.js')}}"></script>
 <script src="{{asset('assets/js/cleave.min.js')}}"></script>
 <script>
+
+        function editTransaksi(data, id) {
+            let date = new Date(data.tanggal);
+            let day = ("0" + date.getDate()).slice(-2);
+            let month = ("0" + (date.getMonth() + 1)).slice(-2);
+            let year = date.getFullYear();
+
+            document.getElementById('edit_tanggal').value = `${day}-${month}-${year}`;
+            document.getElementById('edit_supplier_id').value = data.supplier_id;
+            document.getElementById('edit_nota_timbangan').value = data.nota_timbangan;
+            document.getElementById('edit_berat').value = data.berat.toLocaleString('id');
+
+            document.getElementById('editForm').action = '/billing/nota-tagihan/edit/' + id;
+        }
+
        function check(checkbox, id) {
             var totalTagihan = parseFloat($('#total_tagih').val()) || 0;
             var tagihan = parseFloat($(checkbox).data('tagihan'));
@@ -176,6 +193,13 @@
 
             console.log(value);
         }
+
+        $( function() {
+
+            $( "#edit_tanggal" ).datepicker({
+                dateFormat: "dd-mm-yy"
+            });
+        });
 
             // check all checkbox and push all id to $selectedData and check all checkbox
         function checkAll(checkbox) {
@@ -220,6 +244,18 @@
             console.log(value);
         }
 
+        var edit_nota = new Cleave('#edit_nota_timbangan', {
+            delimiter: '-',
+            blocks: [4, 4]
+        });
+
+        var editBerat = new Cleave('#edit_berat', {
+            numeral: true,
+            numeralThousandsGroupStyle: 'thousand',
+            numeralDecimalMark: ',',
+            delimiter: '.'
+        });
+
         $(document).ready(function() {
             var table = $('#tableTransaksi').DataTable({
                 "paging": false,
@@ -234,6 +270,24 @@
                     cell.innerHTML = i+1;
                 } );
             } ).draw();
+        });
+
+        $('#editForm').submit(function(e){
+            e.preventDefault();
+            Swal.fire({
+                title: 'Apakah data sudah benar?',
+                text: "Pastikan data sudah benar sebelum disimpan!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Ya, simpan!'
+                }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#spinner').show();
+                    this.submit();
+                }
+            })
         });
 
         $('#masukForm').submit(function(e){

@@ -65,6 +65,11 @@ class Transaksi extends Model
         return $this->where('supplier_id', $supplier_id)->where('status', 1)->where('bayar', 0)->orderBy('nota_timbangan')->get();
     }
 
+    public function notaInvoice($customer_id)
+    {
+        return $this->where('customer_id', $customer_id)->where('status', 1)->where('tagihan', 1)->where('ppn', 0)->orderBy('nota_timbangan')->get();
+    }
+
     public function formTransaksi($customer_id)
     {
         return $this->where('customer_id', $customer_id)->where('status', 0)->orderBy('nota_timbangan')->get();
