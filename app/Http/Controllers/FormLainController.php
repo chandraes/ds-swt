@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Rekening;
 use App\Models\KasBesar;
+use App\Models\GroupWa;
+use App\Services\StarSender;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class FormLainController extends Controller
 {
@@ -42,7 +45,30 @@ class FormLainController extends Controller
         $data['nama_rek'] = $rekening->nama_rek;
         $data['bank'] = $rekening->bank;
 
+        DB::beginTransaction();
+
         $store = KasBesar::create($data);
+
+        $group = GroupWa::where('untuk', 'kas-besar')->first();
+        $pesan ="🔵🔵🔵🔵🔵🔵🔵🔵🔵\n".
+                "*Form Lain2 (Dana Masuk)*\n".
+                 "🔵🔵🔵🔵🔵🔵🔵🔵🔵\n\n".
+                 "Uraian :  ".$data['uraian']."\n".
+                 "Nilai :  *Rp. ".number_format($data['nominal_transaksi'], 0, ',', '.')."*\n\n".
+                 "Ditransfer ke rek:\n\n".
+                "Bank      : ".$data['bank']."\n".
+                "Nama    : ".$data['nama_rek']."\n".
+                "No. Rek : ".$data['no_rek']."\n\n".
+                "==========================\n".
+                "Sisa Saldo Kas Besar : \n".
+                "Rp. ".number_format($store->saldo, 0, ',', '.')."\n\n".
+                "Total Modal Investor : \n".
+                "Rp. ".number_format($store->modal_investor_terakhir, 0, ',', '.')."\n\n".
+                "Terima kasih 🙏🙏🙏\n";
+        $send = new StarSender($group->nama_group, $pesan);
+        $res = $send->sendGroup();
+
+        DB::commit();
 
         return redirect()->route('billing')->with('success', 'Data Berhasil Ditambahkan');
 

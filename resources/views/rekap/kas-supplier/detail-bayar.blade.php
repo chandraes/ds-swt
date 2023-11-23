@@ -7,6 +7,7 @@
             <h1>{{$supplier->nama}}</h1>
         </div>
     </div>
+    
     <div class="row mt-3">
         <table class="table table-bordered table-hover" id="tableTransaksi">
             <thead class="table-success">
