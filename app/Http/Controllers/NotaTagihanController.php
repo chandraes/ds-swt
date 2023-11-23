@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Customer;
 use App\Models\Transaksi;
+use App\Models\InvoiceTagihan;
 use Illuminate\Http\Request;
 
 class NotaTagihanController extends Controller
@@ -23,5 +24,16 @@ class NotaTagihanController extends Controller
             'total' => $total,
             'totalTagihan' => $totalTagihan,
         ]);
+    }
+
+    public function cutoff(Request $request)
+    {
+        $data = $reqeust->validate([
+            'total_tagih' => 'required|integer',
+            'selectedData' => 'required',
+        ]);
+
+
+
     }
 }

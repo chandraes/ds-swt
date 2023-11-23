@@ -15,6 +15,11 @@ class KasBesar extends Model
         return $this->latest()->orderBy('id', 'desc')->first();
     }
 
+    public function getTanggalAttribute($value)
+    {
+        return date('d-m-Y', strtotime($value));
+    }
+
     public function lastKasBesarByMonth($month, $year)
     {
         return $this->whereMonth('tanggal', $month)->whereYear('tanggal', $year)->latest()->orderBy('id', 'desc')->first();

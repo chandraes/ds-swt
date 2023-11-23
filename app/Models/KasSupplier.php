@@ -10,6 +10,11 @@ class KasSupplier extends Model
     use HasFactory;
     protected $guarded = ['id'];
 
+    public function getTanggalAttribute($value)
+    {
+        return date('d-m-Y', strtotime($value));
+    }
+
     public function supplier()
     {
         return $this->belongsTo(Supplier::class);

@@ -1,5 +1,4 @@
 @extends('layouts.app')
-
 @section('content')
 <div class="container text-center">
     <h1>DASHBOARD</h1>
@@ -14,12 +13,14 @@
             </a>
         </div>
         @endif
+        @if (auth()->user()->role == 'admin' || auth()->user()->role == 'user')
         <div class="col-md-3 text-center">
             <a href="{{route('billing')}}" class="text-decoration-none">
                 <img src="{{asset('images/billing.svg')}}" alt="" width="100">
                 <h2>BILLING</h2>
             </a>
         </div>
+        @endif
         <div class="col-md-3 text-center">
             <a href="{{route('rekap')}}" class="text-decoration-none">
                 <img src="{{asset('images/rekap.svg')}}" alt="" width="100">

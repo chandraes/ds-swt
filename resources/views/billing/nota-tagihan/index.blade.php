@@ -9,13 +9,11 @@
     </div>
     <div class="row">
         <div class="col-md-6">
-
             <label for="berat" class="form-label">Total Tagihan di Pilih</label>
             <div class="input-group">
                 <span class="input-group-text" id="basic-addon1">Rp.</span>
                 <input type="text" class="form-control" id="total_tagih_display" disabled >
-              </div>
-
+            </div>
         </div>
     </div>
     <div class="row mt-3">
@@ -57,13 +55,14 @@
                     <td class="text-center align-middle">{{$d->pph}}</td>
                     <td class="text-center align-middle">{{number_format($d->total_tagihan,0,',','.')}}</td>
                     <td class="text-center align-middle">
-                        {{-- delete --}}
+                        @if (auth()->user()->role == 'admin')
                         <form action="{{route('form-transaksi.delete', ['transaksi' => $d->id])}}" method="post"
                             id="delete-{{$d->id}}">
                             @csrf
                             @method('delete')
                             <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i></button>
                         </form>
+                        @endif
                     </td>
                 </tr>
                 <script>
@@ -103,8 +102,14 @@
         </table>
     </div>
     <div class="row mt-5">
-        <input type="hidden" name="selectedData" required>
-        <input type="hidden" class="form-control" id="total_tagih" required value="0">
+        <form action="{{route('nota-tagihan.cutoff', ['customer' => $customer->id])}}" method="post" id="lanjutkanForm">
+        @csrf
+            <input type="hidden" name="selectedData" required>
+            <input type="hidden" class="form-control" id="total_tagih" required value="0">
+            <div class="col-md-12">
+                <button type="submit" class="btn btn-primary form-control">LANJUTKAN</button>
+            </div>
+        </form>
         <div class="col-md-12">
             <a href="{{route('billing')}}" class="btn btn-secondary form-control mt-3">Kembali</a>
         </div>
@@ -199,7 +204,7 @@
                 "paging": false,
                 "searching": false,
                 "scrollCollapse": true,
-                "scrollY": "550px",
+                "scrollY": "500px",
 
             });
 
@@ -229,10 +234,27 @@
         });
 
         $('#lanjutkanForm').submit(function(e){
+            var value = $('#total_tagih_display').val();
+            var check = $('#total_tagih').val();
+
+            if (check == 0 || check == '') {
+                Swal.fire({
+                    title: 'Tidak ada data yang dipilih!',
+                    text: "Harap pilih tagihan terlebih dahulu!",
+                    icon: 'error',
+                    showCancelButton: false,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Ok'
+                    })
+                return false;
+
+            }
+
             e.preventDefault();
             Swal.fire({
                 title: 'Apakah data sudah benar?',
-                text: "Pastikan data sudah benar sebelum disimpan!",
+                text: "Total Tagihan Rp. "+value,
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
