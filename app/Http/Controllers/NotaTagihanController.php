@@ -20,6 +20,7 @@ class NotaTagihanController extends Controller
         $totalBerat = $transaksi->notaTransaksiBerat($customer->id);
         $total = $transaksi->notaTransaksiTotal($customer->id);
         $totalTagihan = $transaksi->notaTransaksiTotalTagihan($customer->id);
+        $totalProfit = $transaksi->notaTagihanTotalProfit($customer->id);
         $data = $transaksi->notaTagihan($customer->id);
 
         return view('billing.nota-tagihan.index', [
@@ -28,6 +29,7 @@ class NotaTagihanController extends Controller
             'totalBerat' => $totalBerat,
             'total' => $total,
             'totalTagihan' => $totalTagihan,
+            'totalProfit' => $totalProfit,
         ]);
     }
 

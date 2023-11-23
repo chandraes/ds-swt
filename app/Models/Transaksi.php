@@ -118,6 +118,12 @@ class Transaksi extends Model
         return $transaksi == 0 ? 0 : $transaksi;
     }
 
+    public function notaTagihanTotalProfit($customer_id)
+    {
+        $transaksi = $this->where('customer_id', $customer_id)->where('status', 1)->where('tagihan', 0)->sum('profit');
+        return $transaksi == 0 ? 0 : number_format($transaksi, 0, ',', '.');
+    }
+
     public function notaBayarTotalBayar($supplier_id)
     {
         $transaksi = $this->where('supplier_id', $supplier_id)->where('status', 1)->where('bayar', 0)->sum('total_bayar');

@@ -50,6 +50,7 @@
                     <th class="text-center align-middle">Harga Satuan</th>
                     <th class="text-center align-middle">Total Harga</th>
                     <th class="text-center align-middle">PPH 0,25%</th>
+                    <th class="text-center align-middle">Profit</th>
                     <th class="text-center align-middle">Total Tagihan</th>
                     <th class="text-center align-middle">Act</th>
                 </tr>
@@ -70,6 +71,7 @@
                     <td class="text-center align-middle">{{$d->harga}}</td>
                     <td class="text-center align-middle">{{$d->formatted_total}}</td>
                     <td class="text-center align-middle">{{$d->pph}}</td>
+                    <td class="text-center align-middle">{{$d->profit}}</td>
                     <td class="text-center align-middle">{{number_format($d->total_tagihan,0,',','.')}}</td>
                     <td class="text-center align-middle">
                         @if (auth()->user()->role == 'admin')
@@ -112,6 +114,7 @@
                     <th class="text-center align-middle"></th>
                     <th class="text-center align-middle">{{$total}}</th>
                     <th class="text-center align-middle"></th>
+                    <th class="text-center align-middle">{{$totalProfit}}</th>
                     <th class="text-center align-middle">{{number_format($totalTagihan, 0, ',','.')}}</th>
                     <th class="text-center align-middle"></th>
                 </tr>
