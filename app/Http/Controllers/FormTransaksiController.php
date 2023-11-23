@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Transaksi;
 use App\Models\Customer;
 use App\Models\Supplier;
+use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 
 class FormTransaksiController extends Controller
@@ -33,7 +34,14 @@ class FormTransaksiController extends Controller
                 'customer_id' => 'required|exists:customers,id',
                 'supplier_id' => 'required|exists:suppliers,id',
                 'tanggal' => 'required',
-                'nota_timbangan' => 'required|unique:transaksis,nota_timbangan|min:9|max:9',
+                'nota_timbangan' => [
+                    'required',
+                    'min:9',
+                    'max:9',
+                    Rule::unique('transaksis')->where(function ($query) use ($request) {
+                        return $query->where('customer_id', $request->customer_id);
+                    }),
+                ],
                 'berat' => 'required',
             ]);
 
@@ -60,6 +68,11 @@ class FormTransaksiController extends Controller
         $store = Transaksi::create($data);
 
         return redirect()->route('form-transaksi.tambah', ['customer' => $customer->id])->with(['success' => 'Data Berhasil Ditambahkan', 'tgl' => $tgl, 'supplier' => $data['supplier_id']]);
+
+    }
+
+    public function edit_store(Request $request, Transaksi $transaksi)
+    {
 
     }
 

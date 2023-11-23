@@ -10,22 +10,22 @@ class Transaksi extends Model
     use HasFactory;
     protected $guarded = ['id'];
 
-    public function getTanggalAttribute($value)
+    public function getIdTanggalAttribute()
     {
-        return date('d-m-Y', strtotime($value));
+        return date('d-m-Y', strtotime($this->attributes['tanggal']));
     }
 
-    public function getFormattedBeratAttribute($value)
+    public function getNfBeratAttribute()
     {
-        return number_format($value, 0, ',', '.');
+        return number_format($this->attributes['berat'], 0, ',', '.');
     }
 
-    public function getHargaAttribute($value)
+    public function getNfHargaAttribute()
     {
-        return number_format($value, 0, ',', '.');
+        return number_format($this->harga, 0, ',', '.');
     }
 
-    public function getFormattedTotalAttribute()
+    public function getNfTotalAttribute()
     {
         return number_format($this->attributes['total'], 0, ',', '.');
     }

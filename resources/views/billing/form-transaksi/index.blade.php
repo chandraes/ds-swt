@@ -85,15 +85,14 @@
                 @foreach ($data as $d)
                 <tr>
                     <td class="text-center align-middle"></td>
-                    <td class="text-center align-middle">{{$d->tanggal}}</td>
+                    <td class="text-center align-middle">{{$d->id_tanggal}}</td>
                     <td class="text-center align-middle">{{$d->supplier->nickname}}</td>
                     <td class="text-center align-middle">{{$d->nota_timbangan}}</td>
-                    <td class="text-center align-middle">{{number_format($d->berat,0,',','.')}}</td>
+                    <td class="text-center align-middle">{{$d->nf_berat}}</td>
                     <td class="text-center align-middle">Kg</td>
-                    <td class="text-center align-middle">{{$d->harga}}</td>
-                    <td class="text-center align-middle">{{number_format($d->total, 0,',','.')}}</td>
+                    <td class="text-center align-middle">{{$d->nf_harga}}</td>
+                    <td class="text-center align-middle">{{$d->nf_total}}</td>
                     <td class="text-center align-middle">
-                        {{-- delete  --}}
                         <form action="{{route('form-transaksi.delete', ['transaksi' => $d->id])}}" method="post" id="delete-{{$d->id}}">
                             @csrf
                             @method('delete')

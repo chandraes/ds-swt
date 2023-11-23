@@ -29,10 +29,10 @@
                     <td class="text-center align-middle table-pdf text-pdf">{{$d->tanggal}}</td>
                     <td class="text-center align-middle table-pdf text-pdf">{{$d->customer->singkatan}}</td>
                     <td class="text-center align-middle table-pdf text-pdf">{{$d->nota_timbangan}}</td>
-                    <td class="text-center align-middle table-pdf text-pdf">{{number_format($d->berat, 0, ',','.')}}</td>
+                    <td class="text-center align-middle table-pdf text-pdf">{{$d->nf_berat}}</td>
                     <td class="text-center align-middle table-pdf text-pdf">Kg</td>
-                    <td class="text-center align-middle table-pdf text-pdf">{{$d->harga}}</td>
-                    <td class="text-center align-middle table-pdf text-pdf">{{$d->formatted_total}}</td>
+                    <td class="text-center align-middle table-pdf text-pdf">{{$d->nf_harga}}</td>
+                    <td class="text-center align-middle table-pdf text-pdf">{{$d->nf_total}}</td>
                     <td class="text-center align-middle table-pdf text-pdf">{{number_format($d->total_bayar,0,',','.')}}</td>
 
                 </tr>

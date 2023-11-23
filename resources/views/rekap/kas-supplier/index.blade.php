@@ -89,7 +89,7 @@
             <tbody>
                 @foreach ($data as $d)
                 <tr>
-                    <td class="text-center align-middle">{{$d->tanggal}}</td>
+                    <td class="text-center align-middle">{{$d->id_tanggal}}</td>
                     <td class="text-center align-middle">
                         @if ($d->invoice_bayar_id)
                         <a href="{{route('rekap.kas-supplier.detail-bayar', ['invoice' => $d->invoice_bayar_id])}}">

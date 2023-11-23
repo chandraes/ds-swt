@@ -10,9 +10,9 @@ class KasSupplier extends Model
     use HasFactory;
     protected $guarded = ['id'];
 
-    public function getTanggalAttribute($value)
+    public function getIdTanggalAttribute()
     {
-        return date('d-m-Y', strtotime($value));
+        return date('d-m-Y', strtotime($this->attributes['tanggal'] ));
     }
 
     public function supplier()

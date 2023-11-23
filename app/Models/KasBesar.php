@@ -16,9 +16,9 @@ class KasBesar extends Model
     }
 
 
-    public function getTanggalAttribute($value)
+    public function getIdTanggalAttribute()
     {
-        return date('d-m-Y', strtotime($value));
+        return date('d-m-Y', strtotime($this->tanggal));
     }
 
     public function lastKasBesarByMonth($month, $year)
