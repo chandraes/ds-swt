@@ -1,13 +1,24 @@
 @extends('layouts.app')
 @section('content')
 <div class="container-fluid">
-    <div class="row justify-content-center mb-5">
+    <div class="row justify-content-center mb-2">
         <div class="col-md-12 text-center">
             <h1><u>DETAIL BAYAR</u></h1>
             <h1>{{$supplier->nama}}</h1>
         </div>
     </div>
-    
+    <div class="row justify-content-center mb-3">
+        <div class="col-md-4">
+            {{-- print pdf button --}}
+            <form action="{{route('rekap.kas-supplier.detail-bayar.print', $invoice->id)}}" method="get" target="_blank">
+                <button type="submit" class="btn btn-success form-control">
+                    {{-- fa print icon --}}
+                    <i class="fa fa-print"></i>
+                    Print
+                </button>
+            </form>
+        </div>
+    </div>
     <div class="row mt-3">
         <table class="table table-bordered table-hover" id="tableTransaksi">
             <thead class="table-success">

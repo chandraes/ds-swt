@@ -93,6 +93,7 @@ class RekapController extends Controller
             'totalBerat' => $totalBerat,
             'total' => $total,
             'totalTagihan' => $totalBayar,
+            'invoice' => $invoice,
         ]);
 
     }
