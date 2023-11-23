@@ -45,6 +45,7 @@ class NotaBayarController extends Controller
 
         $kasSupplier = new KasSupplier;
         $kasBesar = new KasBesar;
+        $transaksi = new Transaksi;
 
         $saldoKasBesar = $kasBesar->lastKasBesar()->saldo;
 
@@ -55,7 +56,6 @@ class NotaBayarController extends Controller
         DB::beginTransaction();
 
         $invoice = $invoiceBayar->insertBayar($data);
-
 
         $k['uraian'] = 'Pembayaran BS' . $invoice->no_invoice;
         $k['nominal_transaksi'] = $data['total_bayar'];
@@ -70,7 +70,6 @@ class NotaBayarController extends Controller
 
         $store = $kasBesar->insertBayar($b);
 
-        $transaksi = new Transaksi;
         $list = $transaksi->notaBayar($supplier->id);
         // get id list to array
         $listId = $list->pluck('id')->toArray();

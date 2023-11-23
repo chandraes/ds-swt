@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class InvoiceBayar extends Model
 {
     use HasFactory;
+    
     protected $guarded = [];
 
     public function invoiceBayarDetail()
@@ -48,7 +49,7 @@ class InvoiceBayar extends Model
         $data['tanggal'] = date('Y-m-d');
         $data['no_invoice'] = $this->generateNoInvoice();
         $store = $this->create($data);
-        
+
         return $store;
     }
 }

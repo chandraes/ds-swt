@@ -90,7 +90,15 @@
                 @foreach ($data as $d)
                 <tr>
                     <td class="text-center align-middle">{{$d->tanggal}}</td>
-                    <td class="text-center align-middle">{{$d->uraian}}</td>
+                    <td class="text-center align-middle">
+                        @if ($d->invoice_bayar_id)
+                        <a href="{{route('rekap.kas-supplier.detail-bayar', ['invoice' => $d->invoice_bayar_id])}}">
+                            {{$d->uraian}}
+                        @else
+                        {{$d->uraian}}
+                        @endif
+
+                    </td>
                     <td class="text-center align-middle">{{$d->jenis === 1 ?
                         number_format($d->nominal_transaksi, 0, ',', '.') : ''}}
                     </td>

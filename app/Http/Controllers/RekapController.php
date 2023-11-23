@@ -79,6 +79,24 @@ class RekapController extends Controller
         ]);
     }
 
+    public function detail_bayar_supplier(InvoiceBayar $invoice)
+    {
+        $data = $invoice->transaksi;
+        $supplier = $invoice->supplier;
+        $total = $data->sum('total');
+        $totalBerat = $data->sum('berat');
+        $totalBayar = $data->sum('total_bayar');
+
+        return view('rekap.kas-supplier.detail-bayar', [
+            'data' => $data,
+            'supplier' => $supplier,
+            'totalBerat' => $totalBerat,
+            'total' => $total,
+            'totalTagihan' => $totalBayar,
+        ]);
+
+    }
+
     public function kas_besar_print(Request $request)
     {
         $kas = new KasBesar;
