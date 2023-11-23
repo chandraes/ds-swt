@@ -65,10 +65,10 @@
                     <td class="text-center align-middle">{{$d->tanggal}}</td>
                     <td class="text-center align-middle">{{$d->supplier->nickname}}</td>
                     <td class="text-center align-middle">{{$d->nota_timbangan}}</td>
-                    <td class="text-center align-middle">{{$d->berat}}</td>
+                    <td class="text-center align-middle">{{number_format($d->berat, 0,',','.')}}</td>
                     <td class="text-center align-middle">Kg</td>
                     <td class="text-center align-middle">{{$d->harga}}</td>
-                    <td class="text-center align-middle">{{$d->total}}</td>
+                    <td class="text-center align-middle">{{$d->formatted_total}}</td>
                     <td class="text-center align-middle">{{$d->pph}}</td>
                     <td class="text-center align-middle">{{number_format($d->total_tagihan,0,',','.')}}</td>
                     <td class="text-center align-middle">

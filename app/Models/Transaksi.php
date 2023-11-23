@@ -15,7 +15,7 @@ class Transaksi extends Model
         return date('d-m-Y', strtotime($value));
     }
 
-    public function getBeratAttribute($value)
+    public function getFormattedBeratAttribute($value)
     {
         return number_format($value, 0, ',', '.');
     }
@@ -25,10 +25,15 @@ class Transaksi extends Model
         return number_format($value, 0, ',', '.');
     }
 
-    public function getTotalAttribute($value)
+    public function getFormattedTotalAttribute()
     {
-        return number_format($value, 0, ',', '.');
+        return number_format($this->attributes['total'], 0, ',', '.');
     }
+
+//     public function getTotalAttribute($value)
+// {
+//     return floatval(str_replace(',', '', $value));
+// }
 
     public function getProfitAttribute($value)
     {

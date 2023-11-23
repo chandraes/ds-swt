@@ -9,4 +9,6 @@ class InvoiceBayarDetail extends Model
 {
     use HasFactory;
     protected $guarded = [];
+
+    
 }

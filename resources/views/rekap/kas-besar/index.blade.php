@@ -74,6 +74,7 @@
                 <th class="text-center align-middle">Deposit</th>
                 <th class="text-center align-middle">Titipan</th>
                 <th class="text-center align-middle">Tagihan</th>
+                <th class="text-center align-middle">Bayar</th>
                 <th class="text-center align-middle">Masuk</th>
                 <th class="text-center align-middle">Keluar</th>
                 <th class="text-center align-middle">Saldo</th>
@@ -82,7 +83,7 @@
                 <th class="text-center align-middle">Modal Investor</th>
             </tr>
             <tr class="table-warning">
-                <td colspan="6" class="text-center align-middle">Saldo Bulan
+                <td colspan="7" class="text-center align-middle">Saldo Bulan
                     {{$stringBulan}} {{$tahunSebelumnya}}</td>
                 <td></td>
                 <td class="text-center align-middle">Rp. {{$dataSebelumnya ? number_format($dataSebelumnya->saldo,
@@ -99,7 +100,9 @@
                     <td class="text-center align-middle">{{$d->tanggal}}</td>
                     <td class="text-center align-middle">
                         @if ($d->invoice_tagihan_id)
-                        <a href="#">{{$d->uraian}}</a>
+                        <a href="{{route('rekap.kas-besar.detail-tagihan', ['invoice' => $d->invoice_tagihan_id])}}">{{$d->uraian}}</a>
+                        @elseif($d->invoice_bayar_id)
+                        <a href="{{route('rekap.kas-besar.detail-bayar', ['invoice' => $d->invoice_bayar_id])}}">{{$d->uraian}}</a>
                         @else
                         {{$d->uraian}}
                         @endif
@@ -113,6 +116,9 @@
                     </td>
                     <td class="text-center align-middle">
                         {{$d->nomor_tagihan != 00 ? $d->kode_tagihan.$d->nomor_tagihan : ''}}
+                    </td>
+                    <td class="text-center align-middle">
+                        {{$d->nomor_bayar != 00 ? $d->kode_bayar.$d->nomor_bayar : ''}}
                     </td>
                     <td class="text-center align-middle">{{$d->jenis === 1 ?
                         number_format($d->nominal_transaksi, 0, ',', '.') : ''}}
@@ -138,11 +144,12 @@
                     <td></td>
                     <td></td>
                     <td></td>
+                    <td></td>
                 </tr>
             </tbody>
             <tfoot>
                 <tr>
-                    <td class="text-center align-middle" colspan="5"><strong>GRAND TOTAL</strong></td>
+                    <td class="text-center align-middle" colspan="6"><strong>GRAND TOTAL</strong></td>
                     <td class="text-center align-middle"><strong>{{number_format($data->where('jenis',
                             1)->sum('nominal_transaksi'), 0, ',', '.')}}</strong></td>
                     <td class="text-center align-middle text-danger"><strong>{{number_format($data->where('jenis',

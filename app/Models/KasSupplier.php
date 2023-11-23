@@ -39,4 +39,14 @@ class KasSupplier extends Model
     {
         return $this->selectRaw('YEAR(tanggal) tahun')->groupBy('tahun')->get();
     }
+
+    public function insertBayar($data)
+    {
+        $data['tanggal'] = date('Y-m-d');
+        $data['jenis'] = 1;
+        $data['saldo'] = $this->lastKasSupplier($data['supplier_id'])->saldo + $data['nominal_transaksi'];
+
+        $store = $this->create($data);
+        return $store;
+    }
 }

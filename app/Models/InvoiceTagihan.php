@@ -22,7 +22,14 @@ class InvoiceTagihan extends Model
 
     public function transaksi()
     {
-        return $this->hasManyThrouhg(InvoiceTagihanDetail::class, Transaksi::class);
+        return $this->hasManyThrough(
+            Transaksi::class,
+            InvoiceTagihanDetail::class,
+            'invoice_tagihan_id',
+            'id',
+            'id',
+            'transaksi_id'
+        );
     }
 
     public function noInvoice()

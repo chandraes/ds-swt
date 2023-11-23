@@ -72,15 +72,16 @@
             <tr>
                 <th class="text-center align-middle">Tanggal</th>
                 <th class="text-center align-middle">Uraian</th>
-                <th class="text-center align-middle">No DO</th>
                 <th class="text-center align-middle">Masuk</th>
                 <th class="text-center align-middle">Keluar</th>
                 <th class="text-center align-middle">Saldo</th>
             </tr>
             <tr class="table-warning">
 
-                <td colspan="5" class="text-center align-middle">Saldo Bulan
+                <td colspan="2" class="text-center align-middle">Saldo Bulan
                     {{$stringBulan}} {{$tahunSebelumnya}}</td>
+                    <td></td>
+                    <td></td>
                 <td class="text-center align-middle">Rp. {{$dataSebelumnya ? number_format($dataSebelumnya->saldo,
                     0, ',','.') : ''}}</td>
             </tr>
@@ -90,9 +91,6 @@
                 <tr>
                     <td class="text-center align-middle">{{$d->tanggal}}</td>
                     <td class="text-center align-middle">{{$d->uraian}}</td>
-                    <td class="text-center align-middle">
-                        {{$d->no_do}}
-                    </td>
                     <td class="text-center align-middle">{{$d->jenis === 1 ?
                         number_format($d->nominal_transaksi, 0, ',', '.') : ''}}
                     </td>
@@ -108,12 +106,11 @@
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td></td>
                 </tr>
             </tbody>
             <tfoot>
                 <tr>
-                    <td class="text-center align-middle" colspan="3"><strong>GRAND TOTAL</strong></td>
+                    <td class="text-center align-middle" colspan="2"><strong>GRAND TOTAL</strong></td>
                     <td class="text-center align-middle"><strong>{{number_format($data->where('jenis',
                             1)->sum('nominal_transaksi'), 0, ',', '.')}}</strong></td>
                     <td class="text-center align-middle text-danger"><strong>{{number_format($data->where('jenis',

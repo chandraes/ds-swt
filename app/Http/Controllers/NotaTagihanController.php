@@ -49,7 +49,7 @@ class NotaTagihanController extends Controller
         $d['total_tagihan'] = $data['total_tagih'];
         $d['no_invoice'] = $db->noInvoice();
 
-        $k['uraian'] = 'Tagihan ' . $d['no_invoice'].' '. Customer::find($data['customer_id'])->singkatan;
+        $k['uraian'] = 'Tagihan '. Customer::find($data['customer_id'])->singkatan;
         $k['nominal_transaksi'] = $d['total_tagihan'];
         $k['nomor_tagihan'] = $d['no_invoice'];
 
@@ -93,8 +93,6 @@ class NotaTagihanController extends Controller
         $res = $send->sendGroup();
 
         DB::commit();
-
-
 
         return redirect()->route('billing')->with('success', 'Berhasil menyimpan data tagihan.');
 

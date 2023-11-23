@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\KasBesar;
 use App\Models\Supplier;
 use App\Models\KasSupplier;
+use App\Models\InvoiceTagihan;
+use App\Models\InvoiceBayar;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
@@ -39,6 +41,41 @@ class RekapController extends Controller
             'tahunSebelumnya' => $tahunSebelumnya,
             'bulan' => $bulan,
             'stringBulanNow' => $stringBulanNow,
+        ]);
+    }
+
+    public function detail_tagihan(InvoiceTagihan $invoice)
+    {
+        $data = $invoice->transaksi;
+        $customer = $invoice->customer;
+        $total = $data->sum('total');
+        $totalBerat = $data->sum('berat');
+        $totalTagihan = $data->sum('total_tagihan');
+
+
+        return view('rekap.kas-besar.detail-tagihan', [
+            'data' => $data,
+            'customer' => $customer,
+            'totalBerat' => $totalBerat,
+            'total' => $total,
+            'totalTagihan' => $totalTagihan,
+        ]);
+    }
+
+    public function detail_bayar(InvoiceBayar $invoice)
+    {
+        $data = $invoice->transaksi;
+        $supplier = $invoice->supplier;
+        $total = $data->sum('total');
+        $totalBerat = $data->sum('berat');
+        $totalBayar = $data->sum('total_bayar');
+
+        return view('rekap.kas-besar.detail-bayar', [
+            'data' => $data,
+            'supplier' => $supplier,
+            'totalBerat' => $totalBerat,
+            'total' => $total,
+            'totalTagihan' => $totalBayar,
         ]);
     }
 
