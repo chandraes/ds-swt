@@ -104,6 +104,7 @@ Route::group(['middleware' => ['auth']], function() {
 
         Route::get('/form-transaksi/tambah/{customer}', [App\Http\Controllers\FormTransaksiController::class, 'tambah'])->name('form-transaksi.tambah');
         Route::post('/form-transaksi/tambah-store', [App\Http\Controllers\FormTransaksiController::class, 'tambah_store'])->name('form-transaksi.tambah-store');
+        Route::patch('/form-transaksi/edit/{transaksi}', [App\Http\Controllers\FormTransaksiController::class, 'edit_store'])->name('form-transaksi.edit_storebab');
         Route::delete('/form-transaksi/delete/{transaksi}', [App\Http\Controllers\FormTransaksiController::class, 'delete'])->name('form-transaksi.delete');
         Route::post('/form-transaksi/lanjutkan/{customer}', [App\Http\Controllers\FormTransaksiController::class, 'lanjutkan'])->name('form-transaksi.lanjutkan');
 

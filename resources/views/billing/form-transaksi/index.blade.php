@@ -93,7 +93,8 @@
                     <td class="text-center align-middle">{{$d->nf_harga}}</td>
                     <td class="text-center align-middle">{{$d->nf_total}}</td>
                     <td class="text-center align-middle">
-                        <form action="{{route('form-transaksi.delete', ['transaksi' => $d->id])}}" method="post" id="delete-{{$d->id}}">
+                        <button class="btn m-2 btn-warning" data-bs-toggle="modal" data-bs-target="#editTransaksi" onclick="editTransaksi({{$d}}, {{$d->id}})"><i class="fa fa-edit"></i></button>
+                        <form action="{{route('form-transaksi.delete', ['transaksi' => $d->id])}}" method="post" id="delete-{{$d->id}}" style="display: inline-block;">
                             @csrf
                             @method('delete')
                             <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i></button>
@@ -134,6 +135,7 @@
             </tfoot>
         </table>
     </div>
+    @include('billing.form-transaksi.edit')
     <div class="row mt-5">
         {{-- button lanjutkan --}}
             <form action="{{route('form-transaksi.lanjutkan', ['customer' => $customer->id])}}" method="post" id="lanjutkanForm">
@@ -159,6 +161,20 @@
     <script src="{{asset('assets/js/cleave.min.js')}}"></script>
     <script>
 
+        function editTransaksi(data, id) {
+            let date = new Date(data.tanggal);
+            let day = ("0" + date.getDate()).slice(-2);
+            let month = ("0" + (date.getMonth() + 1)).slice(-2);
+            let year = date.getFullYear();
+
+            document.getElementById('edit_tanggal').value = `${day}-${month}-${year}`;
+            document.getElementById('edit_supplier_id').value = data.supplier_id;
+            document.getElementById('edit_nota_timbangan').value = data.nota_timbangan;
+            document.getElementById('edit_berat').value = data.berat.toLocaleString('id');
+
+            document.getElementById('editForm').action = '/billing/form-transaksi/edit/' + id;
+        }
+
         $(document).ready(function() {
                 var table = $('#tableTransaksi').DataTable({
                     "paging": false,
@@ -180,9 +196,18 @@
             $( "#tanggal" ).datepicker({
                 dateFormat: "dd-mm-yy"
             });
+
+            $( "#edit_tanggal" ).datepicker({
+                dateFormat: "dd-mm-yy"
+            });
         });
 
         var editWa = new Cleave('#nota_timbangan', {
+            delimiter: '-',
+            blocks: [4, 4]
+        });
+
+        var edit_nota = new Cleave('#edit_nota_timbangan', {
             delimiter: '-',
             blocks: [4, 4]
         });
@@ -193,8 +218,33 @@
             numeralDecimalMark: ',',
             delimiter: '.'
         });
+
+        var editBerat = new Cleave('#edit_berat', {
+            numeral: true,
+            numeralThousandsGroupStyle: 'thousand',
+            numeralDecimalMark: ',',
+            delimiter: '.'
+        });
         // masukForm on submit, sweetalert confirm
         $('#masukForm').submit(function(e){
+            e.preventDefault();
+            Swal.fire({
+                title: 'Apakah data sudah benar?',
+                text: "Pastikan data sudah benar sebelum disimpan!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Ya, simpan!'
+                }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#spinner').show();
+                    this.submit();
+                }
+            })
+        });
+
+        $('#editForm').submit(function(e){
             e.preventDefault();
             Swal.fire({
                 title: 'Apakah data sudah benar?',

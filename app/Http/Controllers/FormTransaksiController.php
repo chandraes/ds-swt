@@ -73,7 +73,39 @@ class FormTransaksiController extends Controller
 
     public function edit_store(Request $request, Transaksi $transaksi)
     {
+        $data = $request->validate([
+            'supplier_id' => 'required|exists:suppliers,id',
+            'tanggal' => 'required',
+            'nota_timbangan' => 'required',
+            'berat' => 'required',
+        ]);
 
+        $supplier = Supplier::findOrFail($data['supplier_id']);
+
+        if ($supplier->persen_profit == null || $supplier->persen_profit == 0) {
+            return redirect()->back()->with('error', 'Supplier belum memiliki persen profit! Harap hubungi admin untuk mengisi persen profit supplier!');
+        }
+
+        $persen_profit = $supplier->persen_profit / 100;
+
+        $data['berat'] = str_replace('.', '', $data['berat']);
+        $data['tanggal'] = date('Y-m-d', strtotime($data['tanggal']));
+        $data['total'] = $data['berat'] * $transaksi->harga;
+        $data['pph'] = $data['total'] * 0.0025;
+        $data['profit'] = $data['total'] * $persen_profit;
+        $data['total_ppn'] = $data['total'] * 0.11;
+        $data['total_tagihan'] = $data['total'] - $data['pph'];
+        $data['total_bayar'] = $data['total_tagihan'] - $data['profit'];
+
+        try {
+
+            $transaksi->update($data);
+
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('error', 'Terdapat Nota Timbang yang sama!');
+        }
+
+        return redirect()->back()->with('success', 'Data Berhasil Diubah');
     }
 
     public function delete(Transaksi $transaksi)
