@@ -9,7 +9,7 @@
     </div>
     <div class="row">
         <div class="col-md-6">
-            <input type="hidden" class="form-control" id="total_tagih" disabled value="0">
+
             <label for="berat" class="form-label">Total Tagihan di Pilih</label>
             <div class="input-group">
                 <span class="input-group-text" id="basic-addon1">Rp.</span>
@@ -104,6 +104,7 @@
     </div>
     <div class="row mt-5">
         <input type="hidden" name="selectedData" required>
+        <input type="hidden" class="form-control" id="total_tagih" required value="0">
         <div class="col-md-12">
             <a href="{{route('billing')}}" class="btn btn-secondary form-control mt-3">Kembali</a>
         </div>

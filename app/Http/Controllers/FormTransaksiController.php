@@ -43,7 +43,7 @@ class FormTransaksiController extends Controller
         if ($supplier->persen_profit == null || $supplier->persen_profit == 0) {
             return redirect()->back()->with('error', 'Supplier belum memiliki persen profit! Harap hubungi admin untuk mengisi persen profit supplier!');
         }
-        
+
         $persen_profit = $supplier->persen_profit / 100;
 
         $customer = Customer::findOrFail($data['customer_id']);
