@@ -77,6 +77,7 @@ Route::group(['middleware' => ['auth']], function() {
         Route::get('/kas-supplier', [App\Http\Controllers\RekapController::class, 'kas_supplier'])->name('rekap.kas-supplier');
         Route::get('/kas-supplier/print/{bulan}/{tahun}/{supplier}', [App\Http\Controllers\RekapController::class, 'kas_supplier_print'])->name('rekap.kas-supplier.print');
         Route::get('/kas-supplier/detail-bayar/{invoice}', [App\Http\Controllers\RekapController::class, 'detail_bayar_supplier'])->name('rekap.kas-supplier.detail-bayar');
+        Route::get('/kas-supplier/detail-bayar/print/{invoice}', [App\Http\Controllers\RekapController::class, 'detail_bayar_supplier_print'])->name('rekap.kas-supplier.detail-bayar.print');
     });
 
     // END ROUTE REKAP

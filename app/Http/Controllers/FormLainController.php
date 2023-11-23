@@ -29,7 +29,7 @@ class FormLainController extends Controller
 
         $kas = new KasBesar;
         $rekening = Rekening::where('untuk', 'kas-besar')->first();
-        $lastKasBesar = $kasBesar->lastKasBesar();
+        $lastKasBesar = $kas->lastKasBesar();
 
 
         if ($lastKasBesar == null || $lastKasBesar->saldo < $data['nominal_transaksi']) {
@@ -44,7 +44,7 @@ class FormLainController extends Controller
 
         $store = KasBesar::create($data);
 
-        return redirect()->route('rekap.kas-besar')->with('success', 'Data Berhasil Ditambahkan');
+        return redirect()->route('billing')->with('success', 'Data Berhasil Ditambahkan');
 
     }
 
