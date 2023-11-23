@@ -61,6 +61,12 @@ class NotaBayarController extends Controller
         $k['nominal_transaksi'] = $data['total_bayar'];
         $k['supplier_id'] = $invoice->supplier_id;
         $k['invoice_bayar_id'] = $invoice->id;
+
+        $j['uraian'] = 'Pembelian BS' . $invoice->no_invoice;
+        $j['nominal_transaksi'] = $data['total_bayar'];
+        $j['supplier_id'] = $invoice->supplier_id;
+        $storeKeluar = $kasSupplier->insertKeluar($j);
+
         $storeKasSupplier = $kasSupplier->insertBayar($k);
 
         $b['nominal_transaksi'] = $data['total_bayar'];
