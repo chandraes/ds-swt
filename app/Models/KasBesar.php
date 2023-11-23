@@ -68,5 +68,25 @@ class KasBesar extends Model
         return str_pad($value, 2, '0', STR_PAD_LEFT);
     }
 
+    public function getNomorTagihanAttribute($value)
+    {
+        return str_pad($value, 2, '0', STR_PAD_LEFT);
+    }
+
+    public function insertTagihan($data)
+    {
+        $rekening = Rekening::where('untuk', 'kas-besar')->first();
+
+        $data['tanggal'] = now();
+        $data['jenis'] = 1;
+        $data['saldo'] = $this->lastKasBesar()->saldo + $data['nominal_transaksi'];
+        $data['modal_investor_terakhir'] = $this->lastKasBesar()->modal_investor_terakhir;
+        $data['no_rek'] = $rekening->no_rek;
+        $data['bank'] = $rekening->bank;
+        $data['nama_rek'] = $rekening->nama_rek;
+
+        $store = $this->create($data);
+        return $store;
+    }
 
 }

@@ -7,6 +7,23 @@
             <h1>{{$customer->nama}}</h1>
         </div>
     </div>
+    {{-- if has any error --}}
+    @if ($errors->any())
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Whoops!</strong> Ada kesalahan dalam input data:
+                <ul>
+                    @foreach ($errors->all() as $error)
+                    <li>{{$error}}</li>
+                    @endforeach
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </ul>
+            </div>
+        </div>
+    </div>
+    @endif
+    {{-- end if --}}
     <div class="row">
         <div class="col-md-6">
             <label for="berat" class="form-label">Total Tagihan di Pilih</label>
@@ -104,8 +121,9 @@
     <div class="row mt-5">
         <form action="{{route('nota-tagihan.cutoff', ['customer' => $customer->id])}}" method="post" id="lanjutkanForm">
         @csrf
+            <input type="hidden" name="customer_id" value="{{$customer->id}}">
             <input type="hidden" name="selectedData" required>
-            <input type="hidden" class="form-control" id="total_tagih" required value="0">
+            <input type="hidden" class="form-control" id="total_tagih" name="total_tagih" required value="0">
             <div class="col-md-12">
                 <button type="submit" class="btn btn-primary form-control">LANJUTKAN</button>
             </div>

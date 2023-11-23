@@ -24,4 +24,9 @@ class InvoiceTagihan extends Model
     {
         return $this->hasManyThrouhg(InvoiceTagihanDetail::class, Transaksi::class);
     }
+
+    public function noInvoice()
+    {
+        return $this->max('no_invoice') + 1 ?? 1;
+    }
 }
