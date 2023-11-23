@@ -113,7 +113,7 @@
                     <th class="text-center align-middle">Kg</th>
                     <th class="text-center align-middle"></th>
                     <th class="text-center align-middle">{{$total}}</th>
-                    <th class="text-center align-middle"></th>
+                    <th class="text-center align-middle">{{$totalPPH}}</th>
                     <th class="text-center align-middle">{{$totalProfit}}</th>
                     <th class="text-center align-middle">{{number_format($totalTagihan, 0, ',','.')}}</th>
                     <th class="text-center align-middle"></th>
