@@ -79,8 +79,51 @@ class FormLainController extends Controller
         return view('billing.lain-lain.keluar');
     }
 
-    public function keluar_store()
+    public function keluar_store(Request $request)
     {
+        $data = $request->validate([
+            'uraian' => 'required',
+            'nominal_transaksi' => 'required',
+            'nama_rek' => 'required',
+            'no_rek' => 'required',
+            'bank' => 'required',
+        ]);
+
+        $data['nominal_transaksi'] = str_replace('.', '', $data['nominal_transaksi']);
+        $kas = new KasBesar;
+
+        $lastKasBesar = $kas->lastKasBesar();
+
+        if ($lastKasBesar == null || $lastKasBesar->saldo < $data['nominal_transaksi']) {
+            return redirect()->back()->with('error', 'Saldo Kas Besar Tidak Cukup!!');
+        }
+
+        DB::beginTransaction();
+
+        $store = $kas->lainKeluar($data);
+
+        $group = GroupWa::where('untuk', 'kas-besar')->first();
+        $pesan ="🔴🔴🔴🔴🔴🔴🔴🔴🔴\n".
+                "*Form Lain2 (Dana Keluar)*\n".
+                 "🔴🔴🔴🔴🔴🔴🔴🔴🔴\n\n".
+                 "Uraian :  ".$data['uraian']."\n".
+                 "Nilai :  *Rp. ".number_format($data['nominal_transaksi'], 0, ',', '.')."*\n\n".
+                 "Ditransfer ke rek:\n\n".
+                "Bank      : ".$data['bank']."\n".
+                "Nama    : ".$data['nama_rek']."\n".
+                "No. Rek : ".$data['no_rek']."\n\n".
+                "==========================\n".
+                "Sisa Saldo Kas Besar : \n".
+                "Rp. ".number_format($store->saldo, 0, ',', '.')."\n\n".
+                "Total Modal Investor : \n".
+                "Rp. ".number_format($store->modal_investor_terakhir, 0, ',', '.')."\n\n".
+                "Terima kasih 🙏🙏🙏\n";
+        $send = new StarSender($group->nama_group, $pesan);
+        $res = $send->sendGroup();
+
+        DB::commit();
+
+        return redirect()->route('billing')->with('success', 'Data Berhasil Ditambahkan');
 
     }
 }

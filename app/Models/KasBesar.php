@@ -114,4 +114,16 @@ class KasBesar extends Model
         return $store;
     }
 
+    public function lainKeluar($data)
+    {
+        $data['tanggal'] = now();
+        $data['jenis'] = 0;
+        $data['saldo'] = $this->lastKasBesar()->saldo - $data['nominal_transaksi'];
+        $data['modal_investor_terakhir'] = $this->lastKasBesar()->modal_investor_terakhir;
+
+        $store = $this->create($data);
+
+        return $store;
+    }
+
 }
