@@ -97,6 +97,25 @@ class RekapController extends Controller
 
     }
 
+    public function detail_bayar_supplier_pdf(InvoiceBayar $invoice)
+    {
+        $data = $invoice->transaksi;
+        $supplier = $invoice->supplier;
+        $total = $data->sum('total');
+        $totalBerat = $data->sum('berat');
+        $totalBayar = $data->sum('total_bayar');
+
+        $pdf = PDF::loadview('rekap.kas-supplier.detail-bayar-pdf', [
+            'data' => $data,
+            'supplier' => $supplier,
+            'totalBerat' => $totalBerat,
+            'total' => $total,
+            'totalTagihan' => $totalBayar,
+        ])->setPaper('a4', 'portrait');
+
+        return $pdf->stream('Detail Pembayaran '.$supplier->nama.'.pdf');
+    }
+
     public function kas_besar_print(Request $request)
     {
         $kas = new KasBesar;
