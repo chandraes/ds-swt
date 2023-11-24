@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Rekening;
 use App\Models\KasBesar;
+use App\Models\Transaksi;
 use App\Models\GroupWa;
 use App\Services\StarSender;
 use Illuminate\Http\Request;
@@ -13,6 +14,8 @@ class FormLainController extends Controller
 {
     public function masuk()
     {
+        // $db = new Transaksi;
+
         $rekening = Rekening::where('untuk', 'kas-besar')->first();
 
         return view('billing.lain-lain.masuk', [

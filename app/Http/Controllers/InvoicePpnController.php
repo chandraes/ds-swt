@@ -53,6 +53,8 @@ class InvoicePpnController extends Controller
         $data = $request->validate([
             'selectedData' => 'required',
             'total_ppn' => 'required',
+            'bulan' => 'required',
+            'tahun' => 'required',
         ]);
         $selectedData = array_filter(explode(',', $data['selectedData']));
 
@@ -63,7 +65,7 @@ class InvoicePpnController extends Controller
         $d['total_ppn'] = $data['total_ppn'];
         $d['no_invoice'] = $db->noInvoice();
 
-        $k['uraian'] = 'PPN '. $customer->singkatan;
+        $k['uraian'] = 'PPN '.$data['bulan'].' '. $customer->singkatan;
         $k['nominal_transaksi'] = $d['total_ppn'];
 
         $kasBesar = new KasBesar;
@@ -89,6 +91,7 @@ class InvoicePpnController extends Controller
         $pesan =    "🔵🔵🔵🔵🔵🔵🔵🔵🔵\n".
                     "*Form PPn Customer*\n".
                     "🔵🔵🔵🔵🔵🔵🔵🔵🔵\n\n".
+                    "Uraian :  PPn ".$data['bulan'].' '. $data['tahun']."\n\n".
                     "Customer : ".$invoice->customer->nama."\n\n".
                     "Nilai :  *Rp. ".number_format($store->nominal_transaksi, 0, ',', '.')."*\n\n".
                     "Ditransfer ke rek:\n\n".

@@ -147,6 +147,8 @@
     <div class="row mt-5">
         <form action="{{route('invoice-ppn.cutoff', ['customer' => $customer->id])}}" method="post" id="lanjutkanForm">
             @csrf
+            <input type="hidden" name="bulan" value="{{$stringBulan}}">
+            <input type="hidden" name="tahun" value="{{$tahun}}">
             <input type="hidden" name="customer_id" value="{{$customer->id}}">
             <input type="hidden" name="selectedData" required>
             <input type="hidden" class="form-control" id="total_ppn" name="total_ppn" required value="0">
