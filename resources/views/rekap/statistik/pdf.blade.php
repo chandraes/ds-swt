@@ -97,7 +97,6 @@
                         @else
                         <td class="text-center align-middle text-pdf table-pdf">{{ number_format(${'yearly_total_' . strtolower($statistic)}, 0,',','.') }}</td>
                         @endif
-
                     </tr>
                 @endforeach
             </tbody>
