@@ -26,13 +26,13 @@
                 @foreach ($data as $d)
                 <tr>
                     <td class="text-center align-middle"></td>
-                    <td class="text-center align-middle">{{$d->tanggal}}</td>
+                    <td class="text-center align-middle">{{$d->id_tanggal}}</td>
                     <td class="text-center align-middle">{{$d->customer->singkatan}}</td>
                     <td class="text-center align-middle">{{$d->nota_timbangan}}</td>
-                    <td class="text-center align-middle">{{$d->berat}}</td>
+                    <td class="text-center align-middle">{{$d->nf_berat}}</td>
                     <td class="text-center align-middle">Kg</td>
-                    <td class="text-center align-middle">{{$d->harga}}</td>
-                    <td class="text-center align-middle">{{$d->formatted_total}}</td>
+                    <td class="text-center align-middle">{{$d->nf_harga}}</td>
+                    <td class="text-center align-middle">{{$d->nf_total}}</td>
                     <td class="text-center align-middle">{{number_format($d->total_bayar,0,',','.')}}</td>
 
                 </tr>
