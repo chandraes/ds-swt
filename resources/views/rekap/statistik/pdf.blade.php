@@ -51,7 +51,6 @@
                     @for ($i = 1; $i <= 6; $i++)
                         <th class="text-center align-middle text-pdf table-pdf">{{$i}}</th> <!-- Month name -->
                     @endfor
-                    <th class="text-center align-middle text-pdf table-pdf" style="width: 13%">Total</th>
                 </tr>
             </thead>
             <tbody>
@@ -66,11 +65,6 @@
                             <td class="text-center align-middle text-pdf table-pdf">{{ number_format($statistics_yearly[$i]['total_' . strtolower($statistic)], 0,',','.') }}</td>
                             @endif
                         @endfor
-                        @if ($statistic == 'Profit')
-                        <td class="text-center align-middle text-pdf table-pdf">{{ ${'yearly_total_' . strtolower($statistic)} }}</td>
-                        @else
-                        <td class="text-center align-middle text-pdf table-pdf">{{ number_format(${'yearly_total_' . strtolower($statistic)}, 0,',','.') }}</td>
-                        @endif
                     </tr>
                 @endforeach
             </tbody>
