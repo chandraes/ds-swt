@@ -4,6 +4,7 @@
     <div class="row justify-content-center mb-5">
         <div class="col-md-12 text-center">
             <h1><u>INVOICE PPN</u></h1>
+            <h1>{{strtoupper($stringBulan)}} {{$tahun}}</h1>
             <h1>{{$customer->nama}}</h1>
         </div>
     </div>
@@ -23,27 +24,60 @@
         </div>
     </div>
     @endif
-    {{-- end if --}}
+    <form action="{{route('invoice-ppn.index', ['customer' => $customer->id])}}" method="get">
+        <div class="row">
+            <div class="col-md-3 mb-3">
+                <label for="bulan" class="form-label">Bulan</label>
+                <select class="form-select" name="bulan" id="bulan">
+                    <option value="1" {{$bulan=='01' ? 'selected' : '' }}>Januari</option>
+                    <option value="2" {{$bulan=='02' ? 'selected' : '' }}>Februari</option>
+                    <option value="3" {{$bulan=='03' ? 'selected' : '' }}>Maret</option>
+                    <option value="4" {{$bulan=='04' ? 'selected' : '' }}>April</option>
+                    <option value="5" {{$bulan=='05' ? 'selected' : '' }}>Mei</option>
+                    <option value="6" {{$bulan=='06' ? 'selected' : '' }}>Juni</option>
+                    <option value="7" {{$bulan=='07' ? 'selected' : '' }}>Juli</option>
+                    <option value="8" {{$bulan=='08' ? 'selected' : '' }}>Agustus</option>
+                    <option value="9" {{$bulan=='09' ? 'selected' : '' }}>September</option>
+                    <option value="10" {{$bulan=='10' ? 'selected' : '' }}>Oktober</option>
+                    <option value="11" {{$bulan=='11' ? 'selected' : '' }}>November</option>
+                    <option value="12" {{$bulan=='12' ? 'selected' : '' }}>Desember</option>
+                </select>
+            </div>
+            <div class="col-md-3 mb-3">
+                <label for="tahun" class="form-label">Tahun</label>
+                <select class="form-select" name="tahun" id="tahun">
+                    @foreach ($dataTahun as $d)
+                    <option value="{{$d->tahun}}" {{$d->tahun == $tahun ? 'selected' : ''}}>{{$d->tahun}}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="col-md-3 mb-3">
+                <label for="tahun" class="form-label">&nbsp;</label>
+                <button type="submit" class="btn btn-primary form-control" id="btn-cari">Tampilkan</button>
+            </div>
+        </div>
+    </form>
+    <hr>
     <div class="row">
         <div class="col-md-4">
             <label for="berat" class="form-label"><strong> Total Tagihan di Pilih </strong></label>
             <div class="input-group">
                 <span class="input-group-text" id="basic-addon1">Rp.</span>
-                <input type="text" class="form-control" id="total_tagih_display" disabled >
+                <input type="text" class="form-control" id="total_tagih_display" disabled>
             </div>
         </div>
         <div class="col-md-4">
             <label for="total_pph" class="form-label"><strong> Total PPh di Pilih </strong></label>
             <div class="input-group">
                 <span class="input-group-text" id="basic-addon1">Rp.</span>
-                <input type="text" class="form-control" id="total_pph_display" disabled >
+                <input type="text" class="form-control" id="total_pph_display" disabled>
             </div>
         </div>
         <div class="col-md-4">
             <label for="total_pph" class="form-label"><strong> Total PPN di Pilih </strong></label>
             <div class="input-group">
                 <span class="input-group-text" id="basic-addon1">Rp.</span>
-                <input type="text" class="form-control" id="total_ppn_display" disabled >
+                <input type="text" class="form-control" id="total_ppn_display" disabled>
             </div>
         </div>
     </div>
@@ -74,7 +108,9 @@
                 <tr>
                     <td class="text-center align-middle">
                         {{-- checklist on check push $d->id to $selectedData --}}
-                        <input type="checkbox" value="{{$d->id}}" data-tagihan="{{$d->total_tagihan}}" data-pph="{{$d->pph}}" data-ppn="{{$d->total_ppn}}" onclick="check(this, {{$d->id}})" id="idSelect-{{$d->id}}">
+                        <input type="checkbox" value="{{$d->id}}" data-tagihan="{{$d->total_tagihan}}"
+                            data-pph="{{$d->pph}}" data-ppn="{{$d->total_ppn}}" onclick="check(this, {{$d->id}})"
+                            id="idSelect-{{$d->id}}">
                     </td>
                     <td class="text-center align-middle"></td>
                     <td class="text-center align-middle">{{$d->id_tanggal}}</td>
@@ -110,7 +146,7 @@
     <input type="hidden" id="total_pph" name="total_pph" value="0">
     <div class="row mt-5">
         <form action="{{route('invoice-ppn.cutoff', ['customer' => $customer->id])}}" method="post" id="lanjutkanForm">
-        @csrf
+            @csrf
             <input type="hidden" name="customer_id" value="{{$customer->id}}">
             <input type="hidden" name="selectedData" required>
             <input type="hidden" class="form-control" id="total_ppn" name="total_ppn" required value="0">
@@ -135,9 +171,7 @@
 <script src="{{asset('assets/js/dt5.min.js')}}"></script>
 <script src="{{asset('assets/js/cleave.min.js')}}"></script>
 <script>
-
-
-       function check(checkbox, id) {
+    function check(checkbox, id) {
             var totalTagihan = parseFloat($('#total_tagih').val()) || 0;
             var totalPph = parseFloat($('#total_pph').val()) || 0;
             var totalPpn = parseFloat($('#total_ppn').val()) || 0;

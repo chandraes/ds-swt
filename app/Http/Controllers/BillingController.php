@@ -14,6 +14,7 @@ class BillingController extends Controller
         $transaksi = new Transaksi();
         $nt = $transaksi->totalNotaTagihan();
         $nb = $transaksi->totalNotaBayar();
+        $ip = $transaksi->totalInvoicePpn();
         $customer = Customer::all();
         $supplier = Supplier::select('id', 'nama', 'nickname')->get();
 
@@ -21,6 +22,7 @@ class BillingController extends Controller
             'customer' => $customer,
             'nt' => $nt,
             'nb' => $nb,
+            'ip' => $ip,
             'supplier' => $supplier
         ]);
     }

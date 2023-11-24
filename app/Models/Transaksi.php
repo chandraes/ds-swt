@@ -70,9 +70,12 @@ class Transaksi extends Model
         return $this->where('supplier_id', $supplier_id)->where('status', 1)->where('bayar', 0)->orderBy('nota_timbangan')->get();
     }
 
-    public function notaInvoice($customer_id)
+    public function notaInvoice($customer_id, $month, $year)
     {
-        return $this->where('customer_id', $customer_id)->where('status', 1)->where('tagihan', 1)->where('ppn', 0)->orderBy('nota_timbangan')->get();
+        return $this->whereMonth('tanggal', $month)->whereYear('tanggal', $year)
+                    ->where('customer_id', $customer_id)
+                    ->where('status', 1)->where('tagihan', 1)->where('ppn', 0)
+                    ->orderBy('nota_timbangan')->get();
     }
 
     public function formTransaksi($customer_id)
@@ -166,5 +169,10 @@ class Transaksi extends Model
     public function totalNotaBayar()
     {
         return $this->where('status', 1)->where('bayar', 0)->count();
+    }
+
+    public function totalInvoicePpn()
+    {
+        return $this->where('status', 1)->where('tagihan', 1)->where('ppn', 0)->count();
     }
 }

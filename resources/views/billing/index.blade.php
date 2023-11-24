@@ -82,7 +82,7 @@
         <div class="col-md-3 text-center mt-5">
             <a href="#" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#modalInvoicePpn">
                 <img src="{{asset('images/invoice-ppn.svg')}}" alt="" width="100">
-                <h2>INVOICE PPN  @if($nb != 0) <span class="text-danger">({{$nb}})</span> @endif</h2>
+                <h2>INVOICE PPN  @if($ip != 0) <span class="text-danger">({{$ip}})</span> @endif</h2>
             </a>
             <div class="modal fade" id="modalInvoicePpn" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-xl" role="document">

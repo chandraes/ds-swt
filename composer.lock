@@ -6921,16 +6921,16 @@
         },
         {
             "name": "laravel-lang/lang",
-            "version": "13.7.0",
+            "version": "13.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Laravel-Lang/lang.git",
-                "reference": "dcda8ae88557fa6bbd935ba574b88284de5d64ad"
+                "reference": "54bb87a2644fb3cb222a20861b1f7c877a6d1c2a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Laravel-Lang/lang/zipball/dcda8ae88557fa6bbd935ba574b88284de5d64ad",
-                "reference": "dcda8ae88557fa6bbd935ba574b88284de5d64ad",
+                "url": "https://api.github.com/repos/Laravel-Lang/lang/zipball/54bb87a2644fb3cb222a20861b1f7c877a6d1c2a",
+                "reference": "54bb87a2644fb3cb222a20861b1f7c877a6d1c2a",
                 "shasum": ""
             },
             "require": {
@@ -6977,7 +6977,7 @@
                 "issues": "https://github.com/Laravel-Lang/lang/issues",
                 "source": "https://github.com/Laravel-Lang/lang"
             },
-            "time": "2023-11-21T17:03:03+00:00"
+            "time": "2023-11-22T08:33:39+00:00"
         },
         {
             "name": "laravel-lang/locales",
@@ -7762,16 +7762,16 @@
         },
         {
             "name": "phpunit/php-code-coverage",
-            "version": "10.1.8",
+            "version": "10.1.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "84838eed9ded511f61dc3e8b5944a52d9017b297"
+                "reference": "a56a9ab2f680246adcf3db43f38ddf1765774735"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/84838eed9ded511f61dc3e8b5944a52d9017b297",
-                "reference": "84838eed9ded511f61dc3e8b5944a52d9017b297",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/a56a9ab2f680246adcf3db43f38ddf1765774735",
+                "reference": "a56a9ab2f680246adcf3db43f38ddf1765774735",
                 "shasum": ""
             },
             "require": {
@@ -7828,7 +7828,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/php-code-coverage/issues",
                 "security": "https://github.com/sebastianbergmann/php-code-coverage/security/policy",
-                "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/10.1.8"
+                "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/10.1.9"
             },
             "funding": [
                 {
@@ -7836,7 +7836,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-11-15T13:31:15+00:00"
+            "time": "2023-11-23T12:23:20+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",

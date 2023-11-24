@@ -16,8 +16,15 @@ class InvoicePpnController extends Controller
 {
     public function index(Request $request, Customer $customer)
     {
+        $bulan = $request->bulan ?? date('m');
+        $tahun = $request->tahun ?? date('Y');
+
+        // nama bulan indonesia
+        $stringBulan = \Carbon\Carbon::createFromDate($tahun, $bulan)->locale('id')->monthName;
+
         $transaksi = new Transaksi;
-        $data = $transaksi->notaInvoice($customer->id);
+        $data = $transaksi->notaInvoice($customer->id, $bulan, $tahun);
+        $dataTahun = $transaksi->dataTahun();
         $totalBerat = $data->sum('berat');
         $total = $data->sum('total');
         $totalPPN = $data->sum('total_ppn');
@@ -34,6 +41,10 @@ class InvoicePpnController extends Controller
             'totalTagihan' => $totalTagihan,
             'totalProfit' => $totalProfit,
             'totalPPH' => $totalPPH,
+            'bulan' => $bulan,
+            'tahun' => $tahun,
+            'dataTahun' => $dataTahun,
+            'stringBulan' => $stringBulan,
         ]);
     }
 
