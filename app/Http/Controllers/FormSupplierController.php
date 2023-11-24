@@ -150,10 +150,10 @@ class FormSupplierController extends Controller
         if ($lastKasSupplier == null || $lastKasSupplier->saldo < $data['nominal_transaksi']) {
             return redirect()->back()->with('error', 'Saldo Kas Supplier Tidak Mencukupi');
         }
-        $data['uraian'] = 'Pengembalian Dana';
+        $data['uraian'] = 'Pengembalian Titipan';
 
         $k['nominal_transaksi'] = $data['nominal_transaksi'];
-        $k['uraian'] = 'Pengembalian Dana '.$supplier->nickname;
+        $k['uraian'] = 'Pengembalian Titipan '.$supplier->nickname;
 
         DB::beginTransaction();
 
