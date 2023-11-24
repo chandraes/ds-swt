@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Rekening;
 use App\Models\KasBesar;
-use App\Models\Transaksi;
 use App\Models\GroupWa;
 use App\Services\StarSender;
 use Illuminate\Http\Request;
@@ -14,8 +13,6 @@ class FormLainController extends Controller
 {
     public function masuk()
     {
-        // $db = new Transaksi;
-
         $rekening = Rekening::where('untuk', 'kas-besar')->first();
 
         return view('billing.lain-lain.masuk', [
@@ -55,10 +52,10 @@ class FormLainController extends Controller
         $group = GroupWa::where('untuk', 'kas-besar')->first();
         $pesan ="🔵🔵🔵🔵🔵🔵🔵🔵🔵\n".
                 "*Form Lain2 (Dana Masuk)*\n".
-                 "🔵🔵🔵🔵🔵🔵🔵🔵🔵\n\n".
-                 "Uraian :  ".$data['uraian']."\n".
-                 "Nilai :  *Rp. ".number_format($data['nominal_transaksi'], 0, ',', '.')."*\n\n".
-                 "Ditransfer ke rek:\n\n".
+                "🔵🔵🔵🔵🔵🔵🔵🔵🔵\n\n".
+                "Uraian :  ".$data['uraian']."\n".
+                "Nilai :  *Rp. ".number_format($data['nominal_transaksi'], 0, ',', '.')."*\n\n".
+                "Ditransfer ke rek:\n\n".
                 "Bank      : ".$data['bank']."\n".
                 "Nama    : ".$data['nama_rek']."\n".
                 "No. Rek : ".$data['no_rek']."\n\n".

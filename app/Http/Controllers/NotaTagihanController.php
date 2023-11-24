@@ -99,6 +99,17 @@ class NotaTagihanController extends Controller
 
         $kasBesar = new KasBesar;
 
+        $transaksi = new Transaksi;
+        $results = $transaksi->totalTagihan();
+
+        $pesan2 = "Customer : ";
+
+        foreach ($results as $result) {
+            $total_tagihan = number_format($result->total_tagihan, 0, ',', '.');
+            $total_profit = number_format($result->total_profit, 0, ',', '.');
+            $pesan2 .= "{$result->customer->singkatan}\nTotal Tagihan: Rp. {$total_tagihan}\nTotal Profit: Rp.{$total_profit}\n\n";
+        }
+
         DB::beginTransaction();
 
         $invoice = $db->create($d);
@@ -128,6 +139,7 @@ class NotaTagihanController extends Controller
                     "Nama    : ".$store->nama_rek."\n".
                     "No. Rek : ".$store->no_rek."\n\n".
                     "==========================\n".
+                    $pesan2.
                     "Sisa Saldo Kas Besar : \n".
                     "Rp. ".number_format($store->saldo, 0, ',', '.')."\n\n".
                     "Total Modal Investor : \n".
