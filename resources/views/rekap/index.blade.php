@@ -1,8 +1,6 @@
 @extends('layouts.app')
 @section('content')
-@php
-$supplier = App\Models\Supplier::select('id', 'nama', 'nickname')->get();
-@endphp
+
 <div class="container text-center">
     <h1>REKAP</h1>
 </div>
@@ -48,10 +46,36 @@ $supplier = App\Models\Supplier::select('id', 'nama', 'nickname')->get();
             </div>
         </div>
         <div class="col-md-3 mt-3 text-center">
-            <a href="{{route('home')}}" class="text-decoration-none">
+            <a href="#" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#modalInvoiceRekap">
                 <img src="{{asset('images/rekap-invoice.svg')}}" alt="" width="100">
                 <h2>INVOICE</h2>
             </a>
+            <div class="modal fade" id="modalInvoiceRekap" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog" aria-labelledby="modalInvoiceTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-xl" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalInvoiceTitle">Rekap Invoice</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                @foreach ($customer as $c)
+                                <div class="col-md-3 m-2">
+                                    <a href="{{route('rekap.invoice', ['customer' => $c->id])}}" class="text-decoration-none">
+                                        <img src="{{asset('images/palm.svg')}}" alt="" width="100">
+                                        <h3 class="mt-2">{{$c->singkatan}}</h3>
+                                    </a>
+                                </div>
+                                @endforeach
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                            <button type="button" class="btn btn-primary">Simpan</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="col-md-3 mt-3 text-center">
             <a href="{{route('home')}}" class="text-decoration-none">

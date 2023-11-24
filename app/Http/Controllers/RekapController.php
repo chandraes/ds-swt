@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Customer;
 use App\Models\KasBesar;
 use App\Models\Supplier;
 use App\Models\KasSupplier;
@@ -14,6 +15,17 @@ use Carbon\Carbon;
 
 class RekapController extends Controller
 {
+    public function index()
+    {
+        $customer = Customer::all();
+        $supplier = Supplier::select('id', 'nama', 'nickname')->get();
+
+        return view('rekap.index', [
+            'customer' => $customer,
+            'supplier' => $supplier
+        ]);
+    }
+
     public function kas_besar(Request $request)
     {
         $kas = new KasBesar;
@@ -161,25 +173,31 @@ class RekapController extends Controller
         $dataTahun = $transaksi->dataTahun();
 
         $data = $transaksi->rekapInvoice($customer->id, $bulan, $tahun);
+        $totalBerat = $data->sum('berat');
+        $total = $data->sum('total');
+        $totalPPN = $data->sum('total_ppn');
+        $totalTagihan = $data->sum('total_tagihan');
+        $totalProfit = $data->sum('profit');
+        $totalPPH = $data->sum('pph');
+        $totalBayar = $data->sum('total_bayar');
 
-        $bulanSebelumnya = $bulan - 1;
-        $bulanSebelumnya = $bulanSebelumnya == 0 ? 12 : $bulanSebelumnya;
-        $tahunSebelumnya = $bulanSebelumnya == 12 ? $tahun - 1 : $tahun;
-        $stringBulan = Carbon::createFromDate($tahun, $bulanSebelumnya)->locale('id')->monthName;
         $stringBulanNow = Carbon::createFromDate($tahun, $bulan)->locale('id')->monthName;
 
-        $dataSebelumnya = $kas->rekapInvoice($supplier->id,$bulanSebelumnya, $tahunSebelumnya);
 
         return view('rekap.invoice.index', [
             'customer' => $customer,
             'data' => $data,
             'dataTahun' => $dataTahun,
-            'dataSebelumnya' => $dataSebelumnya,
-            'stringBulan' => $stringBulan,
             'tahun' => $tahun,
-            'tahunSebelumnya' => $tahunSebelumnya,
             'bulan' => $bulan,
             'stringBulanNow' => $stringBulanNow,
+            'totalBerat' => $totalBerat,
+            'total' => $total,
+            'totalPPN' => $totalPPN,
+            'totalTagihan' => $totalTagihan,
+            'totalProfit' => $totalProfit,
+            'totalPPH' => $totalPPH,
+            'totalBayar' => $totalBayar,
         ]);
 
     }

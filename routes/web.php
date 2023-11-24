@@ -67,7 +67,7 @@ Route::group(['middleware' => ['auth']], function() {
     // END ROUTE DB
 
     // ROUTE REKAP
-    Route::view('rekap', 'rekap.index')->name('rekap');
+    Route::get('rekap', [App\Http\Controllers\RekapController::class, 'index'])->name('rekap');
     Route::prefix('rekap')->group(function() {
         Route::get('/kas-besar', [App\Http\Controllers\RekapController::class, 'kas_besar'])->name('rekap.kas-besar');
         Route::get('/kas-besar/print/{bulan}/{tahun}', [App\Http\Controllers\RekapController::class, 'kas_besar_print'])->name('rekap.kas-besar.print');
@@ -78,6 +78,8 @@ Route::group(['middleware' => ['auth']], function() {
         Route::get('/kas-supplier/print/{bulan}/{tahun}/{supplier}', [App\Http\Controllers\RekapController::class, 'kas_supplier_print'])->name('rekap.kas-supplier.print');
         Route::get('/kas-supplier/detail-bayar/{invoice}', [App\Http\Controllers\RekapController::class, 'detail_bayar_supplier'])->name('rekap.kas-supplier.detail-bayar');
         Route::get('/kas-supplier/detail-bayar/print/{invoice}', [App\Http\Controllers\RekapController::class, 'detail_bayar_supplier_pdf'])->name('rekap.kas-supplier.detail-bayar.print');
+
+        Route::get('/invoice/{customer}', [App\Http\Controllers\RekapController::class, 'rekap_invoice'])->name('rekap.invoice');
     });
 
     // END ROUTE REKAP
