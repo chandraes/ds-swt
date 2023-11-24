@@ -163,7 +163,7 @@ class FormSupplierController extends Controller
         $group = GroupWa::where('untuk', 'kas-besar')->first();
 
         $pesan =    "🔵🔵🔵🔵🔵🔵🔵🔵🔵\n".
-                    "*Form Pengembalian Supplier*\n".
+                    "*Form Pengembalian Titipan*\n".
                     "🔵🔵🔵🔵🔵🔵🔵🔵🔵\n\n".
                     "Supplier : ".$s->supplier->nama."\n\n".
                     "Nilai :  *Rp. ".number_format($store->nominal_transaksi, 0, ',', '.')."*\n\n".
@@ -172,6 +172,8 @@ class FormSupplierController extends Controller
                     "Nama    : ".$store->nama_rek."\n".
                     "No. Rek : ".$store->no_rek."\n\n".
                     "==========================\n".
+                    "Sisa Kas Supplier : \n".
+                    "Rp. ".number_format($s->saldo, 0, ',', '.')."\n\n".
                     "Sisa Saldo Kas Besar : \n".
                     "Rp. ".number_format($store->saldo, 0, ',', '.')."\n\n".
                     "Total Modal Investor : \n".
