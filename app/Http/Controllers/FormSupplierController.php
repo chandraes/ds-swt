@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\KasSupplier;
 use App\Models\Supplier;
+use App\Models\Rekening;
 use App\Models\KasBesar;
 use App\Models\GroupWa;
 use App\Services\StarSender;
@@ -118,5 +119,70 @@ class FormSupplierController extends Controller
 
         return redirect()->route('billing')->with('success', 'Data Berhasil Disimpan');
 
+    }
+
+    public function pengembalian()
+    {
+        $rekening = Rekening::where('untuk', 'kas-besar')->first();
+        $supplier = Supplier::select('id', 'nama', 'nickname')->get();
+
+        return view('billing.form-supplier.pengembalian', [
+            'rekening' => $rekening,
+            'supplier' => $supplier,
+        ]);
+    }
+
+    public function pengembalian_store(Request $request)
+    {
+        $data = $request->validate([
+            'supplier_id' => 'required|exists:suppliers,id',
+            'nominal_transaksi' => 'required',
+        ]);
+
+        $data['nominal_transaksi'] = str_replace('.', '', $data['nominal_transaksi']);
+
+        $kasSupplier = new KasSupplier();
+        $kasBesar = new KasBesar();
+        $supplier = Supplier::find($data['supplier_id']);
+
+        $lastKasSupplier = $kasSupplier->lastKasSupplier($data['supplier_id']);
+
+        if ($lastKasSupplier == null || $lastKasSupplier->saldo < $data['nominal_transaksi']) {
+            return redirect()->back()->with('error', 'Saldo Kas Supplier Tidak Mencukupi');
+        }
+        $data['uraian'] = 'Pengembalian Dana';
+
+        $k['nominal_transaksi'] = $data['nominal_transaksi'];
+        $k['uraian'] = 'Pengembalian Dana '.$supplier->nickname;
+
+        DB::beginTransaction();
+
+        $s = $kasSupplier->insertKeluar($data);
+        $store = $kasBesar->insertMasuk($k);
+
+        $group = GroupWa::where('untuk', 'kas-besar')->first();
+
+        $pesan =    "🔵🔵🔵🔵🔵🔵🔵🔵🔵\n".
+                    "*Form Pengembalian Supplier*\n".
+                    "🔵🔵🔵🔵🔵🔵🔵🔵🔵\n\n".
+                    "Supplier : ".$s->supplier->nama."\n\n".
+                    "Nilai :  *Rp. ".number_format($store->nominal_transaksi, 0, ',', '.')."*\n\n".
+                    "Ditransfer ke rek:\n\n".
+                    "Bank      : ".$store->bank."\n".
+                    "Nama    : ".$store->nama_rek."\n".
+                    "No. Rek : ".$store->no_rek."\n\n".
+                    "==========================\n".
+                    "Sisa Saldo Kas Besar : \n".
+                    "Rp. ".number_format($store->saldo, 0, ',', '.')."\n\n".
+                    "Total Modal Investor : \n".
+                    "Rp. ".number_format($store->modal_investor_terakhir, 0, ',', '.')."\n\n".
+                    "Terima kasih 🙏🙏🙏\n";
+
+        $send = new StarSender($group->nama_group, $pesan);
+        $res = $send->sendGroup();
+
+        DB::commit();
+
+        return redirect()->route('billing')->with('success', 'Data Berhasil Disimpan');
     }
 }

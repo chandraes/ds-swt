@@ -140,6 +140,8 @@
         var selectFormSupplier = document.getElementById('selectFormSupplier').value;
         if(selectFormSupplier == 'masuk'){
             window.location.href = "{{route('form-supplier.titipan')}}";
+        } else if(selectFormSupplier == 'keluar'){
+            window.location.href = "{{route('form-supplier.pengembalian')}}";
         }
     }
 </script>

@@ -126,4 +126,21 @@ class KasBesar extends Model
         return $store;
     }
 
+    public function insertMasuk($data)
+    {
+        $rekening = Rekening::where('untuk', 'kas-besar')->first();
+
+        $data['tanggal'] = now();
+        $data['jenis'] = 1;
+        $data['saldo'] = $this->lastKasBesar()->saldo + $data['nominal_transaksi'];
+        $data['modal_investor_terakhir'] = $this->lastKasBesar()->modal_investor_terakhir;
+        $data['no_rek'] = $rekening->no_rek;
+        $data['bank'] = $rekening->bank;
+        $data['nama_rek'] = $rekening->nama_rek;
+
+        $store = $this->create($data);
+
+        return $store;
+    }
+
 }

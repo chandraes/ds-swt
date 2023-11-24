@@ -103,6 +103,8 @@ Route::group(['middleware' => ['auth']], function() {
         Route::get('/form-supplier/titipan', [App\Http\Controllers\FormSupplierController::class, 'titipan'])->name('form-supplier.titipan');
         Route::post('/form-supplier/titipan/store', [App\Http\Controllers\FormSupplierController::class, 'titipan_store'])->name('form-supplier.titipan-store');
         Route::get('/form-supplier/get-rek-supplier/{id}', [App\Http\Controllers\FormSupplierController::class, 'getRekSupplier'])->name('form-supplier.get-rek-supplier');
+        Route::get('/form-supplier/pengembalian', [App\Http\Controllers\FormSupplierController::class, 'pengembalian'])->name('form-supplier.pengembalian');
+        Route::post('/fomr-supplier/pengembalian/store', [App\Http\Controllers\FormSupplierController::class, 'pengembalian_store'])->name('form-supplier.pengembalian-store');
 
         Route::get('/form-transaksi/tambah/{customer}', [App\Http\Controllers\FormTransaksiController::class, 'tambah'])->name('form-transaksi.tambah');
         Route::post('/form-transaksi/tambah-store', [App\Http\Controllers\FormTransaksiController::class, 'tambah_store'])->name('form-transaksi.tambah-store');

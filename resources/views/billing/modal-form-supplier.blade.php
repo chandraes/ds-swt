@@ -9,6 +9,7 @@
             <div class="modal-body">
                 <select class="form-select" name="selectFormSupplier" id="selectFormSupplier">
                     <option value="masuk">Titipan Supplier</option>
+                    <option value="keluar">Pengembalian Dana Supplier</option>
                 </select>
             </div>
             <div class="modal-footer">
