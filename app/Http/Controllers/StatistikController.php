@@ -206,7 +206,7 @@ class StatistikController extends Controller
             'yearly_total_bayar' => $yearly_total_bayar,
             'yearly_total_tagihan' => $yearly_total_tagihan,
             'yearly_total_profit' => $yearly_total_profit,
-        ])->setPaper('a4', 'landscape');
+        ])->setPaper('a4', 'portrait');
 
         return $pdf->stream('Statistik '.$customer->nama.'.pdf');
     }

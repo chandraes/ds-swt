@@ -100,15 +100,7 @@ class NotaTagihanController extends Controller
         $kasBesar = new KasBesar;
 
         $transaksi = new Transaksi;
-        $results = $transaksi->totalTagihan();
 
-        $pesan2 = "Customer : ";
-
-        foreach ($results as $result) {
-            $total_tagihan = number_format($result->total_tagihan, 0, ',', '.');
-            $total_profit = number_format($result->total_profit, 0, ',', '.');
-            $pesan2 .= "{$result->customer->singkatan}\nTotal Tagihan: Rp. {$total_tagihan}\nTotal Profit: Rp.{$total_profit}\n\n";
-        }
 
         DB::beginTransaction();
 
@@ -118,6 +110,16 @@ class NotaTagihanController extends Controller
         $store = $kasBesar->insertTagihan($k);
 
         $transaksi = Transaksi::whereIn('id', $selectedData)->update(['tagihan' => 1]);
+
+        $results = $transaksi->totalTagihan();
+
+        $pesan2 = "Customer : ";
+
+        foreach ($results as $result) {
+            $total_tagihan = number_format($result->total_tagihan, 0, ',', '.');
+            $total_profit = number_format($result->total_profit, 0, ',', '.');
+            $pesan2 .= "{$result->customer->singkatan}\nTotal Tagihan: Rp. {$total_tagihan}\nTotal Profit: Rp.{$total_profit}\n\n";
+        }
 
         foreach ($selectedData as $k => $v) {
 

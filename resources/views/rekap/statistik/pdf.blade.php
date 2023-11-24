@@ -47,42 +47,65 @@
         <table class="table table-hover table-bordered text-pdf table-pdf" id="rekapTahunan">
             <thead class="table-success">
                 <tr>
-                    <th class="text-center align-middle text-pdf table-pdf">Bulan</th>
-                    @for ($i = 1; $i <= 12; $i++)
+                    <th class="text-center align-middle text-pdf table-pdf" style="width: 10%">Bulan</th>
+                    @for ($i = 1; $i <= 6; $i++)
                         <th class="text-center align-middle text-pdf table-pdf">{{$i}}</th> <!-- Month name -->
                     @endfor
-                    <th class="text-center align-middle text-pdf table-pdf">Total</th>
+                    <th class="text-center align-middle text-pdf table-pdf" style="width: 13%">Total</th>
                 </tr>
             </thead>
             <tbody>
+                <!-- Your table rows here -->
+                @foreach (['Berat', 'Bayar', 'Tagihan', 'Profit'] as $statistic)
+                    <tr>
+                        <td class="text-center align-middle text-pdf table-pdf">{{ $statistic }}</td>
+                        @for ($i = 1; $i <= 6; $i++)
+                            @if ($statistic == 'Profit')
+                            <td class="text-center align-middle text-pdf table-pdf">{{ $statistics_yearly[$i]['total_' . strtolower($statistic)] }}</td>
+                            @else
+                            <td class="text-center align-middle text-pdf table-pdf">{{ number_format($statistics_yearly[$i]['total_' . strtolower($statistic)], 0,',','.') }}</td>
+                            @endif
+                        @endfor
+                        @if ($statistic == 'Profit')
+                        <td class="text-center align-middle text-pdf table-pdf">{{ ${'yearly_total_' . strtolower($statistic)} }}</td>
+                        @else
+                        <td class="text-center align-middle text-pdf table-pdf">{{ number_format(${'yearly_total_' . strtolower($statistic)}, 0,',','.') }}</td>
+                        @endif
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+        <table class="table table-hover table-bordered text-pdf table-pdf mt-2" id="rekapTahunan">
+            <thead class="table-success">
                 <tr>
-                    <td class="text-center align-middle text-pdf table-pdf">Berat (Kg)</td>
-                    @foreach ($statistics_yearly as $data)
-                        <td class="text-center align-middle text-pdf table-pdf">{{ number_format($data['total_berat'], 0,',','.') }}</td>
-                    @endforeach
-                    <td class="text-center align-middle text-pdf table-pdf">{{ number_format($yearly_total_berat, 0,',','.') }}</td>
+                    <th class="text-center align-middle text-pdf table-pdf" style="width: 10%">Bulan</th>
+                    @for ($i = 7; $i <= 12; $i++)
+                        <th class="text-center align-middle text-pdf table-pdf">{{$i}}</th> <!-- Month name -->
+                    @endfor
+                    <th class="text-center align-middle text-pdf table-pdf" style="width: 13%">Total</th>
                 </tr>
-                <tr>
-                    <td class="text-center align-middle text-pdf table-pdf">Bayar</td>
-                    @foreach ($statistics_yearly as $data)
-                        <td class="text-center align-middle text-pdf table-pdf">{{ number_format($data['total_bayar'], 0,',','.') }}</td>
-                    @endforeach
-                    <td class="text-center align-middle text-pdf table-pdf">{{ number_format($yearly_total_bayar, 0,',','.') }}</td>
-                </tr>
-                <tr>
-                    <td class="text-center align-middle text-pdf table-pdf">Tagihan</td>
-                    @foreach ($statistics_yearly as $data)
-                        <td class="text-center align-middle text-pdf table-pdf">{{ number_format($data['total_tagihan'], 0,',','.') }}</td>
-                    @endforeach
-                    <td class="text-center align-middle text-pdf table-pdf">{{ number_format($yearly_total_tagihan, 0,',','.') }}</td>
-                </tr>
-                <tr>
-                    <td class="text-center align-middle text-pdf table-pdf">Profit</td>
-                    @foreach ($statistics_yearly as $data)
-                        <td class="text-center align-middle text-pdf table-pdf">{{ $data['total_profit'] }}</td>
-                    @endforeach
-                    <td class="text-center align-middle text-pdf table-pdf">{{ $yearly_total_profit }}</td>
-                </tr>
+            </thead>
+            <tbody>
+                <!-- Your table rows here -->
+                @foreach (['Berat', 'Bayar', 'Tagihan', 'Profit'] as $statistic)
+                    <tr>
+                        <td class="text-center align-middle text-pdf table-pdf">{{ $statistic }}</td>
+                        @for ($i = 7; $i <= 12; $i++)
+                            @if ($statistic == 'Profit')
+                            <td class="text-center align-middle text-pdf table-pdf">{{ $statistics_yearly[$i]['total_' . strtolower($statistic)] }}</td>
+                            @else
+                            <td class="text-center align-middle text-pdf table-pdf">{{ number_format($statistics_yearly[$i]['total_' . strtolower($statistic)], 0,',','.') }}</td>
+                            @endif
+
+                        @endfor
+                        @if ($statistic == 'Profit')
+                        <td class="text-center align-middle text-pdf table-pdf">{{ ${'yearly_total_' . strtolower($statistic)} }}</td>
+                        @else
+                        <td class="text-center align-middle text-pdf table-pdf">{{ number_format(${'yearly_total_' . strtolower($statistic)}, 0,',','.') }}</td>
+                        @endif
+
+                    </tr>
+                @endforeach
             </tbody>
         </table>
     </div>
