@@ -175,4 +175,13 @@ class Transaksi extends Model
     {
         return $this->where('status', 1)->where('tagihan', 1)->where('ppn', 0)->count();
     }
+
+    // sum total tagihan group by customer that has transaksis
+    public function totalTagihan()
+    {
+        return $this->selectRaw('customer_id, sum(total_tagihan) as total_tagihan')
+                    ->where('status', 1)->where('ppn', 0)
+                    ->groupBy('customer_id')->get();
+    }
+
 }
