@@ -40,10 +40,15 @@ class Transaksi extends Model
         return number_format($value, 0, ',', '.');
     }
 
-    public function getPPHAttribute($value)
+    public function getNfPPHAttribute()
     {
-        return number_format($value, 0, ',', '.');
+        return number_format($this->attributes['pph'], 0, ',', '.');
     }
+
+    // public function getPPHAttribute($value)
+    // {
+    //     return number_format($value, 0, ',', '.');
+    // }
 
     public function customer()
     {

@@ -11,27 +11,7 @@
                 <img src="{{asset('images/form-deposit.svg')}}" alt="" width="100">
                 <h2>FORM DEPOSIT</h2>
             </a>
-            <div class="modal fade" id="formDeposit" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
-                role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="modalTitleId">Form Deposit</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <select class="form-select" name="selectDeposit" id="selectDeposit">
-                                <option value="masuk">Penambahan Deposit</option>
-                                <option value="keluar">Pengembalian Deposit</option>
-                            </select>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                            <button type="button" class="btn btn-primary" onclick="funDeposit()">Lanjutkan</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            @include('billing.modal-form-deposit')
         </div>
         <div class="col-md-3 text-center mt-5">
             <a href="{{route('billing.deviden.index')}}" class="text-decoration-none">
@@ -72,120 +52,57 @@
                 <img src="{{asset('images/form-supplier.svg')}}" alt="" width="100">
                 <h2>FORM SUPPLIER</h2>
             </a>
-            <div class="modal fade" id="formSupplier" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
-                role="dialog" aria-labelledby="formSupplierTitle" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="formSupplierTitle">Form Supplier</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <select class="form-select" name="selectFormSupplier" id="selectFormSupplier">
-                                <option value="masuk">Titipan Supplier</option>
-                            </select>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                            <button type="button" class="btn btn-primary" onclick="funSupplier()">Lanjutkan</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            @include('billing.modal-form-supplier')
+
         </div>
         <div class="col-md-3 text-center mt-5">
             <a href="#" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#modalTransaksi">
                 <img src="{{asset('images/transaksi.svg')}}" alt="" width="100">
                 <h2>FORM TRANSAKSI</h2>
             </a>
-            <div class="modal fade" id="modalTransaksi" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
-                role="dialog" aria-labelledby="transaksiTitle" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-xl" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="transaksiTitle">Form Transaksi</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="row">
-                                @foreach ($customer as $c)
-                                <div class="col-md-3 m-3">
-                                    <a href="{{route('form-transaksi.tambah', ['customer' => $c->id])}}"
-                                        class="text-decoration-none">
-                                        <img src="{{asset('images/palm.svg')}}" alt="" width="100">
-                                        <h3 class="mt-2">{{$c->singkatan}}</h3>
-                                    </a>
-                                </div>
-                                @endforeach
-                            </div>
+            @include('billing.modal-form-transaksi')
 
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
         <div class="col-md-3 text-center mt-5">
             <a href="#" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#notaTagihan">
                 <img src="{{asset('images/nota-tagihan.svg')}}" alt="" width="100">
                 <h2>NOTA TAGIHAN @if($nt != 0) <span class="text-danger">({{$nt}})</span> @endif</h2>
             </a>
-            <div class="modal fade" id="notaTagihan" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
-                role="dialog" aria-labelledby="notaTagihanTitle" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-xl" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="notaTagihanTitle">Nota Tagihan</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="row">
-                                @foreach ($customer as $c)
-                                <div class="col-md-3 m-2">
-                                    <a href="{{route('nota-tagihan.index', ['customer' => $c->id])}}"
-                                        class="text-decoration-none">
-                                        <img src="{{asset('images/palm.svg')}}" alt="" width="100">
-                                        <h3 class="mt-2">{{$c->singkatan}}</h3>
-                                    </a>
-                                </div>
-                                @endforeach
-                            </div>
+            @include('billing.modal-nota-tagihan')
 
-                        </div>
-
-                    </div>
-                </div>
-            </div>
         </div>
         <div class="col-md-3 text-center mt-5">
             <a href="#" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#modalNotaBayar">
                 <img src="{{asset('images/nota-bayar.svg')}}" alt="" width="100">
                 <h2>NOTA BAYAR  @if($nb != 0) <span class="text-danger">({{$nb}})</span> @endif</h2>
             </a>
+            @include('billing.modal-nota-bayar')
 
-            <div class="modal fade" id="modalNotaBayar" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog" aria-labelledby="notaBayarTitle" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" role="document">
+        </div>
+        <div class="col-md-3 text-center mt-5">
+            <a href="#" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#modalInvoicePpn">
+                <img src="{{asset('images/invoice-ppn.svg')}}" alt="" width="100">
+                <h2>INVOICE PPN  @if($nb != 0) <span class="text-danger">({{$nb}})</span> @endif</h2>
+            </a>
+            <div class="modal fade" id="modalInvoicePpn" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-xl" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="notaBayarTitle">Nota Bayar</h5>
+                            <h5 class="modal-title" id="modalTitleId">Invoice PPn</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <form action="{{route('nota-bayar.index')}}" method="get">
-
                         <div class="modal-body">
-                            <div class="col-md-12 mb-3">
-                                <select class="form-select" name="supplier_id" id="supplier_id">
-                                    <option value="">-- Pilih Supplier --</option>
-                                    @foreach ($supplier as $s)
-                                        <option value="{{$s->id}}">{{$s->nama}} ({{$s->nickname}})</option>
-                                    @endforeach
-                                </select>
+                            <div class="row">
+                                @foreach ($customer as $c)
+                                <div class="col-md-3 m-2">
+                                    <a href="{{route('invoice-ppn.index', ['customer' => $c->id])}}" class="text-decoration-none">
+                                        <img src="{{asset('images/palm.svg')}}" alt="" width="100">
+                                        <h3 class="mt-2">{{$c->singkatan}}</h3>
+                                    </a>
+                                </div>
+                                @endforeach
                             </div>
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                            <button type="submit" class="btn btn-primary">Lanjutkan</button>
-                        </div>
-                    </form>
                     </div>
                 </div>
             </div>

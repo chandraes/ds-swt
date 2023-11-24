@@ -3,7 +3,7 @@
 <div class="container-fluid">
     <div class="row justify-content-center mb-5">
         <div class="col-md-12 text-center">
-            <h1><u>NOTA TAGIHAN</u></h1>
+            <h1><u>INVOICE PPN</u></h1>
             <h1>{{$customer->nama}}</h1>
         </div>
     </div>
@@ -25,11 +25,25 @@
     @endif
     {{-- end if --}}
     <div class="row">
-        <div class="col-md-6">
-            <label for="berat" class="form-label">Total Tagihan di Pilih</label>
+        <div class="col-md-4">
+            <label for="berat" class="form-label"><strong> Total Tagihan di Pilih </strong></label>
             <div class="input-group">
                 <span class="input-group-text" id="basic-addon1">Rp.</span>
                 <input type="text" class="form-control" id="total_tagih_display" disabled >
+            </div>
+        </div>
+        <div class="col-md-4">
+            <label for="total_pph" class="form-label"><strong> Total PPh di Pilih </strong></label>
+            <div class="input-group">
+                <span class="input-group-text" id="basic-addon1">Rp.</span>
+                <input type="text" class="form-control" id="total_pph_display" disabled >
+            </div>
+        </div>
+        <div class="col-md-4">
+            <label for="total_pph" class="form-label"><strong> Total PPN di Pilih </strong></label>
+            <div class="input-group">
+                <span class="input-group-text" id="basic-addon1">Rp.</span>
+                <input type="text" class="form-control" id="total_ppn_display" disabled >
             </div>
         </div>
     </div>
@@ -52,7 +66,7 @@
                     <th class="text-center align-middle">PPH 0,25%</th>
                     <th class="text-center align-middle">Profit</th>
                     <th class="text-center align-middle">Total Tagihan</th>
-                    <th class="text-center align-middle">Act</th>
+                    <th class="text-center align-middle">Total PPN</th>
                 </tr>
             </thead>
             <tbody>
@@ -60,7 +74,7 @@
                 <tr>
                     <td class="text-center align-middle">
                         {{-- checklist on check push $d->id to $selectedData --}}
-                        <input type="checkbox" value="{{$d->id}}" data-tagihan="{{$d->total_tagihan}}" onclick="check(this, {{$d->id}})" id="idSelect-{{$d->id}}">
+                        <input type="checkbox" value="{{$d->id}}" data-tagihan="{{$d->total_tagihan}}" data-pph="{{$d->pph}}" data-ppn="{{$d->total_ppn}}" onclick="check(this, {{$d->id}})" id="idSelect-{{$d->id}}">
                     </td>
                     <td class="text-center align-middle"></td>
                     <td class="text-center align-middle">{{$d->id_tanggal}}</td>
@@ -73,61 +87,33 @@
                     <td class="text-center align-middle">{{$d->nf_pph}}</td>
                     <td class="text-center align-middle">{{$d->profit}}</td>
                     <td class="text-center align-middle">{{number_format($d->total_tagihan,0,',','.')}}</td>
-                    <td class="text-center align-middle">
-                        @if (auth()->user()->role == 'admin')
-                        <button class="btn m-2 btn-warning" data-bs-toggle="modal" data-bs-target="#editTransaksi" onclick="editTransaksi({{$d}}, {{$d->id}})"><i class="fa fa-edit"></i></button>
-                        <form action="{{route('form-transaksi.delete', ['transaksi' => $d->id])}}" method="post" style="display: inline-block;"
-                            id="delete-{{$d->id}}">
-                            @csrf
-                            @method('delete')
-                            <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i></button>
-                        </form>
-                        @endif
-                    </td>
+                    <td class="text-center align-middle">{{number_format($d->total_ppn,0,',','.')}}</td>
+
                 </tr>
-                <script>
-                    $(document).ready(function(){
-                        $('#delete-{{$d->id}}').submit(function(e){
-                            e.preventDefault();
-                            Swal.fire({
-                                title: 'Apakah anda yakin?',
-                                icon: 'warning',
-                                showCancelButton: true,
-                                confirmButtonColor: '#3085d6',
-                                cancelButtonColor: '#6c757d',
-                                confirmButtonText: 'Ya, hapus!'
-                                }).then((result) => {
-                                if (result.isConfirmed) {
-                                    $('#spinner').show();
-                                    this.submit();
-                                }
-                            })
-                        });
-                    });
-                </script>
                 @endforeach
             </tbody>
             <tfoot>
                 <tr>
                     <th colspan="5" class="text-center align-middle">Grand Total</th>
-                    <th class="text-center align-middle">{{$totalBerat}}</th>
+                    <th class="text-center align-middle">{{number_format($totalBerat, 0, ',','.')}}</th>
                     <th class="text-center align-middle">Kg</th>
                     <th class="text-center align-middle"></th>
-                    <th class="text-center align-middle">{{$total}}</th>
-                    <th class="text-center align-middle">{{$totalPPH}}</th>
+                    <th class="text-center align-middle">{{number_format($total, 0,',','.')}}</th>
+                    <th class="text-center align-middle">{{number_format($totalPPH, 0,',','.')}}</th>
                     <th class="text-center align-middle">{{$totalProfit}}</th>
                     <th class="text-center align-middle">{{number_format($totalTagihan, 0, ',','.')}}</th>
-                    <th class="text-center align-middle"></th>
+                    <th class="text-center align-middle">{{number_format($totalPPN, 0, ',','.')}}</th>
                 </tr>
             </tfoot>
         </table>
     </div>
-    @include('billing.nota-tagihan.edit')
+    <input type="hidden" id="total_pph" name="total_pph" value="0">
     <div class="row mt-5">
         <form action="{{route('nota-tagihan.cutoff', ['customer' => $customer->id])}}" method="post" id="lanjutkanForm">
         @csrf
             <input type="hidden" name="customer_id" value="{{$customer->id}}">
             <input type="hidden" name="selectedData" required>
+            <input type="hidden" class="form-control" id="total_ppn" name="total_ppn" required value="0">
             <input type="hidden" class="form-control" id="total_tagih" name="total_tagih" required value="0">
             <div class="col-md-12">
                 <button type="submit" class="btn btn-primary form-control">LANJUTKAN</button>
@@ -150,32 +136,29 @@
 <script src="{{asset('assets/js/cleave.min.js')}}"></script>
 <script>
 
-        function editTransaksi(data, id) {
-            let date = new Date(data.tanggal);
-            let day = ("0" + date.getDate()).slice(-2);
-            let month = ("0" + (date.getMonth() + 1)).slice(-2);
-            let year = date.getFullYear();
-
-            document.getElementById('edit_tanggal').value = `${day}-${month}-${year}`;
-            document.getElementById('edit_supplier_id').value = data.supplier_id;
-            document.getElementById('edit_nota_timbangan').value = data.nota_timbangan;
-            document.getElementById('edit_berat').value = data.berat.toLocaleString('id');
-
-            document.getElementById('editForm').action = '/billing/nota-tagihan/edit/' + id;
-        }
 
        function check(checkbox, id) {
             var totalTagihan = parseFloat($('#total_tagih').val()) || 0;
+            var totalPph = parseFloat($('#total_pph').val()) || 0;
+            var totalPpn = parseFloat($('#total_ppn').val()) || 0;
+
+
             var tagihan = parseFloat($(checkbox).data('tagihan'));
+            var pph = parseFloat($(checkbox).data('pph'));
+            var ppn = parseFloat($(checkbox).data('ppn'));
 
             if (checkbox.checked) {
                 totalTagihan += tagihan;
+                totalPph += pph;
+                totalPpn += ppn;
 
                 $('input[name="selectedData"]').val(function(i, v) {
                     return v + id + ',';
                 });
             } else {
                 totalTagihan -= tagihan;
+                totalPph -= pph;
+                totalPpn -= ppn;
 
                 $('input[name="selectedData"]').val(function(i, v) {
                     return v.replace(id + ',', '');
@@ -184,6 +167,10 @@
 
             $('#total_tagih').val(totalTagihan);
             $('#total_tagih_display').val(totalTagihan.toLocaleString('id-ID'));
+            $('#total_pph').val(totalPph);
+            $('#total_pph_display').val(totalPph.toLocaleString('id-ID'));
+            $('#total_ppn').val(totalPpn);
+            $('#total_ppn_display').val(totalPpn.toLocaleString('id-ID'));
 
             var value = $('input[name="selectedData"]').val();
 
@@ -206,14 +193,25 @@
             // empty total tagih dan total tagih display
             $('#total_tagih').val(0);
             $('#total_tagih_display').val(0);
+            $('#total_ppn').val(0);
+            $('#total_ppn_display').val(0);
+            $('#total_pph').val(0);
+            $('#total_pph_display').val(0);
+
             $('input[name="selectedData"]').val('');
             var totalTagihan = parseFloat($('#total_tagih').val()) || 0;
+            var totalPph = parseFloat($('#total_pph').val()) || 0;
+            var totalPpn = parseFloat($('#total_ppn').val()) || 0;
 
             if (checkbox.checked) {
                 $('input[name="selectedData"]').val(function(i, v) {
                     @foreach ($data as $d)
                         var tagihan = parseFloat($('#idSelect-{{$d->id}}').data('tagihan'));
+                        var pph = parseFloat($('#idSelect-{{$d->id}}').data('pph'));
+                        var ppn = parseFloat($('#idSelect-{{$d->id}}').data('ppn'));
                         totalTagihan += tagihan;
+                        totalPph += pph;
+                        totalPpn += ppn;
 
                         v = v + {{$d->id}} + ',';
                         $('#idSelect-{{$d->id}}').prop('checked', true);
@@ -230,10 +228,16 @@
                     return v;
                 });
                 totalTagihan = 0;
+                totalPph = 0;
+                totalPpn = 0;
             }
 
             $('#total_tagih').val(totalTagihan);
             $('#total_tagih_display').val(totalTagihan.toLocaleString('id-ID'));
+            $('#total_pph').val(totalPph);
+            $('#total_pph_display').val(totalPph.toLocaleString('id-ID'));
+            $('#total_ppn').val(totalPpn);
+            $('#total_ppn_display').val(totalPpn.toLocaleString('id-ID'));
 
             var value = $('input[name="selectedData"]').val();
 
@@ -243,18 +247,6 @@
 
             console.log(value);
         }
-
-        var edit_nota = new Cleave('#edit_nota_timbangan', {
-            delimiter: '-',
-            blocks: [4, 4]
-        });
-
-        var editBerat = new Cleave('#edit_berat', {
-            numeral: true,
-            numeralThousandsGroupStyle: 'thousand',
-            numeralDecimalMark: ',',
-            delimiter: '.'
-        });
 
         $(document).ready(function() {
             var table = $('#tableTransaksi').DataTable({
@@ -270,42 +262,6 @@
                     cell.innerHTML = i+1;
                 } );
             } ).draw();
-        });
-
-        $('#editForm').submit(function(e){
-            e.preventDefault();
-            Swal.fire({
-                title: 'Apakah data sudah benar?',
-                text: "Pastikan data sudah benar sebelum disimpan!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#6c757d',
-                confirmButtonText: 'Ya, simpan!'
-                }).then((result) => {
-                if (result.isConfirmed) {
-                    $('#spinner').show();
-                    this.submit();
-                }
-            })
-        });
-
-        $('#masukForm').submit(function(e){
-            e.preventDefault();
-            Swal.fire({
-                title: 'Apakah data sudah benar?',
-                text: "Pastikan data sudah benar sebelum disimpan!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#6c757d',
-                confirmButtonText: 'Ya, simpan!'
-                }).then((result) => {
-                if (result.isConfirmed) {
-                    $('#spinner').show();
-                    this.submit();
-                }
-            })
         });
 
         $('#lanjutkanForm').submit(function(e){

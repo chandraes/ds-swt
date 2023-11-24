@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('invoice_ppns', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('customer_id')->constrained('customers');
             $table->date('tanggal');
             $table->integer('no_invoice');
             $table->bigInteger('total_ppn');

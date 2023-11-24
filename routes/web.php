@@ -114,6 +114,9 @@ Route::group(['middleware' => ['auth']], function() {
 
         Route::get('/nota-bayar', [App\Http\Controllers\NotaBayarController::class, 'index'])->name('nota-bayar.index');
         Route::post('/nota-bayar/{supplier}/cutoff', [App\Http\Controllers\NotaBayarController::class, 'cutoff'])->name('nota-bayar.cutoff');
+
+        Route::get('/invoice-ppn/{customer}', [App\Http\Controllers\InvoicePpnController::class, 'index'])->name('invoice-ppn.index');
+        Route::post('/invoice-ppn/{customer}/cutoff', [App\Http\Controllers\InvoicePpnController::class, 'cutoff'])->name('invoice-ppn.cutoff');
     });
 
     // END ROUTE BILLING

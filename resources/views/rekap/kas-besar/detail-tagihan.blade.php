@@ -34,7 +34,7 @@
                     <td class="text-center align-middle">Kg</td>
                     <td class="text-center align-middle">{{$d->nf_harga}}</td>
                     <td class="text-center align-middle">{{$d->nf_total}}</td>
-                    <td class="text-center align-middle">{{$d->pph}}</td>
+                    <td class="text-center align-middle">{{$d->nf_pph}}</td>
                     <td class="text-center align-middle">{{number_format($d->total_tagihan,0,',','.')}}</td>
 
                 </tr>
