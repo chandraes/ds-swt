@@ -81,7 +81,7 @@
                     @foreach ($statistics_yearly as $data)
                         <td class="text-center align-middle text-pdf table-pdf">{{ $data['total_profit'] }}</td>
                     @endforeach
-                    <td class="text-center align-middle text-pdf table-pdf">{{ number_format($yearly_total_profit, 0,',','.') }}</td>
+                    <td class="text-center align-middle text-pdf table-pdf">{{ $yearly_total_profit }}</td>
                 </tr>
             </tbody>
         </table>
