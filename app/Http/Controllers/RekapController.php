@@ -7,6 +7,7 @@ use App\Models\Supplier;
 use App\Models\KasSupplier;
 use App\Models\InvoiceTagihan;
 use App\Models\InvoiceBayar;
+use App\Models\Transaksi;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
@@ -147,6 +148,40 @@ class RekapController extends Controller
         ])->setPaper('a4', 'landscape');
 
         return $pdf->stream('Rekap Kas Besar '.$stringBulanNow.' '.$tahun.'.pdf');
+    }
+
+    public function rekap_invoice(Customer $customer, Request $request)
+    {
+
+        $transaksi = new Transaksi;
+
+        $bulan = $request->bulan ?? date('m');
+        $tahun = $request->tahun ?? date('Y');
+
+        $dataTahun = $transaksi->dataTahun();
+
+        $data = $transaksi->rekapInvoice($customer->id, $bulan, $tahun);
+
+        $bulanSebelumnya = $bulan - 1;
+        $bulanSebelumnya = $bulanSebelumnya == 0 ? 12 : $bulanSebelumnya;
+        $tahunSebelumnya = $bulanSebelumnya == 12 ? $tahun - 1 : $tahun;
+        $stringBulan = Carbon::createFromDate($tahun, $bulanSebelumnya)->locale('id')->monthName;
+        $stringBulanNow = Carbon::createFromDate($tahun, $bulan)->locale('id')->monthName;
+
+        $dataSebelumnya = $kas->rekapInvoice($supplier->id,$bulanSebelumnya, $tahunSebelumnya);
+
+        return view('rekap.invoice.index', [
+            'customer' => $customer,
+            'data' => $data,
+            'dataTahun' => $dataTahun,
+            'dataSebelumnya' => $dataSebelumnya,
+            'stringBulan' => $stringBulan,
+            'tahun' => $tahun,
+            'tahunSebelumnya' => $tahunSebelumnya,
+            'bulan' => $bulan,
+            'stringBulanNow' => $stringBulanNow,
+        ]);
+
     }
 
     public function kas_supplier(Request $request)

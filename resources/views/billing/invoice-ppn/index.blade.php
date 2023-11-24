@@ -109,7 +109,7 @@
     </div>
     <input type="hidden" id="total_pph" name="total_pph" value="0">
     <div class="row mt-5">
-        <form action="{{route('nota-tagihan.cutoff', ['customer' => $customer->id])}}" method="post" id="lanjutkanForm">
+        <form action="{{route('invoice-ppn.cutoff', ['customer' => $customer->id])}}" method="post" id="lanjutkanForm">
         @csrf
             <input type="hidden" name="customer_id" value="{{$customer->id}}">
             <input type="hidden" name="selectedData" required>
@@ -265,8 +265,8 @@
         });
 
         $('#lanjutkanForm').submit(function(e){
-            var value = $('#total_tagih_display').val();
-            var check = $('#total_tagih').val();
+            var value = $('#total_ppn_display').val();
+            var check = $('#total_ppn').val();
 
             if (check == 0 || check == '') {
                 Swal.fire({

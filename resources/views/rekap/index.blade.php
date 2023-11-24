@@ -49,6 +49,18 @@ $supplier = App\Models\Supplier::select('id', 'nama', 'nickname')->get();
         </div>
         <div class="col-md-3 mt-3 text-center">
             <a href="{{route('home')}}" class="text-decoration-none">
+                <img src="{{asset('images/rekap-invoice.svg')}}" alt="" width="100">
+                <h2>INVOICE</h2>
+            </a>
+        </div>
+        <div class="col-md-3 mt-3 text-center">
+            <a href="{{route('home')}}" class="text-decoration-none">
+                <img src="{{asset('images/statistik.svg')}}" alt="" width="100">
+                <h2>STATISTIK</h2>
+            </a>
+        </div>
+        <div class="col-md-3 mt-3 text-center">
+            <a href="{{route('home')}}" class="text-decoration-none">
                 <img src="{{asset('images/dashboard.svg')}}" alt="" width="100">
                 <h2>DASHBOARD</h2>
             </a>

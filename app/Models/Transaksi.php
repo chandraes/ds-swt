@@ -80,6 +80,18 @@ class Transaksi extends Model
         return $this->where('customer_id', $customer_id)->where('status', 0)->orderBy('nota_timbangan')->get();
     }
 
+    public function dataTahun()
+    {
+        return $this->selectRaw('YEAR(tanggal) tahun')->groupBy('tahun')->get();
+    }
+
+    public function rekapInvoice($customer_id, $month, $year)
+    {
+        return $this->where('customer_id', $customer_id)->whereMonth('tanggal', $month)->whereYear('tanggal', $year)
+                    ->where('status', 1)->where('tagihan', 1)->where('ppn', 1)
+                    ->orderBy('nota_timbangan')->get();
+    }
+
     public function formTransaksiBerat($customer_id)
     {
         $transaksi = $this->where('customer_id', $customer_id)->where('status', 0)->sum('berat');
