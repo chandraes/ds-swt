@@ -184,7 +184,12 @@ class Transaksi extends Model
                     ->groupBy('customer_id')->get();
     }
 
-    
+    public function profitPerBulan($month, $year)
+    {
+        return $this->whereMonth('tanggal', $month)->whereYear('tanggal', $year)
+                    ->where('status', 1)
+                    ->sum('profit');
+    }
 
     public function statistikBulanan($customer_id, $month, $year)
     {

@@ -12,6 +12,7 @@ use App\Models\GroupWa;
 use App\Services\StarSender;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class NotaTagihanController extends Controller
 {
@@ -101,6 +102,12 @@ class NotaTagihanController extends Controller
 
         $transaksi = new Transaksi;
 
+        $tanggal = $transaksi->where('id', $selectedData[0])->first()->tanggal;
+        $month = date('m', strtotime($tanggal));
+        // create monthName in indonesian using carbon from $tanggal
+        $monthName = Carbon::parse($tanggal)->locale('id')->monthName;
+        $year = date('Y', strtotime($tanggal));
+        $total_profit_bulan = $transaksi->profitPerBulan($month, $year);
 
         DB::beginTransaction();
 
@@ -109,16 +116,14 @@ class NotaTagihanController extends Controller
         $k['invoice_tagihan_id'] = $invoice->id;
         $store = $kasBesar->insertTagihan($k);
 
-        $transaksi = Transaksi::whereIn('id', $selectedData)->update(['tagihan' => 1]);
+        $update = Transaksi::whereIn('id', $selectedData)->update(['tagihan' => 1]);
 
         $results = $transaksi->totalTagihan();
-
-        $pesan2 = "Customer : ";
+        $pesan2 = "";
 
         foreach ($results as $result) {
             $total_tagihan = number_format($result->total_tagihan, 0, ',', '.');
-            $total_profit = number_format($result->total_profit, 0, ',', '.');
-            $pesan2 .= "{$result->customer->singkatan}\nTotal Tagihan: Rp. {$total_tagihan}\nTotal Profit: Rp.{$total_profit}\n\n";
+            $pesan2 .= "Customer : {$result->customer->singkatan}\nTotal Tagihan: Rp. {$total_tagihan}\n\n";
         }
 
         foreach ($selectedData as $k => $v) {
@@ -142,6 +147,8 @@ class NotaTagihanController extends Controller
                     "No. Rek : ".$store->no_rek."\n\n".
                     "==========================\n".
                     $pesan2.
+                    "Total Profit ".$monthName.' '.$year. ":" ."\n".
+                    "Rp. ".number_format($total_profit_bulan, 0,',','.')."\n\n".
                     "Sisa Saldo Kas Besar : \n".
                     "Rp. ".number_format($store->saldo, 0, ',', '.')."\n\n".
                     "Total Modal Investor : \n".

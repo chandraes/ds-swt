@@ -86,46 +86,48 @@ Route::group(['middleware' => ['auth']], function() {
     });
 
     // END ROUTE REKAP
+    Route::group(['middleware' => ['role:admin,user']], function() {
+        Route::get('/billing', [App\Http\Controllers\BillingController::class, 'index'])->name('billing');
+        Route::prefix('billing')->group(function() {
+            Route::get('/form-deposit/masuk', [App\Http\Controllers\FormDepositController::class, 'masuk'])->name('form-deposit.masuk');
+            Route::post('/form-deposit/masuk/store', [App\Http\Controllers\FormDepositController::class, 'masuk_store'])->name('form-deposit.masuk.store');
+            Route::get('/form-deposit/keluar', [App\Http\Controllers\FormDepositController::class, 'keluar'])->name('form-deposit.keluar');
+            Route::post('/form-deposit/keluar/store', [App\Http\Controllers\FormDepositController::class, 'keluar_store'])->name('form-deposit.keluar.store');
 
-    // ROUTE BILLING
-    Route::get('/billing', [App\Http\Controllers\BillingController::class, 'index'])->name('billing');
-    Route::prefix('billing')->group(function() {
-        Route::get('/form-deposit/masuk', [App\Http\Controllers\FormDepositController::class, 'masuk'])->name('form-deposit.masuk');
-        Route::post('/form-deposit/masuk/store', [App\Http\Controllers\FormDepositController::class, 'masuk_store'])->name('form-deposit.masuk.store');
-        Route::get('/form-deposit/keluar', [App\Http\Controllers\FormDepositController::class, 'keluar'])->name('form-deposit.keluar');
-        Route::post('/form-deposit/keluar/store', [App\Http\Controllers\FormDepositController::class, 'keluar_store'])->name('form-deposit.keluar.store');
+            Route::get('billing/deviden', [App\Http\Controllers\FormDevidenController::class, 'index'])->name('billing.deviden.index');
+            Route::post('billing/deviden/store', [App\Http\Controllers\FormDevidenController::class, 'store'])->name('billing.deviden.store');
 
-        Route::get('billing/deviden', [App\Http\Controllers\FormDevidenController::class, 'index'])->name('billing.deviden.index');
-        Route::post('billing/deviden/store', [App\Http\Controllers\FormDevidenController::class, 'store'])->name('billing.deviden.store');
+            Route::get('/form-lain/masuk', [App\Http\Controllers\FormLainController::class, 'masuk'])->name('form-lain.masuk');
+            Route::post('/form-lain/masuk/store', [App\Http\Controllers\FormLainController::class, 'masuk_store'])->name('form-lain.masuk.store');
+            Route::get('/form-lain/keluar', [App\Http\Controllers\FormLainController::class, 'keluar'])->name('form-lain.keluar');
+            Route::post('/form-lain/keluar/store', [App\Http\Controllers\FormLainController::class, 'keluar_store'])->name('form-lain.keluar.store');
 
-        Route::get('/form-lain/masuk', [App\Http\Controllers\FormLainController::class, 'masuk'])->name('form-lain.masuk');
-        Route::post('/form-lain/masuk/store', [App\Http\Controllers\FormLainController::class, 'masuk_store'])->name('form-lain.masuk.store');
-        Route::get('/form-lain/keluar', [App\Http\Controllers\FormLainController::class, 'keluar'])->name('form-lain.keluar');
-        Route::post('/form-lain/keluar/store', [App\Http\Controllers\FormLainController::class, 'keluar_store'])->name('form-lain.keluar.store');
+            Route::get('/form-supplier/titipan', [App\Http\Controllers\FormSupplierController::class, 'titipan'])->name('form-supplier.titipan');
+            Route::post('/form-supplier/titipan/store', [App\Http\Controllers\FormSupplierController::class, 'titipan_store'])->name('form-supplier.titipan-store');
+            Route::get('/form-supplier/get-rek-supplier/{id}', [App\Http\Controllers\FormSupplierController::class, 'getRekSupplier'])->name('form-supplier.get-rek-supplier');
+            Route::get('/form-supplier/pengembalian', [App\Http\Controllers\FormSupplierController::class, 'pengembalian'])->name('form-supplier.pengembalian');
+            Route::post('/fomr-supplier/pengembalian/store', [App\Http\Controllers\FormSupplierController::class, 'pengembalian_store'])->name('form-supplier.pengembalian-store');
 
-        Route::get('/form-supplier/titipan', [App\Http\Controllers\FormSupplierController::class, 'titipan'])->name('form-supplier.titipan');
-        Route::post('/form-supplier/titipan/store', [App\Http\Controllers\FormSupplierController::class, 'titipan_store'])->name('form-supplier.titipan-store');
-        Route::get('/form-supplier/get-rek-supplier/{id}', [App\Http\Controllers\FormSupplierController::class, 'getRekSupplier'])->name('form-supplier.get-rek-supplier');
-        Route::get('/form-supplier/pengembalian', [App\Http\Controllers\FormSupplierController::class, 'pengembalian'])->name('form-supplier.pengembalian');
-        Route::post('/fomr-supplier/pengembalian/store', [App\Http\Controllers\FormSupplierController::class, 'pengembalian_store'])->name('form-supplier.pengembalian-store');
+            Route::get('/form-transaksi/tambah/{customer}', [App\Http\Controllers\FormTransaksiController::class, 'tambah'])->name('form-transaksi.tambah');
+            Route::post('/form-transaksi/tambah-store', [App\Http\Controllers\FormTransaksiController::class, 'tambah_store'])->name('form-transaksi.tambah-store');
+            Route::patch('/form-transaksi/edit/{transaksi}', [App\Http\Controllers\FormTransaksiController::class, 'edit_store'])->name('form-transaksi.edit_storebab');
+            Route::delete('/form-transaksi/delete/{transaksi}', [App\Http\Controllers\FormTransaksiController::class, 'delete'])->name('form-transaksi.delete');
+            Route::post('/form-transaksi/lanjutkan/{customer}', [App\Http\Controllers\FormTransaksiController::class, 'lanjutkan'])->name('form-transaksi.lanjutkan');
 
-        Route::get('/form-transaksi/tambah/{customer}', [App\Http\Controllers\FormTransaksiController::class, 'tambah'])->name('form-transaksi.tambah');
-        Route::post('/form-transaksi/tambah-store', [App\Http\Controllers\FormTransaksiController::class, 'tambah_store'])->name('form-transaksi.tambah-store');
-        Route::patch('/form-transaksi/edit/{transaksi}', [App\Http\Controllers\FormTransaksiController::class, 'edit_store'])->name('form-transaksi.edit_storebab');
-        Route::delete('/form-transaksi/delete/{transaksi}', [App\Http\Controllers\FormTransaksiController::class, 'delete'])->name('form-transaksi.delete');
-        Route::post('/form-transaksi/lanjutkan/{customer}', [App\Http\Controllers\FormTransaksiController::class, 'lanjutkan'])->name('form-transaksi.lanjutkan');
+            Route::get('/nota-tagihan/{customer}', [App\Http\Controllers\NotaTagihanController::class, 'index'])->name('nota-tagihan.index');
+            Route::patch('/nota-tagihan/edit/{transaksi}', [App\Http\Controllers\NotaTagihanController::class, 'edit_store'])->name('nota-tagihan.edit_store');
+            Route::post('/nota-tagihan/{customer}/cut-off', [App\Http\Controllers\NotaTagihanController::class, 'cutoff'])->name('nota-tagihan.cutoff');
 
-        Route::get('/nota-tagihan/{customer}', [App\Http\Controllers\NotaTagihanController::class, 'index'])->name('nota-tagihan.index');
-        Route::patch('/nota-tagihan/edit/{transaksi}', [App\Http\Controllers\NotaTagihanController::class, 'edit_store'])->name('nota-tagihan.edit_store');
-        Route::post('/nota-tagihan/{customer}/cut-off', [App\Http\Controllers\NotaTagihanController::class, 'cutoff'])->name('nota-tagihan.cutoff');
+            Route::get('/nota-bayar', [App\Http\Controllers\NotaBayarController::class, 'index'])->name('nota-bayar.index');
+            Route::post('/nota-bayar/{supplier}/cutoff', [App\Http\Controllers\NotaBayarController::class, 'cutoff'])->name('nota-bayar.cutoff');
 
-        Route::get('/nota-bayar', [App\Http\Controllers\NotaBayarController::class, 'index'])->name('nota-bayar.index');
-        Route::post('/nota-bayar/{supplier}/cutoff', [App\Http\Controllers\NotaBayarController::class, 'cutoff'])->name('nota-bayar.cutoff');
+            Route::get('/invoice-ppn/{customer}', [App\Http\Controllers\InvoicePpnController::class, 'index'])->name('invoice-ppn.index');
+            Route::post('/invoice-ppn/{customer}/cutoff', [App\Http\Controllers\InvoicePpnController::class, 'cutoff'])->name('invoice-ppn.cutoff');
 
-        Route::get('/invoice-ppn/{customer}', [App\Http\Controllers\InvoicePpnController::class, 'index'])->name('invoice-ppn.index');
-        Route::post('/invoice-ppn/{customer}/cutoff', [App\Http\Controllers\InvoicePpnController::class, 'cutoff'])->name('invoice-ppn.cutoff');
+        });
 
     });
+    // ROUTE BILLING
 
     // END ROUTE BILLING
 });

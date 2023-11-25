@@ -38,7 +38,7 @@
                 @foreach ($data as $d)
                 <tr>
                     <td class="text-center align-middle"></td>
-                    <td class="text-center align-middle">{{$d->tanggal}}</td>
+                    <td class="text-center align-middle">{{$d->id_tanggal}}</td>
                     <td class="text-center align-middle">{{$d->customer->singkatan}}</td>
                     <td class="text-center align-middle">{{$d->nota_timbangan}}</td>
                     <td class="text-center align-middle">{{$d->nf_berat}}</td>
