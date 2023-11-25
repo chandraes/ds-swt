@@ -58,16 +58,27 @@
                     <div class="row mb-4">
                         <label for="" class="col-md-3 form-label">Role</label>
                         <div class="col-md-9">
-                            <select class="form-select" name="role" id="role" required>
+                            <select class="form-select" name="role" id="role" required onchange="checkRole()">
                                 <option value="">-- Pilih Role --</option>
                                 <option value="admin">Admin</option>
                                 <option value="user">User</option>
                                 <option value="investor">Investor</option>
+                                <option value="supplier">Supplier</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mb-4" id="divSupplier" hidden>
+                        <label for="" class="col-md-3 form-label">Supplier</label>
+                        <div class="col-md-9">
+                            <select class="form-select" name="supplier_id" id="supplier_id">
+                                <option value="">-- Pilih Supplier --</option>
+                                @foreach ($suppliers as $supplier)
+                                <option value="{{$supplier->id}}">{{$supplier->nama}}</option>
+                                @endforeach
                             </select>
                         </div>
                     </div>
                 </div>
-
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
                     <button type="submit" class="btn btn-primary">Simpan</button>

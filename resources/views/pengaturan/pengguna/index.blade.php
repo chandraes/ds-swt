@@ -97,11 +97,24 @@
 <link href="{{asset('assets/css/dt.min.css')}}" rel="stylesheet">
 @endpush
 @push('js')
-
 <script src="{{asset('assets/js/cleave.min.js')}}"></script>
-
 <script src="{{asset('assets/js/dt5.min.js')}}"></script>
 <script>
+
+    function checkRole(){
+        var role = $('#role').val();
+        if(role == 'supplier'){
+            $('#divSupplier').removeAttr('hidden');
+            $('#divSupplier').show();
+            // supplier_id required
+            $('#supplier_id').attr('required', true);
+        }else{
+            $('#divSupplier').hide();
+            $('#divSupplier').attr('hidden', true);
+            // supplier_id not required
+            $('#supplier_id').attr('required', false);
+        }
+    }
 
 
     $('#data').DataTable({

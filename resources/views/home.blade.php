@@ -21,13 +21,14 @@
             </a>
         </div>
         @endif
+        @if (auth()->user()->role != 'supplier')
         <div class="col-md-3 text-center">
             <a href="{{route('rekap')}}" class="text-decoration-none">
                 <img src="{{asset('images/rekap.svg')}}" alt="" width="100">
                 <h2>REKAP</h2>
             </a>
         </div>
-
+        @endif
         @if (auth()->user()->role == 'admin')
         <div class="col-md-3 text-center">
             <a href="{{route('pengaturan')}}" class="text-decoration-none">

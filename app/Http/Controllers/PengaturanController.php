@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Supplier;
 use Illuminate\Support\Facades\DB;
 Use App\Http\Controllers\Hash;
 use Illuminate\Http\Request;
@@ -16,9 +17,10 @@ class PengaturanController extends Controller
     {
 
         $users = User::all();
-
+        $suppliers = Supplier::all();
         return view('pengaturan.pengguna.index', [
-            'data' => $users
+            'data' => $users,
+            'suppliers' => $suppliers,
         ]);
     }
 
@@ -42,6 +44,7 @@ class PengaturanController extends Controller
             'email' => 'nullable',
             'password' => 'required',
             'role' => 'required',
+            'supplier_id' => 'nullable',
         ]);
 
         $data['password'] = bcrypt($data['password']);
@@ -72,6 +75,7 @@ class PengaturanController extends Controller
             'email' => 'nullable',
             'password' => 'nullable',
             'role' => 'required',
+            'supplier_id' => 'nullable',
         ]);
 
         $user = User::findOrFail($id);
@@ -80,6 +84,10 @@ class PengaturanController extends Controller
             $data['password'] = bcrypt($data['password']);
         } else {
             unset($data['password']);
+        }
+
+        if ($data['role'] != 'supplier') {
+            $data['supplier_id'] = null;
         }
 
         try {
