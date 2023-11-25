@@ -35,7 +35,7 @@ class Transaksi extends Model
 //     return floatval(str_replace(',', '', $value));
 // }
 
-    public function getProfitAttribute($value)
+    public function getNfProfitAttribute($value)
     {
         return number_format($value, 0, ',', '.');
     }

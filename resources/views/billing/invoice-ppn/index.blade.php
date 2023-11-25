@@ -121,7 +121,7 @@
                     <td class="text-center align-middle">{{$d->nf_harga}}</td>
                     <td class="text-center align-middle">{{$d->nf_total}}</td>
                     <td class="text-center align-middle">{{$d->nf_pph}}</td>
-                    <td class="text-center align-middle">{{$d->profit}}</td>
+                    <td class="text-center align-middle">{{number_format($d->profit,0,',','.')}}</td>
                     <td class="text-center align-middle">{{number_format($d->total_tagihan,0,',','.')}}</td>
                     <td class="text-center align-middle">{{number_format($d->total_ppn,0,',','.')}}</td>
 
@@ -136,7 +136,7 @@
                     <th class="text-center align-middle"></th>
                     <th class="text-center align-middle">{{number_format($total, 0,',','.')}}</th>
                     <th class="text-center align-middle">{{number_format($totalPPH, 0,',','.')}}</th>
-                    <th class="text-center align-middle">{{$totalProfit}}</th>
+                    <th class="text-center align-middle">{{number_format($totalProfit, 0, ',','.')}}</th>
                     <th class="text-center align-middle">{{number_format($totalTagihan, 0, ',','.')}}</th>
                     <th class="text-center align-middle">{{number_format($totalPPN, 0, ',','.')}}</th>
                 </tr>

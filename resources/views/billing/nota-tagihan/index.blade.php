@@ -71,7 +71,7 @@
                     <td class="text-center align-middle">{{$d->nf_harga}}</td>
                     <td class="text-center align-middle">{{$d->nf_total}}</td>
                     <td class="text-center align-middle">{{$d->nf_pph}}</td>
-                    <td class="text-center align-middle">{{$d->profit}}</td>
+                    <td class="text-center align-middle">{{$d->nf_profit}}</td>
                     <td class="text-center align-middle">{{number_format($d->total_tagihan,0,',','.')}}</td>
                     <td class="text-center align-middle">
                         @if (auth()->user()->role == 'admin')

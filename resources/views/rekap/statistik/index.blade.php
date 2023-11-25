@@ -66,7 +66,8 @@
     <div class="row text-center">
         <h1>Statistik {{$nama_bulan}} {{$tahun}}</h1>
     </div>
-
+    <button id="toggleChartButton" class="btn btn-secondary">Tampilkan Chart</button>
+    <canvas id="myChart" style="display: none;"></canvas>
     <div class="row mt-3">
         <table class="table table-bordered table-hover" id="rekapTable">
             <thead class="table-success">
@@ -85,7 +86,7 @@
                         <td class="text-center align-middle">{{ number_format($data['total_berat'], 0, ',','.') }}</td>
                         <td class="text-center align-middle">{{ number_format($data['total_bayar'], 0, ',','.') }}</td>
                         <td class="text-center align-middle">{{ number_format($data['total_tagihan'], 0,',','.') }}</td>
-                        <td class="text-center align-middle">{{ $data['total_profit'] }}</td>
+                        <td class="text-center align-middle">{{ number_format($data['total_profit'], 0,',','.') }}</td>
                     </tr>
                 @endforeach
             </tbody>
@@ -95,7 +96,7 @@
                     <th class="text-center align-middle">{{ number_format($grand_total_berat, 0, ',','.') }}</th>
                     <th class="text-center align-middle">{{ number_format($grand_total_bayar, 0, ',','.') }}</th>
                     <th class="text-center align-middle">{{ number_format($grand_total_tagihan, 0, ',','.') }}</th>
-                    <th class="text-center align-middle">{{ $grand_total_profit }}</th>
+                    <th class="text-center align-middle">{{ number_format($grand_total_profit, 0, ',','.') }}</th>
                 </tr>
             </tfoot>
         </table>
@@ -103,6 +104,9 @@
     <br>
     <div class="row mt-3 text-center">
         <h1>Statistik {{$tahun}}</h1>
+
+        <button id="toggleYearlyChartButton" class="btn btn-secondary col-md-3 m-3">Tampilkan Chart Tahunan</button>
+        <canvas id="yearlyChart" style="display: none;"></canvas>
         <table class="table table-hover table-bordered" id="rekapTahunan">
             <thead class="table-success">
                 <tr>
@@ -138,7 +142,7 @@
                 <tr>
                     <td class="text-center align-middle">Profit</td>
                     @foreach ($statistics_yearly as $data)
-                        <td class="text-center align-middle">{{ $data['total_profit'] }}</td>
+                        <td class="text-center align-middle">{{ number_format($data['total_profit'], 0,',','.') }}</td>
                     @endforeach
                     <td class="text-center align-middle">{{ number_format($yearly_total_profit, 0,',','.') }}</td>
                 </tr>
@@ -153,6 +157,133 @@
 @push('js')
 <script src="{{asset('assets/plugins/date-picker/date-picker.js')}}"></script>
 <script src="{{asset('assets/js/dt5.min.js')}}"></script>
+<script src="{{asset('assets/plugins/chart/Chart.bundle.js')}}"></script>
+<script>
+    document.getElementById('toggleYearlyChartButton').addEventListener('click', function() {
+        var chart = document.getElementById('yearlyChart');
+        var button = document.getElementById('toggleYearlyChartButton');
+
+        // Toggle the display of the chart
+        if (chart.style.display === 'none') {
+            chart.style.display = 'block';
+            button.textContent = 'Sembunyikan Chart Tahunan';
+        } else {
+            chart.style.display = 'none';
+            button.textContent = 'Tampilkan Chart Tahunan';
+        }
+    });
+
+    // Prepare the data for the yearly chart
+    var yearly_labels = @json(array_keys($statistics_yearly));
+    var yearly_data_bayar = @json(array_column($statistics_yearly, 'total_bayar'));
+    var yearly_data_tagihan = @json(array_column($statistics_yearly, 'total_tagihan'));
+    var yearly_data_profit = @json(array_column($statistics_yearly, 'total_profit'));
+
+    // Initialize the yearly chart
+    var yearlyCtx = document.getElementById('yearlyChart').getContext('2d');
+    var yearlyChart = new Chart(yearlyCtx, {
+        type: 'line',
+        data: {
+            labels: yearly_labels,
+            datasets: [{
+                label: 'Bayar',
+                data: yearly_data_bayar,
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }, {
+                label: 'Tagihan',
+                data: yearly_data_tagihan,
+                borderColor: 'rgba(153, 102, 255, 1)',
+                borderWidth: 1
+            }, {
+                label: 'Profit',
+                data: yearly_data_profit,
+                borderColor: 'rgba(255, 159, 64, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+    </script>
+<script>
+
+    document.getElementById('toggleChartButton').addEventListener('click', function() {
+        var chart = document.getElementById('myChart');
+        var button = document.getElementById('toggleChartButton');
+
+        // Toggle the display of the chart
+        if (chart.style.display === 'none') {
+            chart.style.display = 'block';
+            button.textContent = 'Sembunyikan Chart';
+        } else {
+            chart.style.display = 'none';
+            button.textContent = 'Tampilkan Chart';
+        }
+    });
+    // Prepare the data for the chart
+    var labels = @json(array_keys($statistics_monthly));
+    var data_berat = @json(array_column($statistics_monthly, 'total_berat'));
+    var data_bayar = @json(array_column($statistics_monthly, 'total_bayar'));
+    var data_tagihan = @json(array_column($statistics_monthly, 'total_tagihan'));
+    var data_profit = @json(array_column($statistics_monthly, 'total_profit'));
+
+    // Initialize the chart
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Belanja',
+                data: data_bayar,
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }, {
+                label: 'Tagihan',
+                data: data_tagihan,
+                borderColor: 'rgba(153, 102, 255, 1)',
+                borderWidth: 1
+            }, {
+                label: 'Profit',
+                data: data_profit,
+                borderColor: 'rgba(255, 159, 64, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        // Include a comma in the ticks
+                        callback: function(value, index, values) {
+                            return value.toLocaleString('id-ID');
+                        }
+                    }
+                }
+            },
+            tooltips: {
+                callbacks: {
+                    label: function(tooltipItem, data) {
+                        var label = data.datasets[tooltipItem.datasetIndex].label || '';
+
+                        if (label) {
+                            label += ': ';
+                        }
+                        label += tooltipItem.yLabel.toLocaleString('id-ID');
+                        return label;
+                    }
+                }
+            }
+        }
+    });
+    </script>
 <script>
 
     $(document).ready(function() {
