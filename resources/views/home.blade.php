@@ -37,6 +37,14 @@
             </a>
         </div>
         @endif
+        @if (auth()->user()->role == 'supplier')
+        <div class="col-md-3 text-center">
+            <a href="{{route('kas-per-supplier')}}" class="text-decoration-none">
+                <img src="{{asset('images/kas-supplier.svg')}}" alt="" width="100">
+                <h2>KAS SUPPLIER</h2>
+            </a>
+        </div>
+        @endif
     </div>
 </div>
 @endsection

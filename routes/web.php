@@ -90,7 +90,6 @@ Route::group(['middleware' => ['auth']], function() {
         });
     });
 
-
     // END ROUTE REKAP
     Route::group(['middleware' => ['role:admin,user']], function() {
         Route::get('/billing', [App\Http\Controllers\BillingController::class, 'index'])->name('billing');
@@ -133,7 +132,11 @@ Route::group(['middleware' => ['auth']], function() {
         });
 
     });
-    // ROUTE BILLING
 
-    // END ROUTE BILLING
+    Route::group(['middleware' => ['role:supplier']], function() {
+        Route::get('/kas-per-supplier', [App\Http\Controllers\KasPerSupplierController::class, 'index'])->name('kas-per-supplier');
+        Route::get('/kas-per-supplier/print/{bulan}/{tahun}', [App\Http\Controllers\KasPerSupplierController::class, 'print'])->name('kas-per-supplier.print');
+        Route::get('/kas-per-supplier/detail-bayar/{invoice}', [App\Http\Controllers\KasPerSupplierController::class, 'detail_bayar'])->name('kas-per-supplier.detail-bayar');
+        Route::get('/kas-per-supplier/detail-bayar/print/{invoice}', [App\Http\Controllers\KasPerSupplierController::class, 'detail_bayar_print'])->name('kas-per-supplier.detail-bayar.print');
+    });
 });
