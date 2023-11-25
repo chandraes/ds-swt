@@ -38,14 +38,19 @@ Route::group(['middleware' => ['auth']], function() {
             Route::delete('/akun/{akun}/delete', [App\Http\Controllers\PengaturanController::class, 'destroy'])->name('pengaturan.akun.delete');
         });
         // END ROUTE PENGATURAN
+    });
+
 
         // ROUTE DB
-        Route::view('db', 'db.index')->name('db');
-        Route::prefix('db')->group(function () {
+    Route::view('db', 'db.index')->name('db')->middleware('role:admin,user');
+    Route::prefix('db')->group(function () {
+        Route::group(['middleware' => ['role:admin,user']], function() {
             Route::get('/customer', [App\Http\Controllers\CustomerController::class, 'index'])->name('db.customer');
+            Route::patch('/customer/{customer}/update-harga', [App\Http\Controllers\CustomerController::class, 'update_harga'])->name('db.customer.update-harga');
+        });
+        Route::group(['middleware' => ['role:admin']], function() {
             Route::post('/customer/store', [App\Http\Controllers\CustomerController::class, 'store'])->name('db.customer.store');
             Route::patch('/customer/{customer}/update', [App\Http\Controllers\CustomerController::class, 'update'])->name('db.customer.update');
-            Route::patch('/customer/{customer}/update-harga', [App\Http\Controllers\CustomerController::class, 'update_harga'])->name('db.customer.update-harga');
             Route::delete('/customer/{customer}/delete', [App\Http\Controllers\CustomerController::class, 'destroy'])->name('db.customer.delete');
 
             Route::get('/investor', [App\Http\Controllers\InvestorController::class, 'index'])->name('db.investor');
@@ -64,26 +69,27 @@ Route::group(['middleware' => ['auth']], function() {
     });
 
 
-    // END ROUTE DB
 
-    // ROUTE REKAP
-    Route::get('rekap', [App\Http\Controllers\RekapController::class, 'index'])->name('rekap');
-    Route::prefix('rekap')->group(function() {
-        Route::get('/kas-besar', [App\Http\Controllers\RekapController::class, 'kas_besar'])->name('rekap.kas-besar');
-        Route::get('/kas-besar/print/{bulan}/{tahun}', [App\Http\Controllers\RekapController::class, 'kas_besar_print'])->name('rekap.kas-besar.print');
-        Route::get('/kas-besar/detail-tagihan/{invoice}', [App\Http\Controllers\RekapController::class, 'detail_tagihan'])->name('rekap.kas-besar.detail-tagihan');
-        Route::get('/kas-besar/detail-bayar/{invoice}', [App\Http\Controllers\RekapController::class, 'detail_bayar'])->name('rekap.kas-besar.detail-bayar');
+    Route::group(['middleware' => ['role:admin,user,investor']], function() {
+        Route::get('rekap', [App\Http\Controllers\RekapController::class, 'index'])->name('rekap');
+        Route::prefix('rekap')->group(function() {
+            Route::get('/kas-besar', [App\Http\Controllers\RekapController::class, 'kas_besar'])->name('rekap.kas-besar');
+            Route::get('/kas-besar/print/{bulan}/{tahun}', [App\Http\Controllers\RekapController::class, 'kas_besar_print'])->name('rekap.kas-besar.print');
+            Route::get('/kas-besar/detail-tagihan/{invoice}', [App\Http\Controllers\RekapController::class, 'detail_tagihan'])->name('rekap.kas-besar.detail-tagihan');
+            Route::get('/kas-besar/detail-bayar/{invoice}', [App\Http\Controllers\RekapController::class, 'detail_bayar'])->name('rekap.kas-besar.detail-bayar');
 
-        Route::get('/kas-supplier', [App\Http\Controllers\RekapController::class, 'kas_supplier'])->name('rekap.kas-supplier');
-        Route::get('/kas-supplier/print/{bulan}/{tahun}/{supplier}', [App\Http\Controllers\RekapController::class, 'kas_supplier_print'])->name('rekap.kas-supplier.print');
-        Route::get('/kas-supplier/detail-bayar/{invoice}', [App\Http\Controllers\RekapController::class, 'detail_bayar_supplier'])->name('rekap.kas-supplier.detail-bayar');
-        Route::get('/kas-supplier/detail-bayar/print/{invoice}', [App\Http\Controllers\RekapController::class, 'detail_bayar_supplier_pdf'])->name('rekap.kas-supplier.detail-bayar.print');
+            Route::get('/kas-supplier', [App\Http\Controllers\RekapController::class, 'kas_supplier'])->name('rekap.kas-supplier');
+            Route::get('/kas-supplier/print/{bulan}/{tahun}/{supplier}', [App\Http\Controllers\RekapController::class, 'kas_supplier_print'])->name('rekap.kas-supplier.print');
+            Route::get('/kas-supplier/detail-bayar/{invoice}', [App\Http\Controllers\RekapController::class, 'detail_bayar_supplier'])->name('rekap.kas-supplier.detail-bayar');
+            Route::get('/kas-supplier/detail-bayar/print/{invoice}', [App\Http\Controllers\RekapController::class, 'detail_bayar_supplier_pdf'])->name('rekap.kas-supplier.detail-bayar.print');
 
-        Route::get('/invoice/{customer}', [App\Http\Controllers\RekapController::class, 'rekap_invoice'])->name('rekap.invoice');
+            Route::get('/invoice/{customer}', [App\Http\Controllers\RekapController::class, 'rekap_invoice'])->name('rekap.invoice');
 
-        Route::get('/statistik/{customer}', [App\Http\Controllers\StatistikController::class, 'index'])->name('statistik.index');
-        Route::get('/statistik/{customer}/print', [App\Http\Controllers\StatistikController::class, 'print'])->name('statistik.print');
+            Route::get('/statistik/{customer}', [App\Http\Controllers\StatistikController::class, 'index'])->name('statistik.index');
+            Route::get('/statistik/{customer}/print', [App\Http\Controllers\StatistikController::class, 'print'])->name('statistik.print');
+        });
     });
+
 
     // END ROUTE REKAP
     Route::group(['middleware' => ['role:admin,user']], function() {

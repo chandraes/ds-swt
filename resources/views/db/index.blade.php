@@ -12,6 +12,7 @@
                 <h2>CUSTOMER</h2>
             </a>
         </div>
+        @if (auth()->user()->role == 'admin')
         <div class="col-md-3 mt-3 text-center">
             <a href="{{route('db.supplier')}}" class="text-decoration-none">
                 <img src="{{asset('images/supplier.svg')}}" alt="" width="100">
@@ -30,6 +31,7 @@
                 <h2>REKENING TRANSAKSI</h2>
             </a>
         </div>
+        @endif
         <div class="col-md-3 mt-3 text-center">
             <a href="{{route('home')}}" class="text-decoration-none">
                 <img src="{{asset('images/dashboard.svg')}}" alt="" width="100">

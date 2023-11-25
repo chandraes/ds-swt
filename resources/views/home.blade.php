@@ -5,7 +5,7 @@
 </div>
 <div class="container mt-5">
     <div class="row justify-content-left">
-        @if (auth()->user()->role == 'admin')
+        @if (auth()->user()->role != 'supplier' && auth()->user()->role != 'investor')
         <div class="col-md-3 text-center">
             <a href="{{route('db')}}" class="text-decoration-none">
                 <img src="{{asset('images/database.svg')}}" alt="" width="100">
@@ -13,7 +13,7 @@
             </a>
         </div>
         @endif
-        @if (auth()->user()->role == 'admin' || auth()->user()->role == 'user')
+        @if (auth()->user()->role != 'supplier' && auth()->user()->role != 'investor')
         <div class="col-md-3 text-center">
             <a href="{{route('billing')}}" class="text-decoration-none">
                 <img src="{{asset('images/billing.svg')}}" alt="" width="100">
@@ -27,6 +27,7 @@
                 <h2>REKAP</h2>
             </a>
         </div>
+
         @if (auth()->user()->role == 'admin')
         <div class="col-md-3 text-center">
             <a href="{{route('pengaturan')}}" class="text-decoration-none">

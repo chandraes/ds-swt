@@ -14,10 +14,12 @@
                                 width="30"> Dashboard</a></td>
                     <td><a href="{{route('db')}}"><img src="{{asset('images/database.svg')}}" alt="dokumen" width="30">
                             Database</a></td>
+                    @if (auth()->user()->role == 'admin')
                     <td><a href="#" data-bs-toggle="modal" data-bs-target="#createCustomer"><img
                                 src="{{asset('images/customer.svg')}}" width="30"> Tambah Customer</a>
-                        @include('db.customer.create')
                     </td>
+                    @endif
+                    @include('db.customer.create')
                 </tr>
             </table>
         </div>
@@ -50,6 +52,7 @@
 
                 </td>
                 <td class="text-center align-middle">
+                    @if (auth()->user()->role == 'admin')
                     <div class="d-flex justify-content-center">
                         <button class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#editCustomer"
                             onclick="editCustomer({{$d}}, {{$d->id}})">Edit</button>
@@ -59,6 +62,7 @@
                             <button type="submit" class="btn btn-danger m-2"><i class="fa fa-trash"></i></button>
                         </form>
                     </div>
+                    @endif
                 </td>
             </tr>
             <script>
@@ -119,46 +123,7 @@
         scrollY: "550px",
     });
 
-    var harga = new Cleave('#harga', {
-        numeral: true,
-        numeralThousandsGroupStyle: 'thousand',
-        numeralDecimalMark: ',',
-        delimiter: '.'
-    });
 
-    var editWa = new Cleave('#editNo_wa', {
-        delimiter: '-',
-        blocks: [4, 4, 8]
-    });
-
-    var npwp = new Cleave('#npwp', {
-        delimiters: ['.', '.', '.', '-','.','.'],
-        blocks: [2, 3, 3, 1, 3, 3],
-    });
-
-    var edit_npwp = new Cleave('#edit_npwp', {
-        delimiters: ['.', '.', '.', '-','.','.'],
-        blocks: [2, 3, 3, 1, 3, 3],
-    });
-
-    var editHarga = new Cleave('#editHarga', {
-        numeral: true,
-        numeralThousandsGroupStyle: 'thousand',
-        numeralDecimalMark: ',',
-        delimiter: '.'
-    });
-
-    var editHarga2 = new Cleave('#editHarga2', {
-        numeral: true,
-        numeralThousandsGroupStyle: 'thousand',
-        numeralDecimalMark: ',',
-        delimiter: '.'
-    });
-
-    var wa = new Cleave('#no_wa', {
-        delimiter: '-',
-        blocks: [4, 4, 8]
-    });
 
     $('#createForm').submit(function(e){
             e.preventDefault();
@@ -214,5 +179,46 @@
                 }
             })
         });
+
+    var harga = new Cleave('#harga', {
+        numeral: true,
+        numeralThousandsGroupStyle: 'thousand',
+        numeralDecimalMark: ',',
+        delimiter: '.'
+    });
+
+    var editWa = new Cleave('#editNo_wa', {
+        delimiter: '-',
+        blocks: [4, 4, 8]
+    });
+
+    var npwp = new Cleave('#npwp', {
+        delimiters: ['.', '.', '.', '-','.','.'],
+        blocks: [2, 3, 3, 1, 3, 3],
+    });
+
+    var edit_npwp = new Cleave('#edit_npwp', {
+        delimiters: ['.', '.', '.', '-','.','.'],
+        blocks: [2, 3, 3, 1, 3, 3],
+    });
+
+    var editHarga = new Cleave('#editHarga', {
+        numeral: true,
+        numeralThousandsGroupStyle: 'thousand',
+        numeralDecimalMark: ',',
+        delimiter: '.'
+    });
+
+    var editHarga2 = new Cleave('#editHarga2', {
+        numeral: true,
+        numeralThousandsGroupStyle: 'thousand',
+        numeralDecimalMark: ',',
+        delimiter: '.'
+    });
+
+    var wa = new Cleave('#no_wa', {
+        delimiter: '-',
+        blocks: [4, 4, 8]
+    });
 </script>
 @endpush
