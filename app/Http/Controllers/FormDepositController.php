@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\KasBesar;
 use App\Models\Rekening;
+use App\Models\KasSupplier;
+use App\Models\Transaksi;
+use App\Models\InvoicePpn;
 use App\Services\StarSender;
 use App\Models\GroupWa;
 use Illuminate\Http\Request;
@@ -37,6 +40,9 @@ class FormDepositController extends Controller
         $data['modal_investor'] = -$data['nominal_transaksi'];
 
         $kasBesar = new KasBesar();
+        $kasSupplier = new KasSupplier;
+        $transaksi = new Transaksi;
+        $ppn = new InvoicePpn;
         $lastKasBesar = $kasBesar->lastKasBesar();
 
         if ($lastKasBesar) {
@@ -53,6 +59,14 @@ class FormDepositController extends Controller
 
         $store = KasBesar::create($data);
 
+        $totalPpn = $ppn->where('bayar', 0)->sum('total_ppn');
+        $last = $kasBesar->lastKasBesar()->saldo ?? 0;
+        $modalInvestor = ($kasBesar->lastKasBesar()->modal_investor_terakhir ?? 0) * -1;
+        $totalTagihan = $transaksi->totalTagihan()->sum('total_tagihan');
+        $totalTitipan = $kasSupplier->saldoTitipan() ?? 0;
+
+        $total_profit_bulan = ($totalTitipan+$totalTagihan+$last)-($modalInvestor+$totalPpn);
+
         $group = GroupWa::where('untuk', 'kas-besar')->first();
         $pesan =    "🔵🔵🔵🔵🔵🔵🔵🔵🔵\n".
                     "*Form Permintaan Deposit*\n".
@@ -66,6 +80,10 @@ class FormDepositController extends Controller
                     "==========================\n".
                     "Sisa Saldo Kas Besar : \n".
                     "Rp. ".number_format($store->saldo, 0, ',', '.')."\n\n".
+                    "Total Profit Saat Ini :" ."\n".
+                    "Rp. ".number_format($total_profit_bulan, 0,',','.')."\n\n".
+                    "Total PPN Belum Disetor : \n".
+                    "Rp. ".number_format($totalPpn, 0, ',', '.')."\n\n".
                     "Total Modal Investor : \n".
                     "Rp. ".number_format($store->modal_investor_terakhir, 0, ',', '.')."\n\n".
                     "Terima kasih 🙏🙏🙏\n";
@@ -101,6 +119,9 @@ class FormDepositController extends Controller
         $data['bank'] = $rekening->bank;
 
         $kasBesar = new KasBesar;
+        $kasSupplier = new KasSupplier;
+        $transaksi = new Transaksi;
+        $ppn = new InvoicePpn;
         $last = $kasBesar->lastKasBesar();
 
         if($last == null || $last->saldo < $data['nominal_transaksi']){
@@ -115,6 +136,14 @@ class FormDepositController extends Controller
 
         $store = KasBesar::create($data);
 
+        $totalPpn = $ppn->where('bayar', 0)->sum('total_ppn');
+        $last = $kasBesar->lastKasBesar()->saldo ?? 0;
+        $modalInvestor = ($kasBesar->lastKasBesar()->modal_investor_terakhir ?? 0) * -1;
+        $totalTagihan = $transaksi->totalTagihan()->sum('total_tagihan');
+        $totalTitipan = $kasSupplier->saldoTitipan() ?? 0;
+
+        $total_profit_bulan = ($totalTitipan+$totalTagihan+$last)-($modalInvestor+$totalPpn);
+
         $group = GroupWa::where('untuk', 'kas-besar')->first();
 
         $pesan =    "🔴🔴🔴🔴🔴🔴🔴🔴🔴\n".
@@ -128,6 +157,10 @@ class FormDepositController extends Controller
                     "==========================\n".
                     "Sisa Saldo Kas Besar : \n".
                     "Rp. ".number_format($store->saldo, 0, ',', '.')."\n\n".
+                    "Total Profit Saat Ini :" ."\n".
+                    "Rp. ".number_format($total_profit_bulan, 0,',','.')."\n\n".
+                    "Total PPN Belum Disetor : \n".
+                    "Rp. ".number_format($totalPpn, 0, ',', '.')."\n\n".
                     "Total Modal Investor : \n".
                     "Rp. ".number_format($store->modal_investor_terakhir, 0, ',', '.')."\n\n".
                     "Terima kasih 🙏🙏🙏\n";
