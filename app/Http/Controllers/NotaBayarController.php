@@ -6,6 +6,7 @@ use App\Models\Transaksi;
 use App\Models\Supplier;
 use App\Models\KasBesar;
 use App\Models\KasSupplier;
+use App\Models\InvoicePpn;
 use App\Models\InvoiceBayar;
 use App\Models\InvoiceBayarDetail;
 use App\Models\GroupWa;
@@ -46,12 +47,15 @@ class NotaBayarController extends Controller
         $kasSupplier = new KasSupplier;
         $kasBesar = new KasBesar;
         $transaksi = new Transaksi;
+        $ppn = new InvoicePpn;
 
         $saldoKasBesar = $kasBesar->lastKasBesar()->saldo ?? 0;
 
         if ($saldoKasBesar < $data['total_bayar']) {
             return redirect()->back()->with('error', 'Saldo kas besar tidak cukup');
         }
+
+        $totalPpn = $ppn->where('bayar', 0)->sum('total_ppn');
 
         DB::beginTransaction();
 
@@ -112,6 +116,8 @@ class NotaBayarController extends Controller
                     "Rp. ".number_format($storeKeluar->saldo, 0, ',', '.')."\n\n".
                     "Sisa Saldo Kas Besar : \n".
                     "Rp. ".number_format($store->saldo, 0, ',', '.')."\n\n".
+                    "Total PPN Belum Disetor : \n".
+                    "Rp. ".number_format($totalPpn, 0, ',', '.')."\n\n".
                     "Total Modal Investor : \n".
                     "Rp. ".number_format($store->modal_investor_terakhir, 0, ',', '.')."\n\n".
                     "Terima kasih 🙏🙏🙏\n";

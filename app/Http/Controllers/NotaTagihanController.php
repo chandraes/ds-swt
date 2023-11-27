@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Customer;
 use App\Models\Supplier;
 use App\Models\Transaksi;
+use App\Models\InvoicePpn;
 use App\Models\InvoiceTagihan;
 use App\Models\InvoiceTagihanDetail;
 use App\Models\KasBesar;
@@ -102,6 +103,10 @@ class NotaTagihanController extends Controller
 
         $transaksi = new Transaksi;
 
+        $ppn = new InvoicePpn;
+
+        $totalPpn = $ppn->where('bayar', 0)->sum('total_ppn');
+
         $tanggal = $transaksi->where('id', $selectedData[0])->first()->tanggal;
         $month = date('m', strtotime($tanggal));
         // create monthName in indonesian using carbon from $tanggal
@@ -151,6 +156,8 @@ class NotaTagihanController extends Controller
                     "Rp. ".number_format($total_profit_bulan, 0,',','.')."\n\n".
                     "Sisa Saldo Kas Besar : \n".
                     "Rp. ".number_format($store->saldo, 0, ',', '.')."\n\n".
+                    "Total PPN Belum Disetor : \n".
+                    "Rp. ".number_format($totalPpn, 0, ',', '.')."\n\n".
                     "Total Modal Investor : \n".
                     "Rp. ".number_format($store->modal_investor_terakhir, 0, ',', '.')."\n\n".
                     "Terima kasih 🙏🙏🙏\n";
