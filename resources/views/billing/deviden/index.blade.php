@@ -7,6 +7,57 @@
         </div>
     </div>
     @include('swal')
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <td>Modal Investor</td>
+                        <td class="text-end align-middle"> {{number_format($modalInvestor, 0,',','.')}}</td>
+                    </tr>
+                    <tr>
+                        <td>Total PPN Belum Bayar</td>
+                        <td class="text-end align-middle"> {{number_format($ppn, 0,',','.')}}</td>
+                    </tr>
+                    <tr>
+                        <th>Total</th>
+                        <th class="text-end align-middle"> {{number_format($modalInvestor+$ppn, 0,',','.')}}</th>
+                    </tr>
+                    @php
+                        $total1 = $modalInvestor+$ppn;
+                    @endphp
+                    <tr>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Saldo Kas</td>
+                        <td class="text-end align-middle"> {{number_format($kasBesar, 0,',','.')}}</td>
+                    </tr>
+                    <tr>
+                        <td>Total Tagihan</td>
+                        <td class="text-end align-middle"> {{number_format($totalTagihan, 0,',','.')}}</td>
+                    </tr>
+                    <tr>
+                        <td>Titipan Supplier</td>
+                        <td class="text-end align-middle"> {{number_format($totalTitipan, 0,',','.')}}</td>
+                    </tr>
+                    <tr>
+                        <th>Total</th>
+                        @php
+                            $total2 = $totalTitipan+$totalTagihan+$kasBesar;
+                        @endphp
+                        <th class="text-end align-middle"> {{number_format($total2, 0,',','.')}}</th>
+                    </tr>
+                    <tr>
+                        <th>Estimasi Profit</th>
+                        <th class="text-end align-middle">{{number_format($total2-$total1, 0,',','.')}}</th>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
     <form action="{{ route('billing.deviden.store') }}" method="post" id="masukForm">
         @csrf
         <div class="row">

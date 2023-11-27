@@ -59,4 +59,16 @@ class KasSupplier extends Model
         $store = $this->create($data);
         return $store;
     }
+
+    public function saldoTitipan()
+    {
+        $supplier = Supplier::all();
+        $saldo = 0;
+
+        foreach ($supplier as $v) {
+            $saldo += $this->lastKasSupplier($v->id)->saldo;
+        }
+        
+        return $saldo;
+    }
 }

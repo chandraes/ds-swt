@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Customer;
 use App\Models\Transaksi;
 use App\Models\Supplier;
+use App\Models\InvoicePpn;
 use Illuminate\Http\Request;
 
 class BillingController extends Controller
@@ -15,6 +16,7 @@ class BillingController extends Controller
         $nt = $transaksi->totalNotaTagihan();
         $nb = $transaksi->totalNotaBayar();
         $ip = $transaksi->totalInvoicePpn();
+        $ppn = InvoicePpn::where('bayar', false)->count();
         $customer = Customer::all();
         $supplier = Supplier::select('id', 'nama', 'nickname')->get();
 
@@ -23,6 +25,7 @@ class BillingController extends Controller
             'nt' => $nt,
             'nb' => $nb,
             'ip' => $ip,
+            'ppn' => $ppn,
             'supplier' => $supplier
         ]);
     }

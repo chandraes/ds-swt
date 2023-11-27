@@ -110,6 +110,12 @@
             </div>
         </div>
         <div class="col-md-3 text-center mt-5">
+            <a href="{{route('form-ppn')}}" class="text-decoration-none">
+                <img src="{{asset('images/form-ppn.svg')}}" alt="" width="100">
+                <h2>FORM PPN @if($ppn != 0) <span class="text-danger">({{$ppn}})</span> @endif</h2>
+            </a>
+        </div>
+        <div class="col-md-3 text-center mt-5">
             <a href="{{route('home')}}" class="text-decoration-none">
                 <img src="{{asset('images/dashboard.svg')}}" alt="" width="100">
                 <h2>DASHBOARD</h2>

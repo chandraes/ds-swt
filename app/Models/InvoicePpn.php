@@ -20,6 +20,11 @@ class InvoicePpn extends Model
         return $this->belongsTo(Customer::class);
     }
 
+    public function getIdTanggalAttribute()
+    {
+        return date('d-m-Y', strtotime($this->tanggal));
+    }
+
     public function noInvoice()
     {
         return $this->max('no_invoice') + 1 ?? 1;

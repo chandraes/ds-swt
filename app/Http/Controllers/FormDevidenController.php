@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\KasBesar;
 use App\Models\Investor;
+use App\Models\Transaksi;
+use App\Models\InvoicePpn;
+use App\Models\KasSupplier;
 use App\Models\Rekening;
 use App\Models\GroupWa;
 use Illuminate\Http\Request;
@@ -14,6 +17,17 @@ class FormDevidenController extends Controller
 {
     public function index()
     {
+        $transaksi = new Transaksi();
+        $db = new KasBesar();
+        $kasSupplier = new KasSupplier();
+
+        $kasBesar = $db->lastKasBesar()->saldo;
+        $modalInvestor = $db->lastKasBesar()->modal_investor_terakhir * -1;
+        $totalTagihan = $transaksi->totalTagihan()->sum('total_tagihan');
+        $totalTitipan = $kasSupplier->saldoTitipan();
+
+        $ppn = InvoicePpn::where('bayar', false)->sum('total_ppn');
+
         $investors = Investor::all();
         $totalPersentase = $investors->sum('persentase');
 
@@ -22,7 +36,12 @@ class FormDevidenController extends Controller
         }
 
         return view('billing.deviden.index', [
-            'data' => $investors
+            'data' => $investors,
+            'totalTagihan' => $totalTagihan,
+            'totalTitipan' => $totalTitipan,
+            'kasBesar' => $kasBesar,
+            'modalInvestor' => $modalInvestor,
+            'ppn' => $ppn,
         ]);
     }
 
