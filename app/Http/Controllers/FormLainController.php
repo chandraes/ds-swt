@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Rekening;
 use App\Models\KasBesar;
+use App\InvoicePpn;
 use App\Models\GroupWa;
 use App\Services\StarSender;
 use Illuminate\Http\Request;
@@ -31,6 +32,9 @@ class FormLainController extends Controller
         $data['nominal_transaksi'] = str_replace('.', '', $data['nominal_transaksi']);
 
         $kas = new KasBesar;
+        $ppn = new InvoicePpn;
+        $totalPpn = $ppn->where('bayar', 0)->sum('total_ppn');
+
         $rekening = Rekening::where('untuk', 'kas-besar')->first();
         $lastKasBesar = $kas->lastKasBesar();
 
@@ -62,6 +66,8 @@ class FormLainController extends Controller
                 "==========================\n".
                 "Sisa Saldo Kas Besar : \n".
                 "Rp. ".number_format($store->saldo, 0, ',', '.')."\n\n".
+                "Total PPN Belum Disetor : \n".
+                "Rp. ".number_format($totalPpn, 0, ',', '.')."\n\n".
                 "Total Modal Investor : \n".
                 "Rp. ".number_format($store->modal_investor_terakhir, 0, ',', '.')."\n\n".
                 "Terima kasih 🙏🙏🙏\n";
@@ -91,6 +97,8 @@ class FormLainController extends Controller
 
         $data['nominal_transaksi'] = str_replace('.', '', $data['nominal_transaksi']);
         $kas = new KasBesar;
+        $ppn = new InvoicePpn;
+        $totalPpn = $ppn->where('bayar', 0)->sum('total_ppn');
 
         $lastKasBesar = $kas->lastKasBesar();
 
@@ -115,6 +123,8 @@ class FormLainController extends Controller
                 "==========================\n".
                 "Sisa Saldo Kas Besar : \n".
                 "Rp. ".number_format($store->saldo, 0, ',', '.')."\n\n".
+                "Total PPN Belum Disetor : \n".
+                "Rp. ".number_format($totalPpn, 0, ',', '.')."\n\n".
                 "Total Modal Investor : \n".
                 "Rp. ".number_format($store->modal_investor_terakhir, 0, ',', '.')."\n\n".
                 "Terima kasih 🙏🙏🙏\n";
