@@ -53,12 +53,6 @@ class NotaBayarController extends Controller
             return redirect()->back()->with('error', 'Saldo kas besar tidak cukup');
         }
 
-        $saldoKasSupplier = $kasSupplier->lastKasSupplier($supplier->id)->saldo ?? 0;
-
-        if ($saldoKasSupplier < $data['total_bayar']) {
-            return redirect()->back()->with('error', 'Saldo kas supplier tidak cukup');
-        }
-
         DB::beginTransaction();
 
         $invoice = $invoiceBayar->insertBayar($data);
@@ -71,9 +65,9 @@ class NotaBayarController extends Controller
         $j['uraian'] = 'Pembelian BS' . $invoice->no_invoice;
         $j['nominal_transaksi'] = $data['total_bayar'];
         $j['supplier_id'] = $invoice->supplier_id;
-        $storeKeluar = $kasSupplier->insertKeluar($j);
 
         $storeKasSupplier = $kasSupplier->insertBayar($k);
+        $storeKeluar = $kasSupplier->insertKeluar($j);
 
         $b['nominal_transaksi'] = $data['total_bayar'];
         $b['supplier_id'] = $invoice->supplier_id;
