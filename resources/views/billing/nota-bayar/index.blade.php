@@ -31,7 +31,7 @@
                     <td class="text-center align-middle">{{$d->nota_timbangan}}</td>
                     <td class="text-center align-middle">{{number_format($d->berat, 0,',','.')}}</td>
                     <td class="text-center align-middle">Kg</td>
-                    <td class="text-center align-middle">{{$d->harga}}</td>
+                    <td class="text-center align-middle">{{$d->nf_harga}}</td>
                     <td class="text-center align-middle">{{number_format($d->total_bayar,0,',','.')}}</td>
                 </tr>
                 @endforeach
