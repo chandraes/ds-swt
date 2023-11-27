@@ -47,15 +47,15 @@ class NotaBayarController extends Controller
         $kasBesar = new KasBesar;
         $transaksi = new Transaksi;
 
-        $saldoKasBesar = $kasBesar->lastKasBesar()->saldo;
+        $saldoKasBesar = $kasBesar->lastKasBesar()->saldo ?? 0;
 
         if ($saldoKasBesar < $data['total_bayar']) {
             return redirect()->back()->with('error', 'Saldo kas besar tidak cukup');
         }
 
-        $saldoKasSupplier = $kasSupplier->lastKasSupplier($supplier->id)->saldo;
+        $saldoKasSupplier = $kasSupplier->lastKasSupplier($supplier->id)->saldo ?? 0;
 
-        if ($saldoKasSupplier == null || $saldoKasSupplier < $data['total_bayar']) {
+        if ($saldoKasSupplier < $data['total_bayar']) {
             return redirect()->back()->with('error', 'Saldo kas supplier tidak cukup');
         }
 
