@@ -17,7 +17,7 @@ class BillingController extends Controller
         $nb = $transaksi->totalNotaBayar();
         $ip = $transaksi->totalInvoicePpn();
         $ppn = InvoicePpn::where('bayar', false)->count();
-        $t = $transaksi->where('status', 1)->where('tagihan', 0)->get();
+        $t = $transaksi->where('status', 1)->get();
         $customer = Customer::all();
         $supplier = Supplier::select('id', 'nama', 'nickname')->get();
 

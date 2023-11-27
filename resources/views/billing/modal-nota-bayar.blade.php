@@ -13,7 +13,7 @@
                         <select class="form-select" name="supplier_id" id="supplier_id">
                             <option value="">-- Pilih Supplier --</option>
                             @foreach ($supplier as $s)
-                            <option value="{{$s->id}}">{{$s->nama}} ({{$s->nickname}})</option>
+                            <option value="{{$s->id}}">{{$s->nama}} ({{$s->nickname}}) @if($t->where('supplier_id', $s->id)->where('bayar', 0)->count() != 0) <span class="text-danger">({{$t->where('supplier_id', $s->id)->where('bayar', 0)->count()}}) @endif</option>
                             @endforeach
                         </select>
                     </div>
