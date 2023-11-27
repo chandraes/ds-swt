@@ -9,18 +9,21 @@
     @include('swal')
     <div class="row justify-content-center">
         <div class="col-md-6">
-            <table class="table">
+            <table class="table table-striped table-hover">
                 <tbody>
                     <tr>
                         <td>Modal Investor</td>
+                        <td>:</td>
                         <td class="text-end align-middle"> {{number_format($modalInvestor, 0,',','.')}}</td>
                     </tr>
                     <tr>
                         <td>Total PPN Belum Bayar</td>
+                        <td>:</td>
                         <td class="text-end align-middle"> {{number_format($ppn, 0,',','.')}}</td>
                     </tr>
                     <tr>
                         <th>Total</th>
+                        <th>:</th>
                         <th class="text-end align-middle"> {{number_format($modalInvestor+$ppn, 0,',','.')}}</th>
                     </tr>
                     @php
@@ -29,21 +32,26 @@
                     <tr>
                         <td></td>
                         <td></td>
+                        <td></td>
                     </tr>
                     <tr>
                         <td>Saldo Kas</td>
+                        <td>:</td>
                         <td class="text-end align-middle"> {{number_format($kasBesar, 0,',','.')}}</td>
                     </tr>
                     <tr>
                         <td>Total Tagihan</td>
+                        <td>:</td>
                         <td class="text-end align-middle"> {{number_format($totalTagihan, 0,',','.')}}</td>
                     </tr>
                     <tr>
                         <td>Titipan Supplier</td>
+                        <td>:</td>
                         <td class="text-end align-middle"> {{number_format($totalTitipan, 0,',','.')}}</td>
                     </tr>
                     <tr>
                         <th>Total</th>
+                        <th>:</th>
                         @php
                             $total2 = $totalTitipan+$totalTagihan+$kasBesar;
                         @endphp
@@ -51,6 +59,7 @@
                     </tr>
                     <tr>
                         <th>Estimasi Profit</th>
+                        <th>:</th>
                         <th class="text-end align-middle">{{number_format($total2-$total1, 0,',','.')}}</th>
                     </tr>
                 </tbody>
