@@ -12,7 +12,7 @@
                     <div class="col-md-3 m-2">
                         <a href="{{route('nota-tagihan.index', ['customer' => $c->id])}}" class="text-decoration-none">
                             <img src="{{asset('images/palm.svg')}}" alt="" width="100">
-                            <h3 class="mt-2">{{$c->singkatan}}</h3>
+                            <h3 class="mt-2">{{$c->singkatan}} @if($t->where('customer_id', $c->id)->count() != 0) <span class="text-danger">({{$t->where('customer_id', $c->id)->count()}})</span> @endif</h3>
                         </a>
                     </div>
                     @endforeach
