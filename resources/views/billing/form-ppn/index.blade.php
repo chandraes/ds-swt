@@ -112,7 +112,7 @@
 
     var edit_no_rek = new Cleave('#edit_no_rek', {
         delimiter: '-',
-        blocks: [4, 4, 10]
+        blocks: [4, 4, 4, 4, 10]
     });
 
     $(document).ready(function() {
