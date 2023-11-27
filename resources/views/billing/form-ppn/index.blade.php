@@ -54,10 +54,7 @@
                     {{number_format($d->total_ppn, 0, ',', '.')}}
                 </td>
                 <td class="text-center align-middle">
-                    {{-- <form action="{{route('invoice.bayar.lunas', $d)}}" method="post" id="lunasForm-{{$d->id}}">
-                    @csrf
-                        <button type="submit" class="btn btn-success">Bayar </button>
-                    </form> --}}
+                    <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalBayarPpn" onclick="funBayar({{$d}}, {{$d->id}})">Bayar</a>
                 </td>
             </tr>
             <script>
@@ -97,17 +94,26 @@
             @endforeach
         </tbody>
     </table>
+    @include('billing.form-ppn.bayar')
 </div>
 @endsection
 @push('css')
 <link href="{{asset('assets/css/dt.min.css')}}" rel="stylesheet">
 @endpush
 @push('js')
-<script src="{{asset('assets/plugins/date-picker/date-picker.js')}}"></script>
 <script src="{{asset('assets/js/dt5.min.js')}}"></script>
+<script src="{{asset('assets/js/cleave.min.js')}}"></script>
 <script>
     // hide alert after 5 seconds
+    function funBayar(data, id) {
+        document.getElementById('bayarForm').action = "/billing/form-ppn/bayar/" + id;
 
+    }
+
+    var edit_no_rek = new Cleave('#edit_no_rek', {
+        delimiter: '-',
+        blocks: [4, 4, 10]
+    });
 
     $(document).ready(function() {
         $('#data-table').DataTable();
@@ -122,5 +128,24 @@
             document.getElementById('row-input').hidden = false;
         }
     }
+
+    $('#bayarForm').submit(function(e){
+            e.preventDefault();
+            Swal.fire({
+                title: 'Apakah data sudah benar?',
+                text: "Pastikan data sudah benar sebelum disimpan!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Ya, simpan!'
+                }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#spinner').show();
+                    this.submit();
+                }
+            })
+        });
+
 </script>
 @endpush

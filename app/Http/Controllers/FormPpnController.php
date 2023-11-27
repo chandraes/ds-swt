@@ -15,8 +15,16 @@ class FormPpnController extends Controller
         ]);
     }
 
-    public function bayar(InvoicePpn $invoice)
+    public function bayar(Request $request, InvoicePpn $invoice)
     {
+        $data = $request->validate([
+            'nama_rek' => 'required',
+            'no_rek' => 'required',
+            'bank' => 'required',
+        ]);
+
+        dd($data);
+
         $invoice->update([
             'bayar' => true
         ]);

@@ -96,6 +96,7 @@ Route::group(['middleware' => ['auth']], function() {
         Route::prefix('billing')->group(function() {
 
             Route::get('/form-ppn', [App\Http\Controllers\FormPpnController::class, 'index'])->name('form-ppn');
+            Route::post('/form-ppn/bayar/{invoice}', [App\Http\Controllers\FormPpnController::class, 'bayar'])->name('form-ppn.bayar');
 
             Route::get('/form-deposit/masuk', [App\Http\Controllers\FormDepositController::class, 'masuk'])->name('form-deposit.masuk');
             Route::post('/form-deposit/masuk/store', [App\Http\Controllers\FormDepositController::class, 'masuk_store'])->name('form-deposit.masuk.store');

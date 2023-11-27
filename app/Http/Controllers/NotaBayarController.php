@@ -78,8 +78,10 @@ class NotaBayarController extends Controller
         $store = $kasBesar->insertBayar($b);
 
         $list = $transaksi->notaBayar($supplier->id);
+
         // get id list to array
         $listId = $list->pluck('id')->toArray();
+        $customer = $transaksi->where('id', $listId[0])->first()->customer->singkatan;
 
         foreach ($listId as $k => $value) {
             $detail = InvoiceBayarDetail::create([
@@ -98,6 +100,7 @@ class NotaBayarController extends Controller
                     "*Form Pembayaran Supplier*\n".
                     "🔴🔴🔴🔴🔴🔴🔴🔴🔴\n\n".
                     "*BS".$store->nomor_bayar."*\n\n".
+                    "Customer : ".$customer."\n".
                     "Supplier : ".$invoice->supplier->nickname."\n\n".
                     "Nilai :  *Rp. ".number_format($store->nominal_transaksi, 0, ',', '.')."*\n\n".
                     "Ditransfer ke rek:\n\n".
