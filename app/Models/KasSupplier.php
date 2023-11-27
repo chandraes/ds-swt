@@ -66,9 +66,9 @@ class KasSupplier extends Model
         $saldo = 0;
 
         foreach ($supplier as $v) {
-            $saldo += $this->lastKasSupplier($v->id)->saldo;
+            $saldo += $this->lastKasSupplier($v->id)->saldo ?? 0;
         }
-        
+
         return $saldo;
     }
 }
