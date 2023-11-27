@@ -122,10 +122,10 @@ class NotaBayarController extends Controller
                     "==========================\n".
                     "Sisa Saldo Supplier: \n".
                     "Rp. ".number_format($storeKeluar->saldo, 0, ',', '.')."\n\n".
-                    "Total Profit Saat Ini :" ."\n".
-                    "Rp. ".number_format($total_profit_bulan, 0,',','.')."\n\n".
                     "Sisa Saldo Kas Besar : \n".
                     "Rp. ".number_format($store->saldo, 0, ',', '.')."\n\n".
+                    "Total Profit Saat Ini :" ."\n".
+                    "Rp. ".number_format($total_profit_bulan, 0,',','.')."\n\n".
                     "Total PPN Belum Disetor : \n".
                     "Rp. ".number_format($totalPpn, 0, ',', '.')."\n\n".
                     "Total Modal Investor : \n".
