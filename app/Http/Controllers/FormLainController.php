@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Rekening;
 use App\Models\KasBesar;
+use App\Models\KasSupplier;
+use App\Models\Transaksi;
 use App\InvoicePpn;
 use App\Models\GroupWa;
 use App\Services\StarSender;
@@ -33,6 +35,8 @@ class FormLainController extends Controller
 
         $kas = new KasBesar;
         $ppn = new InvoicePpn;
+        $transaksi = new Transaksi;
+        $kasSupplier = new KasSupplier;
         $totalPpn = $ppn->where('bayar', 0)->sum('total_ppn');
 
         $rekening = Rekening::where('untuk', 'kas-besar')->first();
@@ -53,6 +57,13 @@ class FormLainController extends Controller
 
         $store = KasBesar::create($data);
 
+        $last = $kas->lastKasBesar()->saldo ?? 0;
+        $modalInvestor = ($kas->lastKasBesar()->modal_investor_terakhir ?? 0) * -1;
+        $totalTagihan = $transaksi->totalTagihan()->sum('total_tagihan');
+        $totalTitipan = $kasSupplier->saldoTitipan() ?? 0;
+
+        $total_profit_bulan = ($totalTitipan+$totalTagihan+$last)-($modalInvestor+$totalPpn);
+
         $group = GroupWa::where('untuk', 'kas-besar')->first();
         $pesan ="🔵🔵🔵🔵🔵🔵🔵🔵🔵\n".
                 "*Form Lain2 (Dana Masuk)*\n".
@@ -64,6 +75,8 @@ class FormLainController extends Controller
                 "Nama    : ".$data['nama_rek']."\n".
                 "No. Rek : ".$data['no_rek']."\n\n".
                 "==========================\n".
+                "Total Profit Saat Ini :" ."\n".
+                "Rp. ".number_format($total_profit_bulan, 0,',','.')."\n\n".
                 "Sisa Saldo Kas Besar : \n".
                 "Rp. ".number_format($store->saldo, 0, ',', '.')."\n\n".
                 "Total PPN Belum Disetor : \n".
@@ -98,6 +111,9 @@ class FormLainController extends Controller
         $data['nominal_transaksi'] = str_replace('.', '', $data['nominal_transaksi']);
         $kas = new KasBesar;
         $ppn = new InvoicePpn;
+        $transaksi = new Transaksi;
+        $kasSupplier = new KasSupplier;
+
         $totalPpn = $ppn->where('bayar', 0)->sum('total_ppn');
 
         $lastKasBesar = $kas->lastKasBesar();
@@ -110,6 +126,13 @@ class FormLainController extends Controller
 
         $store = $kas->lainKeluar($data);
 
+        $last = $kas->lastKasBesar()->saldo ?? 0;
+        $modalInvestor = ($kas->lastKasBesar()->modal_investor_terakhir ?? 0) * -1;
+        $totalTagihan = $transaksi->totalTagihan()->sum('total_tagihan');
+        $totalTitipan = $kasSupplier->saldoTitipan() ?? 0;
+
+        $total_profit_bulan = ($totalTitipan+$totalTagihan+$last)-($modalInvestor+$totalPpn);
+
         $group = GroupWa::where('untuk', 'kas-besar')->first();
         $pesan ="🔴🔴🔴🔴🔴🔴🔴🔴🔴\n".
                 "*Form Lain2 (Dana Keluar)*\n".
@@ -121,6 +144,8 @@ class FormLainController extends Controller
                 "Nama    : ".$data['nama_rek']."\n".
                 "No. Rek : ".$data['no_rek']."\n\n".
                 "==========================\n".
+                "Total Profit Saat Ini :" ."\n".
+                "Rp. ".number_format($total_profit_bulan, 0,',','.')."\n\n".
                 "Sisa Saldo Kas Besar : \n".
                 "Rp. ".number_format($store->saldo, 0, ',', '.')."\n\n".
                 "Total PPN Belum Disetor : \n".
