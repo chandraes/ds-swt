@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\InvoicePpn;
+use App\Models\Transaksi;
+use App\Models\KasSupplier;
 use App\Models\KasBesar;
 use App\Services\StarSender;
 use App\Models\GroupWa;
@@ -32,6 +34,8 @@ class FormPpnController extends Controller
 
         $db = new KasBesar;
         $ppn = new InvoicePpn;
+        $transaksi = new Transaksi;
+        $kasSupplier = new KasSupplier;
 
         $saldo = $db->lastKasBesar()->saldo ?? 0;
 
@@ -50,6 +54,12 @@ class FormPpnController extends Controller
         ]);
 
         $totalPpn = $ppn->where('bayar', 0)->sum('total_ppn');
+        $last = $db->lastKasBesar()->saldo ?? 0;
+        $modalInvestor = ($db->lastKasBesar()->modal_investor_terakhir ?? 0) * -1;
+        $totalTagihan = $transaksi->totalTagihan()->sum('total_tagihan');
+        $totalTitipan = $kasSupplier->saldoTitipan() ?? 0;
+
+        $total_profit_bulan = ($totalTitipan+$totalTagihan+$last)-($modalInvestor+$totalPpn);
 
         $group = GroupWa::where('untuk', 'kas-besar')->first();
 
@@ -63,6 +73,8 @@ class FormPpnController extends Controller
                     "Nama    : ".$store->nama_rek."\n".
                     "No. Rek : ".$store->no_rek."\n\n".
                     "==========================\n".
+                    "Total Profit Saat Ini :" ."\n".
+                    "Rp. ".number_format($total_profit_bulan, 0,',','.')."\n\n".
                     "Sisa Saldo Kas Besar : \n".
                     "Rp. ".number_format($store->saldo, 0, ',', '.')."\n\n".
                     "Total PPN Belum Disetor : \n".

@@ -9,6 +9,7 @@ use App\Models\InvoicePpn;
 use App\Models\InvoiceTagihan;
 use App\Models\InvoiceTagihanDetail;
 use App\Models\KasBesar;
+use App\Models\KasSupplier;
 use App\Models\GroupWa;
 use App\Services\StarSender;
 use Illuminate\Support\Facades\DB;
@@ -112,7 +113,11 @@ class NotaTagihanController extends Controller
         // create monthName in indonesian using carbon from $tanggal
         $monthName = Carbon::parse($tanggal)->locale('id')->monthName;
         $year = date('Y', strtotime($tanggal));
-        $total_profit_bulan = $transaksi->profitPerBulan($month, $year);
+
+        // total profit bersih
+        $kasSupplier = new KasSupplier();
+
+        //
 
         DB::beginTransaction();
 
@@ -138,6 +143,13 @@ class NotaTagihanController extends Controller
             InvoiceTagihanDetail::create($detail);
         }
 
+        $last = $kasBesar->lastKasBesar()->saldo ?? 0;
+        $modalInvestor = ($kasBesar->lastKasBesar()->modal_investor_terakhir ?? 0) * -1;
+        $totalTagihan = $transaksi->totalTagihan()->sum('total_tagihan');
+        $totalTitipan = $kasSupplier->saldoTitipan() ?? 0;
+
+        $total_profit_bulan = ($totalTitipan+$totalTagihan+$last)-($modalInvestor+$totalPpn);
+
         $group = GroupWa::where('untuk', 'kas-besar')->first();
 
         $pesan =    "🔵🔵🔵🔵🔵🔵🔵🔵🔵\n".
@@ -152,7 +164,7 @@ class NotaTagihanController extends Controller
                     "No. Rek : ".$store->no_rek."\n\n".
                     "==========================\n".
                     $pesan2.
-                    "Total Profit ".$monthName.' '.$year. ":" ."\n".
+                    "Total Profit Saat Ini :" ."\n".
                     "Rp. ".number_format($total_profit_bulan, 0,',','.')."\n\n".
                     "Sisa Saldo Kas Besar : \n".
                     "Rp. ".number_format($store->saldo, 0, ',', '.')."\n\n".
