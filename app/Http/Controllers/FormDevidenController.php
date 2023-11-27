@@ -73,6 +73,11 @@ class FormDevidenController extends Controller
             $last2 = KasBesar::latest()->orderBy('id', 'desc')->first();
             $nilai2 = $data['nominal_transaksi'] * $v->persentase / 100;
             // $rekening = Rekening::where('untuk', 'withdraw')->first();
+            $ppn = new InvoicePpn;
+            $db = new KasBesar;
+            $transaksi = new Transaksi;
+            $kasSupplier = new KasSupplier;
+
 
                 $k['tanggal'] = date('Y-m-d');
                 $k['jenis'] = 0;
@@ -87,6 +92,14 @@ class FormDevidenController extends Controller
             $store = KasBesar::create($k);
             //  dd($store);
 
+            $totalPpn = $ppn->where('bayar', 0)->sum('total_ppn');
+            $last = $db->lastKasBesar()->saldo ?? 0;
+            $modalInvestor = ($db->lastKasBesar()->modal_investor_terakhir ?? 0) * -1;
+            $totalTagihan = $transaksi->totalTagihan()->sum('total_tagihan');
+            $totalTitipan = $kasSupplier->saldoTitipan() ?? 0;
+
+            $total_profit_bulan = ($totalTitipan+$totalTagihan+$last)-($modalInvestor+$totalPpn);
+
             $pesan = "🔴🔴🔴🔴🔴🔴🔴🔴🔴\n".
                     "*Form Deviden ".$month."*\n".
                     "🔴🔴🔴🔴🔴🔴🔴🔴🔴\n\n".
@@ -99,6 +112,10 @@ class FormDevidenController extends Controller
                     "==========================\n".
                     "Sisa Saldo Kas Besar : \n".
                     "Rp. ".number_format($store->saldo, 0, ',', '.')."\n\n".
+                    "Total Profit Saat Ini :" ."\n".
+                    "Rp. ".number_format($total_profit_bulan, 0,',','.')."\n\n".
+                    "Total PPN Belum Disetor : \n".
+                    "Rp. ".number_format($totalPpn, 0, ',', '.')."\n\n".
                     "Total Modal Investor : \n".
                     "Rp. ".number_format($store->modal_investor_terakhir, 0, ',', '.')."\n\n".
                     "Terima kasih 🙏🙏🙏\n";
