@@ -31,6 +31,7 @@ class FormPpnController extends Controller
         $data['nominal_transaksi'] = $invoice->total_ppn;
 
         $db = new KasBesar;
+        $ppn = new InvoicePpn;
 
         $saldo = $db->lastKasBesar()->saldo ?? 0;
 
@@ -48,6 +49,8 @@ class FormPpnController extends Controller
             'bayar' => true
         ]);
 
+        $totalPpn = $ppn->where('bayar', 0)->sum('total_ppn');
+
         $group = GroupWa::where('untuk', 'kas-besar')->first();
 
         $pesan =    "🔴🔴🔴🔴🔴🔴🔴🔴🔴\n".
@@ -62,6 +65,8 @@ class FormPpnController extends Controller
                     "==========================\n".
                     "Sisa Saldo Kas Besar : \n".
                     "Rp. ".number_format($store->saldo, 0, ',', '.')."\n\n".
+                    "Total PPN Belum Disetor : \n".
+                    "Rp. ".number_format($totalPpn, 0, ',', '.')."\n\n".
                     "Total Modal Investor : \n".
                     "Rp. ".number_format($store->modal_investor_terakhir, 0, ',', '.')."\n\n".
                     "Terima kasih 🙏🙏🙏\n";
