@@ -44,7 +44,8 @@ class KasSupplier extends Model
     {
         $data['tanggal'] = date('Y-m-d');
         $data['jenis'] = 0;
-        $data['saldo'] = $this->lastKasSupplier($data['supplier_id'])->saldo - $data['nominal_transaksi'];
+        $saldo = $this->lastKasSupplier($data['supplier_id'])->saldo ?? 0;
+        $data['saldo'] = $saldo - $data['nominal_transaksi'];
 
         $store = $this->create($data);
         return $store;

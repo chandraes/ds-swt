@@ -67,6 +67,7 @@ class NotaBayarController extends Controller
         $j['supplier_id'] = $invoice->supplier_id;
 
         $storeKasSupplier = $kasSupplier->insertBayar($k);
+
         $storeKeluar = $kasSupplier->insertKeluar($j);
 
         $b['nominal_transaksi'] = $data['total_bayar'];
@@ -105,7 +106,7 @@ class NotaBayarController extends Controller
                     "No. Rek : ".$store->no_rek."\n\n".
                     "==========================\n".
                     "Sisa Saldo Supplier: \n".
-                    "Rp. ".number_format($storeKasSupplier->saldo, 0, ',', '.')."\n\n".
+                    "Rp. ".number_format($storeKeluar->saldo, 0, ',', '.')."\n\n".
                     "Sisa Saldo Kas Besar : \n".
                     "Rp. ".number_format($store->saldo, 0, ',', '.')."\n\n".
                     "Total Modal Investor : \n".
