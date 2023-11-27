@@ -53,6 +53,7 @@ class FormPpnController extends Controller
         $pesan =    "🔴🔴🔴🔴🔴🔴🔴🔴🔴\n".
                     "*Form PPn Customer*\n".
                     "🔴🔴🔴🔴🔴🔴🔴🔴🔴\n\n".
+                    "Uraian : ".$store->uraian."\n\n".
                     "Nilai :  *Rp. ".number_format($store->nominal_transaksi, 0, ',', '.')."*\n\n".
                     "Ditransfer ke rek:\n\n".
                     "Bank      : ".$store->bank."\n".
@@ -64,7 +65,7 @@ class FormPpnController extends Controller
                     "Total Modal Investor : \n".
                     "Rp. ".number_format($store->modal_investor_terakhir, 0, ',', '.')."\n\n".
                     "Terima kasih 🙏🙏🙏\n";
-                    
+
         $send = new StarSender($group->nama_group, $pesan);
         $res = $send->sendGroup();
 
