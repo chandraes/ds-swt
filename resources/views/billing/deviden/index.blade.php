@@ -8,9 +8,18 @@
     </div>
     @include('swal')
     <div class="row justify-content-center">
+        @php
+            $total1 = $modalInvestor+$ppn;
+            $total2 = $totalTitipan+$totalTagihan+$kasBesar;
+        @endphp
         <div class="col-md-6">
             <table class="table table-striped table-hover">
                 <tbody>
+                    <tr>
+                        <th>Estimasi Profit</th>
+                        <th>:</th>
+                        <th class="text-end align-middle">{{number_format($total2-$total1, 0,',','.')}}</th>
+                    </tr>
                     <tr>
                         <td>Modal Investor</td>
                         <td>:</td>
@@ -26,9 +35,7 @@
                         <th>:</th>
                         <th class="text-end align-middle"> {{number_format($modalInvestor+$ppn, 0,',','.')}}</th>
                     </tr>
-                    @php
-                        $total1 = $modalInvestor+$ppn;
-                    @endphp
+
                     <tr>
                         <td></td>
                         <td></td>
@@ -52,16 +59,9 @@
                     <tr>
                         <th>Total</th>
                         <th>:</th>
-                        @php
-                            $total2 = $totalTitipan+$totalTagihan+$kasBesar;
-                        @endphp
                         <th class="text-end align-middle"> {{number_format($total2, 0,',','.')}}</th>
                     </tr>
-                    <tr>
-                        <th>Estimasi Profit</th>
-                        <th>:</th>
-                        <th class="text-end align-middle">{{number_format($total2-$total1, 0,',','.')}}</th>
-                    </tr>
+
                 </tbody>
             </table>
         </div>
