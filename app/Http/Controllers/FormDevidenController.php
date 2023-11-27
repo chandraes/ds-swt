@@ -21,10 +21,10 @@ class FormDevidenController extends Controller
         $db = new KasBesar();
         $kasSupplier = new KasSupplier();
 
-        $kasBesar = $db->lastKasBesar()->saldo;
-        $modalInvestor = $db->lastKasBesar()->modal_investor_terakhir * -1;
+        $kasBesar = $db->lastKasBesar()->saldo ?? 0;
+        $modalInvestor = ($db->lastKasBesar()->modal_investor_terakhir ?? 0) * -1;
         $totalTagihan = $transaksi->totalTagihan()->sum('total_tagihan');
-        $totalTitipan = $kasSupplier->saldoTitipan();
+        $totalTitipan = $kasSupplier->saldoTitipan() ?? 0;
 
         $ppn = InvoicePpn::where('bayar', false)->sum('total_ppn');
 
