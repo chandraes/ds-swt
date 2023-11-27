@@ -55,7 +55,7 @@ class NotaBayarController extends Controller
 
         $saldoKasSupplier = $kasSupplier->lastKasSupplier($supplier->id)->saldo;
 
-        if ($saldoKasSupplier < $data['total_bayar']) {
+        if ($saldoKasSupplier == null || $saldoKasSupplier < $data['total_bayar']) {
             return redirect()->back()->with('error', 'Saldo kas supplier tidak cukup');
         }
 
