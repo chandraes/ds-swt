@@ -6,7 +6,7 @@ use App\Models\Rekening;
 use App\Models\KasBesar;
 use App\Models\KasSupplier;
 use App\Models\Transaksi;
-use App\InvoicePpn;
+use App\Models\InvoicePpn;
 use App\Models\GroupWa;
 use App\Services\StarSender;
 use Illuminate\Http\Request;
