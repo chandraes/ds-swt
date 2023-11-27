@@ -60,6 +60,7 @@ class InvoicePpnController extends Controller
 
         $db = new InvoicePpn;
 
+
         $d['tanggal'] = date('Y-m-d');
         $d['customer_id'] = $customer->id;
         $d['total_ppn'] = $data['total_ppn'];
@@ -86,6 +87,8 @@ class InvoicePpnController extends Controller
             InvoicePpnDetail::create($detail);
         }
 
+        $totalPpn = $db->where('bayar', 0)->sum('total_ppn');
+
         $group = GroupWa::where('untuk', 'kas-besar')->first();
 
         $pesan =    "🔵🔵🔵🔵🔵🔵🔵🔵🔵\n".
@@ -101,6 +104,8 @@ class InvoicePpnController extends Controller
                     "==========================\n".
                     "Sisa Saldo Kas Besar : \n".
                     "Rp. ".number_format($store->saldo, 0, ',', '.')."\n\n".
+                    "Total PPN Belum Disetor : \n".
+                    "Rp. ".number_format($totalPpn, 0, ',', '.')."\n\n".
                     "Total Modal Investor : \n".
                     "Rp. ".number_format($store->modal_investor_terakhir, 0, ',', '.')."\n\n".
                     "Terima kasih 🙏🙏🙏\n";
