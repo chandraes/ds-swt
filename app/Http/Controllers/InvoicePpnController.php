@@ -12,6 +12,7 @@ use App\Models\GroupWa;
 use App\Services\StarSender;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class InvoicePpnController extends Controller
 {
@@ -57,16 +58,19 @@ class InvoicePpnController extends Controller
             'bulan' => 'required',
             'tahun' => 'required',
         ]);
+
         $selectedData = array_filter(explode(',', $data['selectedData']));
 
         $db = new InvoicePpn;
-
 
         $d['tanggal'] = date('Y-m-d');
         $d['customer_id'] = $customer->id;
         $d['total_ppn'] = $data['total_ppn'];
         $d['no_invoice'] = $db->noInvoice();
 
+        $data['bulan'] = Carbon::parse($d['tanggal'])->locale('id')->monthName;
+        $data['tahun'] = Carbon::parse($d['tanggal'])->year;
+        
         $k['uraian'] = 'PPN '.$data['bulan'].' '. $customer->singkatan;
         $k['nominal_transaksi'] = $d['total_ppn'];
 
