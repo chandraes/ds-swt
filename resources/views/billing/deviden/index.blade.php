@@ -11,6 +11,7 @@
         @php
             $total1 = $modalInvestor+$ppn;
             $total2 = $totalTitipan+$totalTagihan+$kasBesar;
+            $estimasi = $total2-$total1;
         @endphp
         <div class="col-md-6">
             <table class="table table-striped table-hover">
@@ -18,7 +19,7 @@
                     <tr>
                         <th>Estimasi Profit</th>
                         <th>:</th>
-                        <th class="text-end align-middle">{{number_format($total2-$total1, 0,',','.')}}</th>
+                        <th class="text-end align-middle">{{number_format($estimasi, 0,',','.')}}</th>
                     </tr>
                     <tr>
                         <td>Modal Investor</td>
@@ -33,7 +34,7 @@
                     <tr>
                         <th>Total</th>
                         <th>:</th>
-                        <th class="text-end align-middle"> {{number_format($modalInvestor+$ppn, 0,',','.')}}</th>
+                        <th class="text-end align-middle"> {{number_format($modalInvestor+$ppn+$estimasi, 0,',','.')}}</th>
                     </tr>
 
                     <tr>
