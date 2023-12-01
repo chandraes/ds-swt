@@ -44,8 +44,8 @@
                     <td class="text-center align-middle">{{$d->nf_berat}}</td>
                     <td class="text-center align-middle">Kg</td>
                     <td class="text-center align-middle">{{$d->nf_harga}}</td>
-                    <td class="text-center align-middle">{{$d->nf_total}}</td>
-                    <td class="text-center align-middle">{{number_format($d->total_bayar,0,',','.')}}</td>
+                    <td class="text-end align-middle">{{$d->nf_total}}</td>
+                    <td class="text-end align-middle">{{number_format($d->total_bayar,0,',','.')}}</td>
 
                 </tr>
                 @endforeach

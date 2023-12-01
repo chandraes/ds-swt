@@ -32,8 +32,8 @@
                     <td class="text-center align-middle table-pdf text-pdf">{{$d->nf_berat}}</td>
                     <td class="text-center align-middle table-pdf text-pdf">Kg</td>
                     <td class="text-center align-middle table-pdf text-pdf">{{$d->nf_harga}}</td>
-                    <td class="text-center align-middle table-pdf text-pdf">{{$d->nf_total}}</td>
-                    <td class="text-center align-middle table-pdf text-pdf">{{number_format($d->total_bayar,0,',','.')}}</td>
+                    <td class="text-end align-middle table-pdf text-pdf">{{$d->nf_total}}</td>
+                    <td class="text-end align-middle table-pdf text-pdf">{{number_format($d->total_bayar,0,',','.')}}</td>
 
                 </tr>
                 @endforeach
@@ -44,8 +44,8 @@
                     <th class="text-center align-middle table-pdf text-pdf">{{number_format($totalBerat,0,',','.')}}</th>
                     <th class="text-center align-middle table-pdf text-pdf">Kg</th>
                     <th class="text-center align-middle table-pdf text-pdf"></th>
-                    <th class="text-center align-middle table-pdf text-pdf">{{number_format($total, 0,',','.')}}</th>
-                    <th class="text-center align-middle table-pdf text-pdf">{{number_format($totalTagihan, 0, ',','.')}}</th>
+                    <th class="text-end align-middle table-pdf text-pdf">{{number_format($total, 0,',','.')}}</th>
+                    <th class="text-end align-middle table-pdf text-pdf">{{number_format($totalTagihan, 0, ',','.')}}</th>
                 </tr>
             </tfoot>
         </table>
