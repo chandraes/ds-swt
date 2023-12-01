@@ -125,6 +125,7 @@ class RekapController extends Controller
             'totalBerat' => $totalBerat,
             'total' => $total,
             'totalTagihan' => $totalBayar,
+            'invoice' => $invoice,
         ])->setPaper('a4', 'portrait');
 
         return $pdf->stream('Detail Pembayaran '.$supplier->nama.'.pdf');

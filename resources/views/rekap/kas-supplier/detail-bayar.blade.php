@@ -20,6 +20,7 @@
         </div>
     </div>
     <div class="row mt-3">
+        <h2>Kode Bayar : {{$invoice->format_no_invoice}}</h2>
         <table class="table table-bordered table-hover" id="tableTransaksi">
             <thead class="table-success">
                 <tr>

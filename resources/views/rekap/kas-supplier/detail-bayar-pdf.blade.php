@@ -8,6 +8,10 @@
 </div>
 <div class="container-fluid table-responsive ml-3 text-pdf">
     <div class="row mt-3">
+        <div style="padding-left: 0.5rem">
+            <h3> Kode Bayar : {{$invoice->format_no_invoice}}</h3>
+        </div>
+
         <table class="table table-bordered table-hover table-pdf text-pdf" id="tableTransaksi">
             <thead class="table-success">
                 <tr>

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class InvoiceBayar extends Model
 {
     use HasFactory;
-    
+
     protected $guarded = [];
 
     public function invoiceBayarDetail()
@@ -24,6 +24,11 @@ class InvoiceBayar extends Model
     public function getNoInvoiceAttribute($value)
     {
         return str_pad($value, 2, '0', STR_PAD_LEFT);;
+    }
+
+    public function getFormatNoInvoiceAttribute()
+    {
+        return 'BS' . $this->no_invoice;
     }
 
     public function transaksi()
