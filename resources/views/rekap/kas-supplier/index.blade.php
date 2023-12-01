@@ -27,8 +27,9 @@
     </div>
 </div>
 <div class="container-fluid mt-5">
-    <form action="{{route('rekap.kas-besar')}}" method="get">
+    <form action="{{route('rekap.kas-supplier')}}" method="get">
         <div class="row">
+            <input type="hidden" name="supplier" value="{{$supplier->id}}">
             <div class="col-md-3 mb-3">
                 <label for="bulan" class="form-label">Bulan</label>
                 <select class="form-select" name="bulan" id="bulan">
