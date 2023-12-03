@@ -265,8 +265,7 @@
         $('#lanjutkanForm').submit(function(e){
             e.preventDefault();
             Swal.fire({
-                title: 'Apakah data sudah benar?',
-                text: "Pastikan data sudah benar sebelum disimpan!",
+                title: 'Pastikan harga sudah benar!!! Harga customer sebesar Rp. {{$customer->harga}}!',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
