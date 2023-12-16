@@ -14,4 +14,9 @@ class PesanWa extends Model
         'tujuan',
         'status',
     ];
+
+    public function short_pesan()
+    {
+        return substr($this->pesan, 0, 100) . '.............';
+    }
 }
