@@ -10,6 +10,7 @@ use App\Models\InvoicePpn;
 use App\Models\InvoiceBayar;
 use App\Models\InvoiceBayarDetail;
 use App\Models\GroupWa;
+use App\Models\PesanWa;
 use App\Services\StarSender;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -133,6 +134,20 @@ class NotaBayarController extends Controller
                     "Terima kasih 🙏🙏🙏\n";
         $send = new StarSender($group->nama_group, $pesan);
         $res = $send->sendGroup();
+
+        if ($res == 'true') {
+            PesanWa::create([
+                'pesan' => $pesan,
+                'tujuan' => $group->nama_group,
+                'status' => 1,
+            ]);
+        } else {
+            PesanWa::create([
+                'pesan' => $pesan,
+                'tujuan' => $group->nama_group,
+                'status' => 0,
+            ]);
+        }
 
         DB::commit();
 

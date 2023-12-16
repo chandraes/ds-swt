@@ -9,6 +9,7 @@ use App\Models\InvoicePpn;
 use App\Models\KasSupplier;
 use App\Models\Rekening;
 use App\Models\GroupWa;
+use App\Models\PesanWa;
 use Illuminate\Http\Request;
 use App\Services\StarSender;
 use Carbon\Carbon;
@@ -127,6 +128,21 @@ class FormDevidenController extends Controller
         foreach ($isiPesan as $pesan) {
             $send = new StarSender($group->nama_group, $pesan);
             $res = $send->sendGroup();
+
+            if ($res == 'true') {
+                PesanWa::create([
+                    'pesan' => $pesan,
+                    'tujuan' => $group->nama_group,
+                    'status' => 1,
+                ]);
+            } else {
+                PesanWa::create([
+                    'pesan' => $pesan,
+                    'tujuan' => $group->nama_group,
+                    'status' => 0,
+                ]);
+            }
+
         }
 
         return redirect()->route('billing')->with('success', 'Data berhasil disimpan');

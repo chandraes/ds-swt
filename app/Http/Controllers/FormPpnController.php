@@ -8,6 +8,7 @@ use App\Models\KasSupplier;
 use App\Models\KasBesar;
 use App\Services\StarSender;
 use App\Models\GroupWa;
+use App\Models\PesanWa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -86,6 +87,20 @@ class FormPpnController extends Controller
         $send = new StarSender($group->nama_group, $pesan);
         $res = $send->sendGroup();
 
+        if ($res == 'true') {
+            PesanWa::create([
+                'pesan' => $pesan,
+                'tujuan' => $group->nama_group,
+                'status' => 1,
+            ]);
+        } else {
+            PesanWa::create([
+                'pesan' => $pesan,
+                'tujuan' => $group->nama_group,
+                'status' => 0,
+            ]);
+        }
+        
         DB::commit();
 
         return redirect()->route('billing')->with('success', 'Berhasil bayar ppn');

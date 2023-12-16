@@ -9,6 +9,7 @@ use App\Models\InvoicePpnDetail;
 use App\Models\KasBesar;
 use App\Models\KasSupplier;
 use App\Models\GroupWa;
+use App\Models\PesanWa;
 use App\Services\StarSender;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -70,7 +71,7 @@ class InvoicePpnController extends Controller
 
         $data['bulan'] = Carbon::parse($d['tanggal'])->locale('id')->monthName;
         $data['tahun'] = Carbon::parse($d['tanggal'])->year;
-        
+
         $k['uraian'] = 'PPN '.$data['bulan'].' '. $customer->singkatan;
         $k['nominal_transaksi'] = $d['total_ppn'];
 
@@ -128,6 +129,20 @@ class InvoicePpnController extends Controller
 
         $send = new StarSender($group->nama_group, $pesan);
         $res = $send->sendGroup();
+
+        if ($res == 'true') {
+            PesanWa::create([
+                'pesan' => $pesan,
+                'tujuan' => $group->nama_group,
+                'status' => 1,
+            ]);
+        } else {
+            PesanWa::create([
+                'pesan' => $pesan,
+                'tujuan' => $group->nama_group,
+                'status' => 0,
+            ]);
+        }
 
         DB::commit();
 
