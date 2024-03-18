@@ -43,10 +43,6 @@ class FormLainController extends Controller
         $rekening = Rekening::where('untuk', 'kas-besar')->first();
         $lastKasBesar = $kas->lastKasBesar();
 
-
-        if ($lastKasBesar == null || $lastKasBesar->saldo < $data['nominal_transaksi']) {
-            return redirect()->back()->with('error', 'Saldo Kas Besar Tidak Cukup!!');
-        }
         $data['modal_investor_terakhir'] = $lastKasBesar->modal_investor_terakhir;
         $data['saldo'] = $lastKasBesar->saldo + $data['nominal_transaksi'];
         $data['jenis'] = 1;
