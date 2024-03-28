@@ -134,7 +134,7 @@ class NotaTagihanController extends Controller
 
         foreach ($results as $result) {
             $total_tagihan = number_format($result->total_tagihan, 0, ',', '.');
-            $pesan2 .= "Customer : {$result->customer->singkatan}\nTotal Invoice: Rp. {$total_tagihan}\n\n";
+            $pesan2 .= "Customer : {$result->customer->singkatan}\nTotal Tagihan: Rp. {$total_tagihan}\n\n";
         }
 
         foreach ($selectedData as $k => $v) {
@@ -154,7 +154,7 @@ class NotaTagihanController extends Controller
         $group = GroupWa::where('untuk', 'kas-besar')->first();
 
         $pesan =    "🔵🔵🔵🔵🔵🔵🔵🔵🔵\n".
-                    "*PEMBAYARAN INVOICE*\n".
+                    "*PEMBAYARAN TAGIHAN*\n".
                     "🔵🔵🔵🔵🔵🔵🔵🔵🔵\n\n".
                     "*TC".$store->nomor_tagihan."*\n\n".
                     "Customer : ".$invoice->customer->nama."\n\n".
