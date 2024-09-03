@@ -88,6 +88,7 @@
         @endif
 
     </div>
+    <hr>
     <div class="row justify-content-left mt-4">
         <h2>Data Kategori</h2>
         <div class="col-lg-2 col-md-2 col-sm-4 my-4 text-center">
