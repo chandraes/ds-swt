@@ -139,6 +139,10 @@ Route::group(['middleware' => ['auth']], function() {
 
         });
 
+        Route::prefix('pajak')->group(function(){
+            Route::get('/', [App\Http\Controllers\PajakController::class, 'index'])->name('pajak.index');
+        });
+
     });
 
     Route::group(['middleware' => ['role:supplier']], function() {

@@ -158,7 +158,7 @@
             </div>
         </form>
         <div class="col-md-12">
-            <a href="{{route('billing')}}" class="btn btn-secondary form-control mt-3">Kembali</a>
+            <a href="{{route('pajak.index')}}" class="btn btn-secondary form-control mt-3">Kembali</a>
         </div>
     </div>
 </div>
