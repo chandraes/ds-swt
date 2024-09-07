@@ -14,8 +14,6 @@
                     <tr class="text-center">
                         <td class="text-center align-middle"><a href="{{route('home')}}"><img src="{{asset('images/dashboard.svg')}}" alt="dashboard"
                                     width="30"> Dashboard</a></td>
-                        <td class="text-center align-middle"><a href="{{route('rekap')}}"><img src="{{asset('images/rekap.svg')}}" alt="dokumen"
-                                    width="30"> REKAP</a></td>
                         <td class="text-center align-middle">
                             <a href="{{route('statistik.print', ['customer' => $customer->id,'bulan' => $bulan, 'tahun' => $tahun])}}" target="_blank"><img src="{{asset('images/print.svg')}}" alt="dokumen"
                                 width="30"> PRINT PDF</a>
