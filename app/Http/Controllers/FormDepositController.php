@@ -10,6 +10,8 @@ use App\Models\InvoicePpn;
 use App\Services\StarSender;
 use App\Models\PesanWa;
 use App\Models\GroupWa;
+use App\Models\Legalitas\LegalitasDokumen;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class FormDepositController extends Controller
@@ -68,6 +70,18 @@ class FormDepositController extends Controller
 
         $total_profit_bulan = ($totalTitipan+$totalTagihan+$last)-($modalInvestor+$totalPpn);
 
+        $checkLegalitas = LegalitasDokumen::whereNotNull('tanggal_expired')
+        ->where('tanggal_expired', '<', Carbon::now()->addDays(45))->get();
+
+        $addPesan = '';
+
+        if($checkLegalitas->count() > 0){
+            $addPesan = "\n==========================\nWARNING : \n";
+            $no = 1;
+            foreach($checkLegalitas as $legalitas){
+                $addPesan .= $no++.". ".$legalitas->nama." - ".date('d-m-Y', strtotime($legalitas->tanggal_expired))."\n";
+            }
+        }
         $group = GroupWa::where('untuk', 'kas-besar')->first();
         $pesan =    "🔵🔵🔵🔵🔵🔵🔵🔵🔵\n".
                     "*Form Permintaan Deposit*\n".
@@ -87,7 +101,9 @@ class FormDepositController extends Controller
                     "Rp. ".number_format($totalPpn, 0, ',', '.')."\n\n".
                     "Total Modal Investor : \n".
                     "Rp. ".number_format($store->modal_investor_terakhir, 0, ',', '.')."\n\n".
-                    "Terima kasih 🙏🙏🙏\n";
+                    "Terima kasih 🙏🙏🙏\n".
+                    $addPesan;
+                    
         $send = new StarSender($group->nama_group, $pesan);
         $res = $send->sendGroup();
 
@@ -161,6 +177,19 @@ class FormDepositController extends Controller
 
         $group = GroupWa::where('untuk', 'kas-besar')->first();
 
+        $checkLegalitas = LegalitasDokumen::whereNotNull('tanggal_expired')
+            ->where('tanggal_expired', '<', Carbon::now()->addDays(45))->get();
+
+            $addPesan = '';
+
+            if($checkLegalitas->count() > 0){
+                $addPesan = "\n==========================\nWARNING : \n";
+                $no = 1;
+                foreach($checkLegalitas as $legalitas){
+                    $addPesan .= $no++.". ".$legalitas->nama." - ".date('d-m-Y', strtotime($legalitas->tanggal_expired))."\n";
+                }
+            }
+
         $pesan =    "🔴🔴🔴🔴🔴🔴🔴🔴🔴\n".
                     "*Form Pengembalian Deposit*\n".
                     "🔴🔴🔴🔴🔴🔴🔴🔴🔴\n\n".
@@ -178,7 +207,8 @@ class FormDepositController extends Controller
                     "Rp. ".number_format($totalPpn, 0, ',', '.')."\n\n".
                     "Total Modal Investor : \n".
                     "Rp. ".number_format($store->modal_investor_terakhir, 0, ',', '.')."\n\n".
-                    "Terima kasih 🙏🙏🙏\n";
+                    "Terima kasih 🙏🙏🙏\n".
+                    $addPesan;
         $send = new StarSender($group->nama_group, $pesan);
         $res = $send->sendGroup();
 
