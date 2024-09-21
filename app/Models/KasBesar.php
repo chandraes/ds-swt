@@ -12,7 +12,9 @@ class KasBesar extends Model
 
     public function lastKasBesar()
     {
-        return $this->latest()->orderBy('id', 'desc')->first();
+        // dd($this->orderBy('id', 'desc')->first());
+        return $this->orderBy('id', 'desc')->first();
+
     }
 
 
