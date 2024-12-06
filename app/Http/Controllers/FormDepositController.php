@@ -82,7 +82,11 @@ class FormDepositController extends Controller
                 $addPesan .= $no++.". ".$legalitas->nama." - ".date('d-m-Y', strtotime($legalitas->tanggal_expired))."\n";
             }
         }
-        $group = GroupWa::where('untuk', 'kas-besar')->first();
+
+        $dbWa = new GroupWa;
+
+        $group = $dbWa->where('untuk', 'kas-besar')->first();
+
         $pesan =    "🔵🔵🔵🔵🔵🔵🔵🔵🔵\n".
                     "*Form Permintaan Deposit*\n".
                     "🔵🔵🔵🔵🔵🔵🔵🔵🔵\n\n".
@@ -103,23 +107,8 @@ class FormDepositController extends Controller
                     "Rp. ".number_format($store->modal_investor_terakhir, 0, ',', '.')."\n\n".
                     "Terima kasih 🙏🙏🙏\n".
                     $addPesan;
-                    
-        $send = new StarSender($group->nama_group, $pesan);
-        $res = $send->sendGroup();
 
-        if ($res == 'true') {
-            PesanWa::create([
-                'pesan' => $pesan,
-                'tujuan' => $group->nama_group,
-                'status' => 1,
-            ]);
-        } else {
-            PesanWa::create([
-                'pesan' => $pesan,
-                'tujuan' => $group->nama_group,
-                'status' => 0,
-            ]);
-        }
+        $send = $dbWa->sendWa($group->nama_group, $pesan);
 
         return redirect()->route('billing')->with('success', 'Berhasil menambahkan data');
     }
@@ -175,7 +164,9 @@ class FormDepositController extends Controller
 
         $total_profit_bulan = ($totalTitipan+$totalTagihan+$last)-($modalInvestor+$totalPpn);
 
-        $group = GroupWa::where('untuk', 'kas-besar')->first();
+        $dbWa = new GroupWa;
+
+        $group = $dbWa->where('untuk', 'kas-besar')->first();
 
         $checkLegalitas = LegalitasDokumen::whereNotNull('tanggal_expired')
             ->where('tanggal_expired', '<', Carbon::now()->addDays(45))->get();
@@ -209,8 +200,9 @@ class FormDepositController extends Controller
                     "Rp. ".number_format($store->modal_investor_terakhir, 0, ',', '.')."\n\n".
                     "Terima kasih 🙏🙏🙏\n".
                     $addPesan;
-        $send = new StarSender($group->nama_group, $pesan);
-        $res = $send->sendGroup();
+                    
+        $send = $dbWa->sendWa($group->nama_group, $pesan);
+
 
         return redirect()->route('billing')->with('success', 'Data berhasil disimpan');
     }

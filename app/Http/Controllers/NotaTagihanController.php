@@ -49,6 +49,7 @@ class NotaTagihanController extends Controller
             'tanggal' => 'required',
             'nota_timbangan' => 'required|min:9|max:9',
             'berat' => 'required',
+            'harga' => 'required',
         ]);
 
         $supplier = Supplier::findOrFail($data['supplier_id']);
@@ -61,7 +62,8 @@ class NotaTagihanController extends Controller
 
         $data['berat'] = str_replace('.', '', $data['berat']);
         $data['tanggal'] = date('Y-m-d', strtotime($data['tanggal']));
-        $data['total'] = $data['berat'] * $transaksi->harga;
+        $data['harga'] = str_replace('.', '', $data['harga']);
+        $data['total'] = $data['berat'] * $data['harga'];
         $data['pph'] = $data['total'] * 0.0025;
         $data['profit'] = $data['total'] * $persen_profit;
         $data['total_ppn'] = $data['total'] * 0.11;
@@ -151,7 +153,9 @@ class NotaTagihanController extends Controller
 
         $total_profit_bulan = ($totalTitipan+$totalTagihan+$last)-($modalInvestor+$totalPpn);
 
-        $group = GroupWa::where('untuk', 'kas-besar')->first();
+        $dbWa = new GroupWa;
+
+        $group = $dbWa->where('untuk', 'kas-besar')->first();
 
         $pesan =    "🔵🔵🔵🔵🔵🔵🔵🔵🔵\n".
                     "*PEMBAYARAN TAGIHAN*\n".
@@ -174,24 +178,8 @@ class NotaTagihanController extends Controller
                     "Total Modal Investor : \n".
                     "Rp. ".number_format($store->modal_investor_terakhir, 0, ',', '.')."\n\n".
                     "Terima kasih 🙏🙏🙏\n";
-        $send = new StarSender($group->nama_group, $pesan);
-        $res = $send->sendGroup();
 
-        // dd($res);
-
-        if ($res == 'true') {
-            PesanWa::create([
-                'pesan' => $pesan,
-                'tujuan' => $group->nama_group,
-                'status' => 1,
-            ]);
-        } else {
-            PesanWa::create([
-                'pesan' => $pesan,
-                'tujuan' => $group->nama_group,
-                'status' => 0,
-            ]);
-        }
+        $send = $dbWa->sendWa($group->nama_group, $pesan);
 
         DB::commit();
 

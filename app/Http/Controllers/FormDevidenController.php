@@ -63,7 +63,11 @@ class FormDevidenController extends Controller
         }
 
         $investor = Investor::all();
-        $group = GroupWa::where('untuk', 'kas-besar')->first();
+
+        $dbWa = new GroupWa;
+
+        $group = $dbWa->where('untuk', 'kas-besar')->first();
+
         $month = Carbon::now()->locale('id')->monthName;
 
         $isiPesan = [];
@@ -126,23 +130,7 @@ class FormDevidenController extends Controller
 
         // looping $isiPesan
         foreach ($isiPesan as $pesan) {
-            $send = new StarSender($group->nama_group, $pesan);
-            $res = $send->sendGroup();
-
-            if ($res == 'true') {
-                PesanWa::create([
-                    'pesan' => $pesan,
-                    'tujuan' => $group->nama_group,
-                    'status' => 1,
-                ]);
-            } else {
-                PesanWa::create([
-                    'pesan' => $pesan,
-                    'tujuan' => $group->nama_group,
-                    'status' => 0,
-                ]);
-            }
-
+            $send = $dbWa->sendWa($group->nama_group, $pesan);
         }
 
         return redirect()->route('billing')->with('success', 'Data berhasil disimpan');

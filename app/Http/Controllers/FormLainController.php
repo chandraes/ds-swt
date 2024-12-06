@@ -61,7 +61,10 @@ class FormLainController extends Controller
 
         $total_profit_bulan = ($totalTitipan+$totalTagihan+$last)-($modalInvestor+$totalPpn);
 
-        $group = GroupWa::where('untuk', 'kas-besar')->first();
+        $dbWa = new GroupWa;
+
+        $group = $dbWa->where('untuk', 'kas-besar')->first();
+
         $pesan ="🔵🔵🔵🔵🔵🔵🔵🔵🔵\n".
                 "*Form Lain2 (Dana Masuk)*\n".
                 "🔵🔵🔵🔵🔵🔵🔵🔵🔵\n\n".
@@ -81,22 +84,8 @@ class FormLainController extends Controller
                 "Total Modal Investor : \n".
                 "Rp. ".number_format($store->modal_investor_terakhir, 0, ',', '.')."\n\n".
                 "Terima kasih 🙏🙏🙏\n";
-        $send = new StarSender($group->nama_group, $pesan);
-        $res = $send->sendGroup();
 
-        if ($res == 'true') {
-            PesanWa::create([
-                'pesan' => $pesan,
-                'tujuan' => $group->nama_group,
-                'status' => 1,
-            ]);
-        } else {
-            PesanWa::create([
-                'pesan' => $pesan,
-                'tujuan' => $group->nama_group,
-                'status' => 0,
-            ]);
-        }
+        $send = $dbWa->sendWa($group->nama_group, $pesan);
 
         DB::commit();
 
@@ -144,7 +133,10 @@ class FormLainController extends Controller
 
         $total_profit_bulan = ($totalTitipan+$totalTagihan+$last)-($modalInvestor+$totalPpn);
 
-        $group = GroupWa::where('untuk', 'kas-besar')->first();
+        $dbWa = new GroupWa;
+
+        $group = $dbWa->where('untuk', 'kas-besar')->first();
+
         $pesan ="🔴🔴🔴🔴🔴🔴🔴🔴🔴\n".
                 "*Form Lain2 (Dana Keluar)*\n".
                  "🔴🔴🔴🔴🔴🔴🔴🔴🔴\n\n".
@@ -164,22 +156,8 @@ class FormLainController extends Controller
                 "Total Modal Investor : \n".
                 "Rp. ".number_format($store->modal_investor_terakhir, 0, ',', '.')."\n\n".
                 "Terima kasih 🙏🙏🙏\n";
-        $send = new StarSender($group->nama_group, $pesan);
-        $res = $send->sendGroup();
 
-        if ($res == 'true') {
-            PesanWa::create([
-                'pesan' => $pesan,
-                'tujuan' => $group->nama_group,
-                'status' => 1,
-            ]);
-        } else {
-            PesanWa::create([
-                'pesan' => $pesan,
-                'tujuan' => $group->nama_group,
-                'status' => 0,
-            ]);
-        }
+        $send = $dbWa->sendWa($group->nama_group, $pesan);
 
         DB::commit();
 

@@ -93,7 +93,9 @@ class FormSupplierController extends Controller
         $store = $kasBesar->create($kas);
         $store2 = $kasSupplier->create($data);
 
-        $group = GroupWa::where('untuk', 'kas-besar')->first();
+        $dbWa = new GroupWa;
+
+        $group = $dbWa->where('untuk', 'kas-besar')->first();
 
         $pesan =    "🔴🔴🔴🔴🔴🔴🔴🔴🔴\n".
                     "*Form Titipan Supplier*\n".
@@ -113,22 +115,8 @@ class FormSupplierController extends Controller
                     "Total Modal Investor : \n".
                     "Rp. ".number_format($store->modal_investor_terakhir, 0, ',', '.')."\n\n".
                     "Terima kasih 🙏🙏🙏\n";
-        $send = new StarSender($group->nama_group, $pesan);
-        $res = $send->sendGroup();
 
-        if ($res == 'true') {
-            PesanWa::create([
-                'pesan' => $pesan,
-                'tujuan' => $group->nama_group,
-                'status' => 1,
-            ]);
-        } else {
-            PesanWa::create([
-                'pesan' => $pesan,
-                'tujuan' => $group->nama_group,
-                'status' => 0,
-            ]);
-        }
+        $send = $dbWa->sendWa($group->nama_group, $pesan);
 
         DB::commit();
 
@@ -175,7 +163,9 @@ class FormSupplierController extends Controller
         $s = $kasSupplier->insertKeluar($data);
         $store = $kasBesar->insertMasuk($k);
 
-        $group = GroupWa::where('untuk', 'kas-besar')->first();
+        $dbWa = new GroupWa;
+
+        $group = $dbWa->where('untuk', 'kas-besar')->first();
 
         $pesan =    "🔵🔵🔵🔵🔵🔵🔵🔵🔵\n".
                     "*Form Pengembalian Titipan*\n".
@@ -195,8 +185,7 @@ class FormSupplierController extends Controller
                     "Rp. ".number_format($store->modal_investor_terakhir, 0, ',', '.')."\n\n".
                     "Terima kasih 🙏🙏🙏\n";
 
-        $send = new StarSender($group->nama_group, $pesan);
-        $res = $send->sendGroup();
+        $send = $dbWa->sendWa($group->nama_group, $pesan);
 
         DB::commit();
 

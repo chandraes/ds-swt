@@ -160,7 +160,7 @@
             document.getElementById('edit_supplier_id').value = data.supplier_id;
             document.getElementById('edit_nota_timbangan').value = data.nota_timbangan;
             document.getElementById('edit_berat').value = data.berat.toLocaleString('id');
-
+            document.getElementById('edit_harga').value = data.harga.toLocaleString('id');
             document.getElementById('editForm').action = '/billing/nota-tagihan/edit/' + id;
         }
 
@@ -250,6 +250,13 @@
         });
 
         var editBerat = new Cleave('#edit_berat', {
+            numeral: true,
+            numeralThousandsGroupStyle: 'thousand',
+            numeralDecimalMark: ',',
+            delimiter: '.'
+        });
+
+        var editHarga = new Cleave('#edit_harga', {
             numeral: true,
             numeralThousandsGroupStyle: 'thousand',
             numeralDecimalMark: ',',
