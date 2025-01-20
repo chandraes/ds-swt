@@ -118,7 +118,7 @@
     <div class="row mt-3">
         <form action="{{route('nota-tagihan.keranjang.lanjutkan', ['customer' => $customer->id])}}" method="post" id="masukForm">
         @csrf
-        @if ($customer->ppn_kumulatif == 0)
+
         <div class="row mb-4 p-3">
             <div class="col-md-3">
                 <div class="mb-3">
@@ -142,6 +142,7 @@
                     />
                 </div>
             </div>
+            @if ($customer->ppn_kumulatif == 0)
             <div class="col-md-3">
                 <div class="mb-3">
                     <label for="" class="form-label">Total PPN</label>
@@ -153,6 +154,10 @@
                     />
                 </div>
             </div>
+            @endif
+            @php
+                $gt = $customer->ppn_kumulatif == 0 ? $data->sum('total_tagihan')+$data->sum('total_ppn') : $data->sum('total_tagihan');
+            @endphp
             <div class="col-md-3">
                 <div class="mb-3">
                     <label for="" class="form-label">Grand Total</label>
@@ -160,13 +165,12 @@
                         type="text"
                         class="form-control"
                         name="gt"
-                        id="gt" disabled value="{{number_format($data->sum('total_tagihan')+$data->sum('total_ppn'), 0, ',','.')}}"
+                        id="gt" disabled value="{{number_format($gt, 0, ',','.')}}"
                     />
                 </div>
             </div>
         </div>
 
-        @endif
 
             <div class="col-md-12">
                 <button type="submit" class="btn btn-primary form-control"><i class="fa fa-credit-card pe-1"></i> Simpan</button>
