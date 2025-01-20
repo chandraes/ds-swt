@@ -114,9 +114,60 @@
             </tfoot>
         </table>
     </div>
-    <div class="row mt-5">
+    <hr>
+    <div class="row mt-3">
         <form action="{{route('nota-tagihan.keranjang.lanjutkan', ['customer' => $customer->id])}}" method="post" id="masukForm">
         @csrf
+        @if ($customer->ppn_kumulatif == 0)
+        <div class="row mb-4 p-3">
+            <div class="col-md-3">
+                <div class="mb-3">
+                    <label for="" class="form-label">Total DPP</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        name="dpp"
+                        id="dpp" disabled value="{{number_format($data->sum('total'), 0, ',','.')}}"
+                    />
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="mb-3">
+                    <label for="" class="form-label">Total PPH</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        name="dpp"
+                        id="dpp" disabled value="{{number_format($data->sum('pph'), 0, ',','.')}}"
+                    />
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="mb-3">
+                    <label for="" class="form-label">Total PPN</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        name="dpp"
+                        id="dpp" disabled value="{{number_format($data->sum('total_ppn'), 0, ',','.')}}"
+                    />
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="mb-3">
+                    <label for="" class="form-label">Grand Total</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        name="gt"
+                        id="gt" disabled value="{{number_format($data->sum('total_tagihan')+$data->sum('total_ppn'), 0, ',','.')}}"
+                    />
+                </div>
+            </div>
+        </div>
+
+        @endif
+
             <div class="col-md-12">
                 <button type="submit" class="btn btn-primary form-control"><i class="fa fa-credit-card pe-1"></i> Simpan</button>
             </div>
