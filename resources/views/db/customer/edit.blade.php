@@ -36,6 +36,14 @@
                             <input type="text" class="form-control" name="npwp" id="edit_npwp" aria-describedby="helpId"
                                 placeholder="" required>
                         </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="ppn_kumulatif" class="form-label">PPN Kumulatif</label>
+                            <select name="ppn_kumulatif" id="edit_ppn_kumulatif" class="form-select" required>
+                                <option value="">-- Pilih Salah Satu --</option>
+                                <option value="1">Ya</option>
+                                <option value="0">Tidak</option>
+                            </select>
+                        </div>
                     </div>
                     <div class="row">
                         <div class="col-12 mb-3">

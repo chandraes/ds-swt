@@ -5,6 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Customer;
 use App\Models\InvoicePpn;
 use App\Models\Transaksi;
+use App\Models\Pajak\RekapKeluaranDetail;
+use App\Models\Pajak\RekapMasukanDetail;
+use App\Models\Pajak\RekapPpn;
+use App\Models\Pajak\PpnKeluaran;
+use App\Models\Pajak\PpnMasukan;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class PajakController extends Controller
@@ -26,29 +32,31 @@ class PajakController extends Controller
 
     public function ppn_masukan()
     {
-        // $db = new PpnMasukan();
+        $db = new PpnMasukan();
 
-        // $data = $db->with(['invoiceBayar.vendor'])->where('keranjang', 0)->where('onhold', 0)->where('selesai', 0)->get();
-        // $keranjang = $db->with(['invoiceBayar.vendor'])->where('keranjang', 1)->where('onhold', 0)->where('selesai', 0)->count();
-        // $keranjangData = $db->with(['invoiceBayar.vendor'])->where('keranjang', 1)->where('onhold', 0)->where('selesai', 0)->get();
+        $data = $db->with(['invoiceBelanja.supplier'])->where('is_keranjang', 0)->where('is_finish', 0)->get();
+        $keranjang = $db->with(['invoiceBelanja.supplier'])->where('is_keranjang', 1)->where('is_finish', 0)->count();
+        $keranjangData = $db->with(['invoiceBelanja.supplier'])->where('is_keranjang', 1)->where('is_finish', 0)->get();
 
-        // $total_faktur = 0;
-        // $total_blm_faktur = 0;
+        // dd($data);
 
-        // foreach ($data as $item) {
-        //     if ($item->is_faktur == 1) {
-        //         $total_faktur += $item->nominal;
-        //     } elseif ($item->is_faktur == 0) {
-        //         $total_blm_faktur += $item->nominal;
-        //     }
-        // }
+        $total_faktur = 0;
+        $total_blm_faktur = 0;
+
+        foreach ($data as $item) {
+            if ($item->is_faktur == 1) {
+                $total_faktur += $item->nominal;
+            } elseif ($item->is_faktur == 0) {
+                $total_blm_faktur += $item->nominal;
+            }
+        }
 
         return view('pajak.ppn-masukan.index', [
-            // 'data' => $data,
-            // 'total_faktur' => $total_faktur,
-            // 'total_blm_faktur' => $total_blm_faktur,
-            // 'keranjang' => $keranjang,
-            // 'keranjangData' => $keranjangData
+            'data' => $data,
+            'total_faktur' => $total_faktur,
+            'total_blm_faktur' => $total_blm_faktur,
+            'keranjang' => $keranjang,
+            'keranjangData' => $keranjangData
         ]);
     }
 
@@ -78,33 +86,27 @@ class PajakController extends Controller
         $db = new PpnMasukan();
 
         $db->whereIn('id', $data['selectedData'])->update([
-            'keranjang' => 1
+            'is_keranjang' => 1
         ]);
 
         return redirect()->back()->with('success', 'Berhasil menyimpan data');
-
 
     }
 
     public function ppn_masukan_keranjang_destroy(PPnMasukan $ppnMasukan)
     {
         $ppnMasukan->update([
-            'keranjang' => 0
+            'is_keranjang' => 0
         ]);
 
         return redirect()->back()->with('success', 'Berhasil menghapus data dari keranjang!');
     }
 
-    public function ppn_masukan_keranjang_lanjut(Request $request)
+    public function ppn_masukan_keranjang_lanjut()
     {
-
-        $data = $request->validate([
-            'penyesuaian' => 'required',
-        ]);
-
         $db = new RekapPpn();
-        $penyesuaian = str_replace('.', '', $data['penyesuaian']);
-        $res = $db->keranjang_masukan_lanjut($penyesuaian);
+
+        $res = $db->keranjang_masukan_lanjut();
 
         return redirect()->back()->with($res['status'], $res['message']);
 
@@ -114,9 +116,9 @@ class PajakController extends Controller
     {
         $db = new PpnKeluaran();
 
-        $data = $db->with('invoiceTagihan.customer')->where('keranjang', 0)->where('is_expired', 0)->where('onhold', 0)->where('selesai', 0)->get();
-        $keranjang = $db->with('invoiceTagihan.customer')->where('keranjang', 1)->where('onhold', 0)->where('selesai', 0)->count();
-        $keranjangData = $db->with('invoiceTagihan.customer')->where('keranjang', 1)->where('onhold', 0)->where('selesai', 0)->get();
+        $data = $db->with('invoiceTagihan.customer')->where('is_keranjang', 0)->where('is_expired', 0)->where('is_finish', 0)->get();
+        $keranjang = $db->with('invoiceTagihan.customer')->where('is_keranjang', 1)->where('is_finish', 0)->count();
+        $keranjangData = $db->with('invoiceTagihan.customer')->where('is_keranjang', 1)->where('is_finish', 0)->get();
 
 
         return view('pajak.ppn-keluaran.index', [
@@ -153,7 +155,7 @@ class PajakController extends Controller
         $db = new PpnKeluaran();
 
         $db->whereIn('id', $data['selectedData'])->update([
-            'keranjang' => 1
+            'is_keranjang' => 1
         ]);
 
         return redirect()->back()->with('success', 'Berhasil menyimpan data');
@@ -162,7 +164,7 @@ class PajakController extends Controller
     public function ppn_keluaran_keranjang_destroy(PpnKeluaran $ppnKeluaran)
     {
         $ppnKeluaran->update([
-            'keranjang' => 0
+            'is_keranjang' => 0
         ]);
 
         return redirect()->back()->with('success', 'Berhasil menghapus data dari keranjang!');
@@ -171,7 +173,7 @@ class PajakController extends Controller
     public function ppn_keluaran_keranjang()
     {
         $db = new PpnKeluaran();
-        $data = $db->with('invoiceTagihan.customer')->where('keranjang', 1)->where('onhold', 0)->where('selesai', 0)->get();
+        $data = $db->with('invoiceTagihan.customer')->where('is_keranjang', 1)->where('is_finish', 0)->get();
         $dbRekap = new RekapPpn();
         $saldoMasukan = $dbRekap->saldoTerakhir();
 
@@ -189,17 +191,11 @@ class PajakController extends Controller
         ]);
     }
 
-    public function ppn_keluaran_keranjang_lanjut(Request $request)
+    public function ppn_keluaran_keranjang_lanjut()
     {
-        $data = $request->validate([
-            'penyesuaian' => 'required',
-        ]);
-
-        $penyesuaian = str_replace('.', '', $data['penyesuaian']);
-
         $db = new RekapPpn();
 
-        $res = $db->keranjang_keluaran_lanjut($penyesuaian);
+        $res = $db->keranjang_keluaran_lanjut();
 
         return redirect()->route('pajak.ppn-keluaran')->with($res['status'], $res['message']);
     }
@@ -250,11 +246,10 @@ class PajakController extends Controller
         $dataMasukan = RekapMasukanDetail::where('masukan_id', $masukan_id)->pluck('ppn_masukan_id');
         // dd($dataMasukan);
         $db = new PpnMasukan();
-        $data = $db->with(['invoiceBayar.vendor'])->whereIn('id', $dataMasukan)->get();
+        $data = $db->with(['invoiceBelanja.supplier'])->whereIn('id', $dataMasukan)->get();
 
         return view('pajak.rekap-ppn.masukan-detail', [
-            'data' => $data,
-            'rekapPpn' => $rekapPpn
+            'data' => $data
         ]);
     }
 
@@ -264,18 +259,17 @@ class PajakController extends Controller
         $dataKeluaran = RekapKeluaranDetail::where('keluaran_id', $keluaran_id)->pluck('ppn_keluaran_id');
 
         $db = new PpnKeluaran();
-        $data = $db->with(['invoiceTagihan.customer'])->whereIn('id', $dataKeluaran)->get();
+        $data = $db->with(['invoiceJual.konsumen', 'invoiceJual.konsumen_temp'])->whereIn('id', $dataKeluaran)->get();
 
         return view('pajak.rekap-ppn.keluaran-detail', [
-            'data' => $data,
-            'rekapPpn' => $rekapPpn
+            'data' => $data
         ]);
     }
 
     public function ppn_expired()
     {
         $db = new PpnKeluaran();
-        $data = $db->with(['invoiceTagihan.customer'])->where('is_expired', 1)->get();
+        $data = $db->with(['invoiceJual.konsumen', 'invoiceJual.konsumen_temp'])->where('is_expired', 1)->get();
 
         return view('pajak.ppn-expired.index', [
             'data' => $data

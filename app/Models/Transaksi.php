@@ -62,7 +62,19 @@ class Transaksi extends Model
 
     public function notaTagihan($customer_id)
     {
-        return $this->where('customer_id', $customer_id)->where('status', 1)->where('tagihan', 0)->orderBy('nota_timbangan')->get();
+        return $this->with('supplier')->where('customer_id', $customer_id)->where('status', 1)->where('tagihan', 0)->where('keranjang', 0)->orderBy('nota_timbangan')
+                ->get();
+    }
+
+    public function notaTagihanKeranjangCount($customer_id)
+    {
+        return $this->where('customer_id', $customer_id)->where('status', 1)->where('tagihan', 0)->where('keranjang', 1)->count();
+    }
+
+    public function notaTagihanKeranjang($customer_id)
+    {
+        return $this->with('supplier')->where('customer_id', $customer_id)->where('status', 1)->where('tagihan', 0)->where('keranjang', 1)->orderBy('nota_timbangan')
+                ->get();
     }
 
     public function notaBayar($supplier_id)
@@ -109,7 +121,7 @@ class Transaksi extends Model
 
     public function notaTransaksiBerat($customer_id)
     {
-        $transaksi = $this->where('customer_id', $customer_id)->where('status', 1)->where('tagihan', 0)->sum('berat');
+        $transaksi = $this->where('customer_id', $customer_id)->where('status', 1)->where('tagihan', 0)->where('keranjang', 0)->sum('berat');
         return $transaksi == 0 ? 0 : number_format($transaksi, 0, ',', '.');
     }
 
@@ -121,7 +133,7 @@ class Transaksi extends Model
 
     public function notaTransaksiTotal($customer_id)
     {
-        $transaksi = $this->where('customer_id', $customer_id)->where('status', 1)->where('tagihan', 0)->sum('total');
+        $transaksi = $this->where('customer_id', $customer_id)->where('status', 1)->where('tagihan', 0)->where('keranjang', 0)->sum('total');
         return $transaksi == 0 ? 0 : number_format($transaksi, 0, ',', '.');
     }
 
@@ -133,7 +145,7 @@ class Transaksi extends Model
 
     public function notaTransaksiTotalTagihan($customer_id)
     {
-        $transaksi = $this->where('customer_id', $customer_id)->where('status', 1)->where('tagihan', 0)->sum('total_tagihan');
+        $transaksi = $this->where('customer_id', $customer_id)->where('status', 1)->where('tagihan', 0)->where('keranjang', 0)->sum('total_tagihan');
         return $transaksi == 0 ? 0 : $transaksi;
     }
 
@@ -145,13 +157,13 @@ class Transaksi extends Model
 
     public function notaTagihanTotalProfit($customer_id)
     {
-        $transaksi = $this->where('customer_id', $customer_id)->where('status', 1)->where('tagihan', 0)->sum('profit');
+        $transaksi = $this->where('customer_id', $customer_id)->where('status', 1)->where('tagihan', 0)->where('keranjang', 0)->sum('profit');
         return $transaksi == 0 ? 0 : number_format($transaksi, 0, ',', '.');
     }
 
     public function notaTagihanTotalPPH($customer_id)
     {
-        $transaksi = $this->where('customer_id', $customer_id)->where('status', 1)->where('tagihan', 0)->sum('pph');
+        $transaksi = $this->where('customer_id', $customer_id)->where('status', 1)->where('tagihan', 0)->where('keranjang', 0)->sum('pph');
         return $transaksi == 0 ? 0 : number_format($transaksi, 0, ',', '.');
     }
 

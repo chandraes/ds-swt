@@ -107,6 +107,7 @@
         document.getElementById('editAlamat').value = data.alamat;
         document.getElementById('editHarga').value = data.harga;
         document.getElementById('edit_npwp').value = data.npwp;
+        document.getElementById('edit_ppn_kumulatif').value = data.ppn_kumulatif;
         // Populate other fields...
         document.getElementById('editForm').action = '/db/customer/' + id + '/update';
     }

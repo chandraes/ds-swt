@@ -17,6 +17,16 @@ class KasBesar extends Model
 
     }
 
+    public function saldoTerakhir()
+    {
+        return $this->orderBy('id', 'desc')->first()->saldo ?? 0;
+    }
+
+    public function modalInvestorTerakhir()
+    {
+        return $this->orderBy('id', 'desc')->first()->modal_investor_terakhir ?? 0;
+    }
+
 
     public function getIdTanggalAttribute()
     {

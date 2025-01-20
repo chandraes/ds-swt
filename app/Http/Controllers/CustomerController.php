@@ -25,6 +25,7 @@ class CustomerController extends Controller
             'no_wa' => 'required',
             'alamat' => 'required',
             'harga' => 'required',
+            'ppn_kumulatif' => 'required',
         ]);
 
         $data['harga'] = str_replace('.', '', $data['harga']);
@@ -45,6 +46,7 @@ class CustomerController extends Controller
             'no_wa' => 'required',
             'alamat' => 'required',
             'harga' => 'required',
+            'ppn_kumulatif' => 'required',
         ]);
 
         $data['harga'] = str_replace('.', '', $data['harga']);

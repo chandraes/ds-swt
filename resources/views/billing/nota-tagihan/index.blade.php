@@ -9,7 +9,7 @@
     </div>
     {{-- if has any error --}}
     @if ($errors->any())
-    <div class="row justify-content-center">
+    <div class="row justify-content-between">
         <div class="col-md-6">
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                 <strong>Whoops!</strong> Ada kesalahan dalam input data:
@@ -24,13 +24,18 @@
     </div>
     @endif
     {{-- end if --}}
-    <div class="row">
+    <div class="row justify-content-between">
         <div class="col-md-6">
             <label for="berat" class="form-label">Total Tagihan di Pilih</label>
             <div class="input-group">
                 <span class="input-group-text" id="basic-addon1">Rp.</span>
-                <input type="text" class="form-control" id="total_tagih_display" disabled >
+                <input type="text" class="form-control" id="total_tagih_display" disabled>
             </div>
+        </div>
+        <div class="col-md-6 pt-2 text-end pe-4">
+            <a href="{{$keranjang > 0 ? route('nota-tagihan.keranjang', ['customer' => $customer->id]) : '#'}}"
+                class="btn btn-primary mt-4 text-bold {{$keranjang > 0 ? '' : 'disabled'}}"><i class="fa fa-shopping-cart pe-2"></i>Lihat Keranjang
+                {!!$keranjang > 0 ? "<span class='text-warning'>($keranjang)</span>" : ''!!}</a>
         </div>
     </div>
     <div class="row mt-3">
@@ -60,7 +65,8 @@
                 <tr>
                     <td class="text-center align-middle">
                         {{-- checklist on check push $d->id to $selectedData --}}
-                        <input type="checkbox" value="{{$d->id}}" data-tagihan="{{$d->total_tagihan}}" onclick="check(this, {{$d->id}})" id="idSelect-{{$d->id}}">
+                        <input type="checkbox" value="{{$d->id}}" data-tagihan="{{$d->total_tagihan}}"
+                            onclick="check(this, {{$d->id}})" id="idSelect-{{$d->id}}">
                     </td>
                     <td class="text-center align-middle"></td>
                     <td class="text-center align-middle">{{$d->id_tanggal}}</td>
@@ -75,9 +81,10 @@
                     <td class="text-center align-middle">{{number_format($d->total_tagihan,0,',','.')}}</td>
                     <td class="text-center align-middle">
                         @if (auth()->user()->role == 'admin')
-                        <button class="btn m-2 btn-warning" data-bs-toggle="modal" data-bs-target="#editTransaksi" onclick="editTransaksi({{$d}}, {{$d->id}})"><i class="fa fa-edit"></i></button>
-                        <form action="{{route('form-transaksi.delete', ['transaksi' => $d->id])}}" method="post" style="display: inline-block;"
-                            id="delete-{{$d->id}}">
+                        <button class="btn m-2 btn-warning" data-bs-toggle="modal" data-bs-target="#editTransaksi"
+                            onclick="editTransaksi({{$d}}, {{$d->id}})"><i class="fa fa-edit"></i></button>
+                        <form action="{{route('form-transaksi.delete', ['transaksi' => $d->id])}}" method="post"
+                            style="display: inline-block;" id="delete-{{$d->id}}">
                             @csrf
                             @method('delete')
                             <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i></button>
@@ -125,12 +132,13 @@
     @include('billing.nota-tagihan.edit')
     <div class="row mt-5">
         <form action="{{route('nota-tagihan.cutoff', ['customer' => $customer->id])}}" method="post" id="lanjutkanForm">
-        @csrf
+            @csrf
             <input type="hidden" name="customer_id" value="{{$customer->id}}">
             <input type="hidden" name="selectedData" required>
             <input type="hidden" class="form-control" id="total_tagih" name="total_tagih" required value="0">
             <div class="col-md-12">
-                <button type="submit" class="btn btn-primary form-control">LANJUTKAN</button>
+                <button type="submit" class="btn btn-primary form-control"><i class="fa fa-shopping-cart pe-1"></i>
+                    Masukan Keranjang</button>
             </div>
         </form>
         <div class="col-md-12">
@@ -149,8 +157,7 @@
 <script src="{{asset('assets/js/dt5.min.js')}}"></script>
 <script src="{{asset('assets/js/cleave.min.js')}}"></script>
 <script>
-
-        function editTransaksi(data, id) {
+    function editTransaksi(data, id) {
             let date = new Date(data.tanggal);
             let day = ("0" + date.getDate()).slice(-2);
             let month = ("0" + (date.getMonth() + 1)).slice(-2);
@@ -341,7 +348,7 @@
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#6c757d',
-                confirmButtonText: 'Ya, simpan!'
+                confirmButtonText: 'Ya, masukan keranjang!'
                 }).then((result) => {
                 if (result.isConfirmed) {
                     $('#spinner').show();

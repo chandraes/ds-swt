@@ -61,7 +61,7 @@
             </a>
         </div>
         <div class="col-md-3 text-center mb-5 mt-3">
-            <a href="#" class="text-decoration-none">
+            <a href="{{route('pajak.ppn-keluaran')}}" class="text-decoration-none">
                 <img src="{{asset('images/ppn-keluaran.svg')}}" alt="" width="70">
                 <h4 class="mt-3">PPN KELUARAN</h4>
             </a>
@@ -84,7 +84,7 @@
     <div class="row justify-content-left">
         <h4 class="mt-3">REKAP</h4>
         <div class="col-md-3 text-center mb-5 mt-3">
-            <a href="#" class="text-decoration-none">
+            <a href="{{route('pajak.rekap-ppn')}}" class="text-decoration-none">
                 <img src="{{asset('images/rekap-ppn.svg')}}" alt="" width="70">
                 <h4 class="mt-3">PPN</h4>
             </a>
