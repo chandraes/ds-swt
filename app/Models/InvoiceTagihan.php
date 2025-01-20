@@ -109,9 +109,9 @@ class InvoiceTagihan extends Model
             $totalTagihan = $db->totalTagihan()->sum('total_tagihan');
             $totalTitipan = $kasSupplier->saldoTitipan() ?? 0;
 
-            $ppn = new InvoicePpn;
+            $ppn = new PpnKeluaran();
 
-            $totalPpn = $ppn->where('bayar', 0)->sum('total_ppn');
+            $totalPpn = $ppn->where('is_finish', 0)->sum('nominal');
 
             $total_profit_bulan = ($totalTitipan+$totalTagihan+$last)-($modalInvestor+$totalPpn);
 

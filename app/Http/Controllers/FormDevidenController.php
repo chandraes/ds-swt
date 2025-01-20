@@ -9,6 +9,7 @@ use App\Models\InvoicePpn;
 use App\Models\KasSupplier;
 use App\Models\Rekening;
 use App\Models\GroupWa;
+use App\Models\Pajak\PpnKeluaran;
 use App\Models\PesanWa;
 use Illuminate\Http\Request;
 use App\Services\StarSender;
@@ -27,7 +28,7 @@ class FormDevidenController extends Controller
         $totalTagihan = $transaksi->totalTagihan()->sum('total_tagihan');
         $totalTitipan = $kasSupplier->saldoTitipan() ?? 0;
 
-        $ppn = InvoicePpn::where('bayar', false)->sum('total_ppn');
+        $ppn = PpnKeluaran::where('is_finish', 0)->sum('nominal');
 
         $investors = Investor::all();
         $totalPersentase = $investors->sum('persentase');
