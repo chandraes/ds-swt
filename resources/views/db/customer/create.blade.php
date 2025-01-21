@@ -36,11 +36,11 @@
                                 placeholder="" required>
                         </div>
                         <div class="col-md-4 mb-3">
-                            <label for="ppn_kumulatif" class="form-label">PPN Kumulatif</label>
+                            <label for="ppn_kumulatif" class="form-label">PPN Langsung Dibayar</label>
                             <select name="ppn_kumulatif" id="ppn_kumulatif" class="form-select" required>
                                 <option value="">-- Pilih Salah Satu --</option>
-                                <option value="1">Ya</option>
-                                <option value="0">Tidak</option>
+                                <option value="0">Ya</option>
+                                <option value="1">Tidak</option>
                             </select>
                         </div>
                     </div>
