@@ -200,19 +200,32 @@ Route::group(['middleware' => ['auth']], function() {
             Route::get('/nota-bayar', [App\Http\Controllers\NotaBayarController::class, 'index'])->name('nota-bayar.index');
             Route::post('/nota-bayar/{supplier}/cutoff', [App\Http\Controllers\NotaBayarController::class, 'cutoff'])->name('nota-bayar.cutoff');
 
-            Route::get('/invoice-ppn/{customer}', [App\Http\Controllers\InvoicePpnController::class, 'index'])->name('invoice-ppn.index');
-            Route::post('/invoice-ppn/{customer}/cutoff', [App\Http\Controllers\InvoicePpnController::class, 'cutoff'])->name('invoice-ppn.cutoff');
+            Route::prefix('invoice-ppn')->group(function(){
+                Route::get('/{customer}', [App\Http\Controllers\InvoicePpnController::class, 'index'])->name('invoice-ppn.index');
+                Route::post('/{customer}/cutoff', [App\Http\Controllers\InvoicePpnController::class, 'cutoff'])->name('invoice-ppn.cutoff');
+
+                Route::prefix('keranjang')->group(function(){
+                    Route::get('/{customer}', [App\Http\Controllers\InvoicePpnController::class, 'keranjang'])->name('invoice-ppn.keranjang');
+                    Route::post('/delete/{transaksi}', [App\Http\Controllers\InvoicePpnController::class, 'keranjang_delete'])->name('invoice-ppn.keranjang.delete');
+                    Route::post('/lanjutkan/{customer}', [App\Http\Controllers\InvoicePpnController::class, 'keranjang_lanjut'])->name('invoice-ppn.keranjang.lanjutkan');
+                });
+            });
+
+
 
         });
 
         Route::prefix('pajak')->group(function(){
             Route::get('/', [App\Http\Controllers\PajakController::class, 'index'])->name('pajak.index');
+            Route::get('/detail-tagihan/{invoice}', [App\Http\Controllers\PajakController::class, 'detail_tagihan'])->name('pajak.detail-tagihan');
+            Route::get('/detail-ppn/{invoice}', [App\Http\Controllers\PajakController::class, 'detail_ppn'])->name('pajak.detail-ppn');
+            
             Route::prefix('rekap-ppn')->group(function(){
                 Route::get('/', [App\Http\Controllers\PajakController::class, 'rekap_ppn'])->name('pajak.rekap-ppn');
                 Route::get('/masukan/{rekapPpn}', [App\Http\Controllers\PajakController::class, 'rekap_ppn_masukan_detail'])->name('pajak.rekap-ppn.masukan');
                 Route::get('/keluaran/{rekapPpn}', [App\Http\Controllers\PajakController::class, 'rekap_ppn_keluaran_detail'])->name('pajak.rekap-ppn.keluaran');
             });
-            
+
             Route::prefix('ppn-masukan')->group(function(){
                 Route::get('/', [App\Http\Controllers\PajakController::class, 'ppn_masukan'])->name('pajak.ppn-masukan');
                 Route::patch('/store-faktur/{ppnMasukan}', [App\Http\Controllers\PajakController::class, 'ppn_masukan_store_faktur'])->name('pajak.ppn-masukan.store-faktur');

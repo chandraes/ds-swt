@@ -47,17 +47,20 @@ class InvoiceTagihan extends Model
         $kasSupplier = new KasSupplier();
         $d = $db->notaTagihanKeranjang($customer_id);
         // dd($d);
+        $penyesuaian = str_replace('.', '', $data['penyesuaian']);
+
         $dataId = collect($d)->pluck('id')->toArray();
         $customer = Customer::find($customer_id);
 
-        $total_tagihan = $customer->ppn_kumulatif == 1 ? $d->sum('total_tagihan') : $d->sum('total_tagihan') + $d->sum('total_ppn');
-        $ppn = $d->sum('total_ppn');
+        $total_tagihan = $customer->ppn_kumulatif == 1 ? $d->sum('total_tagihan')+$penyesuaian : ($d->sum('total_tagihan') + $d->sum('total_ppn'))+$penyesuaian;
+        $ppn = $customer->ppn_kumulatif == 0 ? $d->sum('total_ppn') : 0;
 
         $invoiceData['tanggal'] = date('Y-m-d');
         $invoiceData['customer_id'] = $customer->id;
         $invoiceData['total_tagihan'] = $total_tagihan;
         $invoiceData['no_invoice'] = $this->noInvoice();
         $invoiceData['ppn'] = $ppn;
+        $invoiceData['penyesuaian'] = $penyesuaian;
 
         $kasData['uraian'] = 'Tagihan '. $customer->singkatan;
         $kasData['nominal_transaksi'] = $invoiceData['total_tagihan'];
@@ -74,6 +77,8 @@ class InvoiceTagihan extends Model
                     'invoice_tagihan_id' => $invoice->id
                 ]);
             }
+
+            $kasData['invoice_tagihan_id'] = $invoice->id;
 
             $store = $dbKas->insertTagihan($kasData);
 

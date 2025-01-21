@@ -31,7 +31,7 @@
             <thead class=" table-success">
                 <tr>
                     <th class="text-center align-middle">Tanggal Input</th>
-                    <th class="text-center align-middle">Nota</th>
+                    {{-- <th class="text-center align-middle">Nota</th> --}}
                     <th class="text-center align-middle">Konsumen</th>
                     <th class="text-center align-middle">Uraian</th>
                     <th class="text-center align-middle">Faktur</th>
@@ -44,19 +44,35 @@
                 @foreach ($data as $d)
                 <tr>
 
-                    <td class="text-center align-middle">{{$d->invoiceJual ? $d->invoiceJual->tanggal : '-'}}</td>
                     <td class="text-center align-middle">
+                        @if ($d->invoiceTagihan)
+                            {{$d->invoiceTagihan->tanggal}}
+                        @endif
+                        @if ($d->invoicePpn)
+                            {{$d->invoicePpn->tanggal}}
+                        @endif
+                    </td>
+                    {{-- <td class="text-center align-middle">
                         @if ($d->invoiceJual)
-                        <a href="{{route('billing.invoice-jual.detail', ['invoice' => $d->invoice_jual_id])}}">
-                            {{$d->invoiceJual->invoice}}
+                        <a href="{{route('billing.invoice-konsumen.detail', ['invoice' => $d->invoice_jual_id])}}">
+                            {{$d->invoiceJual->kode}}
                         </a>
                         @endif
 
+                    </td> --}}
+                    <td class="text-center align-middle">
+                        @if ($d->invoiceTagihan)
+                            {{$d->invoiceTagihan->customer->singkatan}}
+                        @endif
+                        @if ($d->invoicePpn)
+                            {{$d->invoicePpn->customer->singkatan}}
+                        @endif
                     </td>
-                    <td class="text-center align-middle">{{$d->invoiceJual->konsumen ? $d->invoiceJual->konsumen->nama :
-                        $d->invoiceJual->konsumen_temp->nama}}</td>
                     <td class="text-start align-middle">
-                        {{$d->uraian}}
+                        <a href="{{$d->invoiceTagihan ? route('pajak.detail-tagihan', ['invoice' => $d->invoice_tagihan_id]) : route('pajak.detail-ppn', ['invoice' => $d->invoice_ppn_id])}}">
+                            {{$d->uraian}}
+                        </a>
+
                     </td>
                     <td class="text-center align-middle">{{$d->no_faktur}}</td>
 
@@ -81,10 +97,19 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <th class="text-end align-middle" colspan="5">Grand Total</th>
+                    <th class="text-end align-middle" colspan="4">Total</th>
                     <th class="text-end align-middle">{{number_format($data->where('dipungut', 1)->sum('nominal'), 0, ',', '.')}}</th>
                     <th class="text-end align-middle">{{number_format($data->where('dipungut', 0)->sum('nominal'), 0, ',', '.')}}</th>
-
+                </tr>
+                <tr>
+                    <th class="text-end align-middle" colspan="4">Penyesuaian</th>
+                    <th class="text-end align-middle">{{number_format($rekapPpn->penyesuaian, 0, ',', '.')}}</th>
+                    <th class="text-end align-middle"></th>
+                </tr>
+                <tr>
+                    <th class="text-end align-middle" colspan="4">Grand Total</th>
+                    <th class="text-end align-middle">{{number_format($data->where('dipungut', 1)->sum('nominal')+$rekapPpn->penyesuaian, 0, ',', '.')}}</th>
+                    <th class="text-end align-middle"></th>
                 </tr>
             </tfoot>
         </table>

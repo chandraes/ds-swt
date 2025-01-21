@@ -231,7 +231,7 @@ class NotaTagihanController extends Controller
     public function keranjang_lanjut(Customer $customer, Request $request)
     {
         $data = $request->validate([
-            'penyesuaian' => 'nullable'
+            'penyesuaian' => 'required',
         ]);
 
         $db = new InvoiceTagihan();

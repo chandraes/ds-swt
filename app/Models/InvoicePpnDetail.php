@@ -9,4 +9,14 @@ class InvoicePpnDetail extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
+
+    public function invoicePpn()
+    {
+        return $this->belongsTo(InvoicePpn::class);
+    }
+
+    public function transaksi()
+    {
+        return $this->belongsTo(Transaksi::class);
+    }
 }

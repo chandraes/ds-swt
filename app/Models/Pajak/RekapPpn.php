@@ -134,17 +134,15 @@ class RekapPpn extends Model
         }
     }
 
-    public function keranjang_keluaran_lanjut()
+    public function keranjang_keluaran_lanjut($penyesuaian = 0)
     {
         $db = new PpnKeluaran();
 
         $data = $db->where('is_keranjang', 1)->where('is_finish', 0)->get();
 
-        $total = $data->where('dipungut', 1)->sum('nominal');
+        $total = $data->where('dipungut', 1)->sum('nominal') + $penyesuaian;
 
         $saldo = $this->saldoTerakhir() - $total;
-
-
 
         try {
             DB::beginTransaction();
@@ -156,6 +154,7 @@ class RekapPpn extends Model
                 'keluaran_id' => $this->generateKeluaranId(),
                 'nominal' => $total,
                 'saldo' => $saldo,
+                'penyesuaian' => $penyesuaian,
                 'jenis' => 0,
                 'uraian' => 'PPN Keluaran',
             ]);
@@ -174,10 +173,10 @@ class RekapPpn extends Model
                 }
 
                 $store = $dbKasBesar->create([
-                    'ppn_kas' => 1,
+                    'tanggal' => now(),
                     'uraian' => 'Pembayaran PPN',
                     'jenis' => 0,
-                    'nominal' => $nominalKasBesar,
+                    'nominal_transaksi' => $nominalKasBesar,
                     'saldo' => $dbKasBesar->saldoTerakhir() - $nominalKasBesar,
                     'no_rek' => 'Pajak',
                     'nama_rek' => 'Pajak',
@@ -194,12 +193,11 @@ class RekapPpn extends Model
 
                 $waState = 1;
 
-
                 $pesan = "🔴🔴🔴🔴🔴🔴🔴🔴🔴\n".
                         "*Form PPN*\n".
                         "🔴🔴🔴🔴🔴🔴🔴🔴🔴\n\n".
                         "Uraian : ".$store->uraian."\n".
-                        "Nilai :  *Rp. ".number_format($store->nominal, 0, ',', '.')."*\n\n".
+                        "Nilai :  *Rp. ".number_format($store->nominal_transaksi, 0, ',', '.')."*\n\n".
                         "Ditransfer ke rek:\n\n".
                         "Bank      : ".$store->bank."\n".
                         "Nama    : ".$store->nama_rek."\n".
@@ -229,8 +227,9 @@ class RekapPpn extends Model
             DB::commit();
 
             if ($waState == 1) {
-                $tujuan = GroupWa::where('untuk', 'kas-besar')->first()->nama_group;
-                $dbKasBesar->sendWa($tujuan, $pesan);
+                $dbGroup = new GroupWa();
+                $tujuan = $dbGroup->where('untuk', 'kas-besar')->first()->nama_group;
+                $dbGroup->sendWa($tujuan, $pesan);
             }
 
             return [

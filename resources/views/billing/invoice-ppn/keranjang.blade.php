@@ -3,7 +3,7 @@
 <div class="container-fluid">
     <div class="row justify-content-center mb-5">
         <div class="col-md-12 text-center">
-            <h1><u>KERANJANG NOTA TAGIHAN</u></h1>
+            <h1><u>KERANJANG INVOICE PPN</u></h1>
             <h1>{{$customer->nama}}</h1>
         </div>
     </div>
@@ -23,24 +23,12 @@
         </div>
     </div>
     @endif
-    {{-- end if --}}
-    {{-- <div class="row">
-        <div class="col-md-6">
-            <label for="berat" class="form-label">Total Tagihan di Pilih</label>
-            <div class="input-group">
-                <span class="input-group-text" id="basic-addon1">Rp.</span>
-                <input type="text" class="form-control" id="total_tagih_display" disabled>
-            </div>
-        </div>
-    </div> --}}
+
     <div class="row mt-3">
         <table class="table table-bordered table-hover" id="tableTransaksi">
             <thead class="table-success">
                 <tr>
-                    {{-- <th class="text-center align-middle" style="width:3%">
-                        Select
-                        <input type="checkbox" onclick="checkAll(this)" id="checkAll">
-                    </th> --}}
+
                     <th class="text-center align-middle">No</th>
                     <th class="text-center align-middle">Tanggal</th>
                     <th class="text-center align-middle">Supplier</th>
@@ -52,6 +40,7 @@
                     <th class="text-center align-middle">PPH 0,25%</th>
                     <th class="text-center align-middle">Profit</th>
                     <th class="text-center align-middle">Total Tagihan</th>
+                    <th class="text-center align-middle">Total PPN</th>
                     <th class="text-center align-middle">Act</th>
                 </tr>
             </thead>
@@ -67,10 +56,11 @@
                     <td class="text-center align-middle">{{$d->nf_harga}}</td>
                     <td class="text-center align-middle">{{$d->nf_total}}</td>
                     <td class="text-center align-middle">{{$d->nf_pph}}</td>
-                    <td class="text-center align-middle">{{$d->nf_profit}}</td>
+                    <td class="text-center align-middle">{{number_format($d->profit,0,',','.')}}</td>
                     <td class="text-center align-middle">{{number_format($d->total_tagihan,0,',','.')}}</td>
+                    <td class="text-center align-middle">{{number_format($d->total_ppn,0,',','.')}}</td>
                     <td class="text-center align-middle">
-                        <form action="{{route('nota-tagihan.keranjang.delete', ['transaksi' => $d->id])}}" method="post"
+                        <form action="{{route('invoice-ppn.keranjang.delete', ['transaksi' => $d->id])}}" method="post"
                             style="display: inline-block;" id="delete-{{$d->id}}">
                             @csrf
                             <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i></button>
@@ -102,13 +92,14 @@
             <tfoot>
                 <tr>
                     <th colspan="4" class="text-center align-middle">Grand Total</th>
-                    <th class="text-center align-middle">{{number_format($data->sum('berat'), 0, ',','.')}}</th>
+                    <th class="text-center align-middle">{{number_format($totalBerat, 0, ',','.')}}</th>
                     <th class="text-center align-middle">Kg</th>
                     <th class="text-center align-middle"></th>
-                    <th class="text-center align-middle">{{number_format($data->sum('total'), 0, ',','.')}}</th>
-                    <th class="text-center align-middle">{{number_format($data->sum('pph'), 0, ',','.')}}</th>
-                    <th class="text-center align-middle">{{number_format($data->sum('profit'), 0, ',','.')}}</th>
-                    <th class="text-center align-middle">{{number_format($data->sum('total_tagihan'), 0, ',','.')}}</th>
+                    <th class="text-center align-middle">{{number_format($total, 0,',','.')}}</th>
+                    <th class="text-center align-middle">{{number_format($totalPPH, 0,',','.')}}</th>
+                    <th class="text-center align-middle">{{number_format($totalProfit, 0, ',','.')}}</th>
+                    <th class="text-center align-middle">{{number_format($totalTagihan, 0, ',','.')}}</th>
+                    <th class="text-center align-middle">{{number_format($totalPPN, 0, ',','.')}}</th>
                     <th class="text-center align-middle"></th>
                 </tr>
             </tfoot>
@@ -116,55 +107,21 @@
     </div>
     <hr>
     <div class="row mt-3">
-        <form action="{{route('nota-tagihan.keranjang.lanjutkan', ['customer' => $customer->id])}}" method="post"
-            id="masukForm">
+        <form action="{{route('invoice-ppn.keranjang.lanjutkan', ['customer' => $customer->id])}}" method="post" id="masukForm">
             @csrf
-
             <div class="row p-3">
-                <div class="col-md-3">
-                    <div class="mb-3">
-                        <label for="" class="form-label">Total DPP</label>
-                        <input type="text" class="form-control" name="dpp" id="dpp" disabled
-                            value="{{number_format($data->sum('total'), 0, ',','.')}}" />
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="mb-3">
-                        <label for="" class="form-label">Total PPH</label>
-                        <input type="text" class="form-control" name="dpp" id="dpp" disabled
-                            value="{{number_format($data->sum('pph'), 0, ',','.')}}" />
-                    </div>
-                </div>
-                @if ($customer->ppn_kumulatif == 0)
                 <div class="col-md-3">
                     <div class="mb-3">
                         <label for="" class="form-label">Total PPN</label>
                         <div class="input-group mb-3">
                             <span class="input-group-text" id="basic-addon1">Rp</span>
-                            <input type="text" class="form-control" name="ppn" id="ppn" value="{{number_format($data->sum('total_ppn'), 0, ',','.')}}" disabled>
+                            <input type="text" class="form-control" name="tot" id="tot" value="{{number_format($data->sum('total_ppn'), 0, ',','.')}}" disabled>
                           </div>
                     </div>
                 </div>
-                @endif
-                @php
-                $gt = $customer->ppn_kumulatif == 0 ? $data->sum('total_tagihan')+$data->sum('total_ppn') :
-                $data->sum('total_tagihan');
-                @endphp
                 <div class="col-md-3">
                     <div class="mb-3">
-                        <label for="" class="form-label">Total Tagihan</label>
-                        <div class="input-group mb-3">
-                            <span class="input-group-text" id="basic-addon1">Rp</span>
-                            <input type="text" class="form-control" name="tot" id="tot" value="{{number_format($gt, 0, ',','.')}}" disabled>
-                          </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row px-3 pb-3">
-                <div class="col-md-3">
-                    <div class="mb-3">
-                        <label for="" class="form-label">Penyesuaian</label>
+                        <label for="penyesuaian" class="form-label">Penyesuaian </label>
                         <div class="input-group mb-3">
                             <span class="input-group-text" id="basic-addon1">Rp</span>
                             <input type="text" class="form-control" name="penyesuaian" id="penyesuaian" value="0" required onkeyup="addPenyesuaian()">
@@ -173,23 +130,20 @@
                 </div>
                 <div class="col-md-3">
                     <div class="mb-3">
-                        <label for="" class="form-label">Grand Total</label>
+                        <label for="" class="form-label">Grand Total PPN</label>
                         <div class="input-group mb-3">
                             <span class="input-group-text" id="basic-addon1">Rp</span>
-                            <input type="text" class="form-control" name="gt" id="gt" value="{{number_format($gt, 0, ',','.')}}" disabled>
+                            <input type="text" class="form-control" name="gt" id="gt" value="{{number_format($data->sum('total_ppn'), 0, ',','.')}}" disabled>
                           </div>
                     </div>
                 </div>
             </div>
-
-
             <div class="col-md-12">
-                <button type="submit" class="btn btn-primary form-control"><i class="fa fa-credit-card pe-1"></i>
-                    Simpan</button>
+                <button type="submit" class="btn btn-primary form-control">LANJUTKAN</button>
             </div>
         </form>
         <div class="col-md-12">
-            <a href="{{route('nota-tagihan.index', ['customer' => $customer])}}"
+            <a href="{{route('invoice-ppn.index', ['customer' => $customer->id])}}"
                 class="btn btn-secondary form-control mt-3">Kembali</a>
         </div>
     </div>
@@ -258,22 +212,5 @@
             })
         });
 
-        $('#lanjutkanForm').submit(function(e){
-            e.preventDefault();
-            Swal.fire({
-                title: 'Apakah data sudah benar?',
-                text: "Total Tagihan Rp. "+value,
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#6c757d',
-                confirmButtonText: 'Ya, masukan keranjang!'
-                }).then((result) => {
-                if (result.isConfirmed) {
-                    $('#spinner').show();
-                    this.submit();
-                }
-            })
-        });
 </script>
 @endpush

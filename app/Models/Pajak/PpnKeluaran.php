@@ -2,6 +2,7 @@
 
 namespace App\Models\Pajak;
 
+use App\Models\InvoicePpn;
 use App\Models\InvoiceTagihan;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -15,6 +16,11 @@ class PpnKeluaran extends Model
     public function invoiceTagihan()
     {
         return $this->belongsTo(InvoiceTagihan::class);
+    }
+
+    public function invoicePpn()
+    {
+        return $this->belongsTo(InvoicePpn::class);
     }
 
     public function getTanggalAttribute()

@@ -66,7 +66,7 @@
                         <input style="height: 25px; width:25px" type="checkbox" onclick="checkAll(this)" id="checkAll">
                     </th>
                     <th class="text-center align-middle">Tanggal Input</th>
-                    <th class="text-center align-middle">Nota</th>
+                    {{-- <th class="text-center align-middle">Nota</th> --}}
                     <th class="text-center align-middle">Customer</th>
                     <th class="text-center align-middle">Uraian</th>
                     {{-- <th class="text-center align-middle">Tanggal Bayar</th> --}}
@@ -89,16 +89,29 @@
                             data-tagihan="{{$d->nominal}}" onclick="check(this, {{$d->id}})" id="idSelect-{{$d->id}}"
                             {{$d->is_faktur == 0 ? 'disabled' : ''}}>
                     </td>
-                    <td class="text-center align-middle">{{$d->invoiceTagihan ? $d->invoiceTagihan->tanggal : '-'}}</td>
                     <td class="text-center align-middle">
+                        @if ($d->invoice_tagihan_id)
+                        {{$d->invoiceTagihan ? $d->invoiceTagihan->tanggal : '-'}}
+                        @endif
+                        @if ($d->invoice_ppn_id)
+                        {{$d->invoicePpn ? $d->invoicePpn->tanggal : '-'}}
+                        @endif</td>
+                    {{-- <td class="text-center align-middle">
                         @if ($d->invoiceTagihan)
                         {{-- <a href="{{route('invoice.tagihan.detail', ['invoice' => $d->invoice_tagihan_id])}}"> --}}
-                            {{$d->invoiceTagihan->periode}}
+                            {{-- {{$d->invoiceTagihan->no_invoice}} --}}
                         {{-- </a> --}}
-                        @endif
+                        {{-- @endif --}}
 
+                    {{-- </td> --}}
+                    <td class="text-center align-middle">
+                        @if ($d->invoice_tagihan_id)
+                        {{$d->invoiceTagihan ? $d->invoiceTagihan->customer->singkatan : ""}}
+                        @endif
+                        @if ($d->invoice_ppn_id)
+                        {{$d->invoicePpn->customer->singkatan}}
+                        @endif
                     </td>
-                    <td class="text-center align-middle">{{$d->invoiceTagihan->customer ? $d->invoiceTagihan->customer->singkatan : ""}}</td>
                     <td class="text-start align-middle">
                         {{$d->uraian}}
                     </td>
@@ -146,7 +159,7 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <th class="text-end align-middle" colspan="5">Grand Total</th>
+                    <th class="text-end align-middle" colspan="4">Grand Total</th>
                     <th class="text-end align-middle">{{number_format($totalNpwp, 0, ',','.')}}</th>
                     <th class="text-end align-middle">{{number_format($totalFaktur, 0, ',','.')}}</th>
                     <th></th>

@@ -55,6 +55,11 @@
                 <label for="tahun" class="form-label">&nbsp;</label>
                 <button type="submit" class="btn btn-primary form-control" id="btn-cari">Tampilkan</button>
             </div>
+            <div class="col-md-3 mb-3">
+                <label for="tahun" class="form-label">&nbsp;</label>
+                <a href="{{route('invoice-ppn.keranjang', ['customer' => $customer->id])}}"
+                    class="btn btn-success form-control {{$keranjangCount == 0 ? 'disabled' : ''}}" ><i class="fa fa-shopping-cart"></i> Keranjang {!!$keranjangCount > 0 ? "<span class='text-warning'>($keranjangCount)</span>" : ''!!}</a>
+            </div>
         </div>
     </form>
     <hr>

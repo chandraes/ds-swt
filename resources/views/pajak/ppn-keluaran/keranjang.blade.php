@@ -44,7 +44,14 @@
                 @foreach ($data as $d)
                 <tr>
 
-                    <td class="text-center align-middle">{{$d->invoiceTagihan ? $d->invoiceTagihan->tanggal : '-'}}</td>
+                    <td class="text-center align-middle">
+                        @if ($d->invoice_tagihan_id)
+                        {{$d->invoiceTagihan ? $d->invoiceTagihan->tanggal : '-'}}
+                        @endif
+                        @if ($d->invoice_ppn_id)
+                        {{$d->invoicePpn ? $d->invoicePpn->tanggal : '-'}}
+                        @endif</td>
+                    </td>
                     <td class="text-center align-middle">
                         @if ($d->invoiceTagihan)
                         {{-- <a href="{{route('invoice.tagihan.detail', ['invoice' => $d->invoice_tagihan_id])}}"> --}}
@@ -53,8 +60,14 @@
                         @endif
 
                     </td>
-                    <td class="text-center align-middle">{{$d->invoiceTagihan->customer ?
-                        $d->invoiceTagihan->customer->singkatan : ''}}</td>
+                    <td class="text-center align-middle">
+                        @if ($d->invoice_tagihan_id)
+                        {{$d->invoiceTagihan ? $d->invoiceTagihan->customer->singkatan : ""}}
+                        @endif
+                        @if ($d->invoice_ppn_id)
+                        {{$d->invoicePpn->customer->singkatan}}
+                        @endif
+                    </td>
                     <td class="text-start align-middle">
                         {{$d->uraian}}
                     </td>

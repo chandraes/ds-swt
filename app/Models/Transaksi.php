@@ -86,7 +86,14 @@ class Transaksi extends Model
     {
         return $this->whereMonth('tanggal', $month)->whereYear('tanggal', $year)
                     ->where('customer_id', $customer_id)
+                    ->where('keranjang', 0)
                     ->where('status', 1)->where('tagihan', 1)->where('ppn', 0)
+                    ->orderBy('nota_timbangan')->get();
+    }
+
+    public function invoicePpnKeranjang($customer_id)
+    {
+        return $this->where('customer_id', $customer_id)->where('status', 1)->where('tagihan', 1)->where('ppn', 0)->where('keranjang', 1)
                     ->orderBy('nota_timbangan')->get();
     }
 
