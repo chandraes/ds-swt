@@ -40,12 +40,12 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-3 text-center mt-3">
+        {{-- <div class="col-md-3 text-center mt-3">
             <a href="{{route('form-ppn')}}" class="text-decoration-none">
                 <img src="{{asset('images/form-ppn.svg')}}" alt="" width="70">
                 <h4 class="mt-3">FORM PPN @if($ppn != 0) <span class="text-danger">({{$ppn}})</span> @endif</h4>
             </a>
-        </div>
+        </div> --}}
 
     </div>
 </div>
